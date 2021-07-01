@@ -1,0 +1,147 @@
+# Cluster analysis of soil XRPD data {#cluster-analysis}
+*Benjamin Butler*
+
+This chapter will demonstrate the use of cluster analysis to identify mineral-nutrient relationships in African soils. The examples provided for the cluster analysis use the data presented in @Butler2020 that is hosted [here](https://doi.org/10.17632/r6g94fgx55.1) on Mendeley Data. To run the examples in this chapter on your own machine, you will need to download the soil property data in '.csv' format and the XRPD data in a zipped folder of 'xy' files. Please simply save these files to your own directory, and unzip the zipped folder containing the '.xy' files. **Skip this step if you have already downloaded these files for the examples in Chapter \@ref(machine-learning)**,
+
+```{r, echo=FALSE, cache = TRUE}
+if (knitr:::is_html_output())
+{
+  download_link(
+  link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/9b742b95-c071-4e3a-a227-939efa034ac7/file_downloaded",
+  button_label = "Download soil property csv",
+  button_type = "danger",
+  has_icon = TRUE,
+  icon = "fa fa-save",
+  self_contained = FALSE
+)
+}
+```
+
+```{r, echo=FALSE, cache = TRUE}
+if (knitr:::is_html_output())
+{
+  download_link(
+  link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/ef33d276-e39c-4b64-b9aa-f2d1d69c51b3/file_downloaded",
+  button_label = "Download zipped XRPD data",
+  button_type = "danger",
+  has_icon = TRUE,
+  icon = "fa fa-save",
+  self_contained = FALSE
+)
+}
+```
+
+## Loading data
+Once you have downloaded the data required for this chapter, it can be loaded into R by modifying the paths in the following code:
+
+```{r, eval=FALSE}
+library(powdR)
+
+#Load the soil property data
+props <- read.csv(file = "path/to/your/file/clusters_and_properties.csv")
+
+#Load the XRPD data
+
+#Get the full file paths
+xrpd_paths <-  dir("path/to/xrd", full.names = TRUE)
+
+#Load the data
+xrpd <- read_xy(files = xrpd_paths)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(powdR)
+
+#Load the soil property data
+props <- read.csv(file = "data/clusters_and_properties.csv")
+
+#Get the full file paths
+xrpd_paths <-  dir("data/xrd", full.names = TRUE)
+
+#Load the XRPD data
+xrpd <- read_xy(files = xrpd_paths)
+```
+
+## Principal component analysis {#clustering-pca}
+The cluster analysis in this Chapter is applied to principal components of soil XRPD data derived using Principal Component Analysis (PCA; @Jolliffe1986). Prior to applying cluster analysis to the XRPD data via this approach, it is important to apply corrections for sample-independent variation such as small $2\theta$ misalignments and/or fluctuations in count intensities. For this example, the pre-treatment routine will be based on that defined in @Butler2020, and will involve alignment, subsetting, square root transformation and mean centering. Together these correct for common experimental aberrations so that the variation in the observed data is almost entirely sample-dependent. The pre-treatment steps used here also match those described in Section \@ref(cubist-pretreatment), excepted for the additional step of square root transforming the data, which acts to reduced the relative intensity of quartz peaks that can often dominate the overall variation in diffraction data.
+
+Alignment of the data can be carried out using the `align_xy()` function [outlined above](#cubist-pretreatment), which aligns each sample within the dataset to a pure quartz pattern:
+
+```{r message=FALSE, warning=FALSE, cache = TRUE}
+#load the rockjock data
+data(rockjock)
+
+#Extract a quartz pattern from rockjock
+quartz <- as_xy(data.frame(rockjock$tth,
+                           rockjock$xrd$QUARTZ))
+
+#Align the xrpd data to this quartz pattern
+#using a restricted 2theta range of 10 to 60
+xrpd_aligned <- align_xy(xrpd, std = quartz,
+                         xmin = 10, xmax = 60,
+                         xshift = 0.2)
+```
+
+Aligned data can then be subset to $2\theta$ > 6 so that the [high background at low angles](#cubist-pretreatment) in the data can be removed.
+
+```{r message=FALSE, warning=FALSE, cache = TRUE}
+subset_xrpd <- function (x, xmin) {
+  
+  x <- x[x[[1]] >= xmin, ]
+  
+  return(x)
+  
+}
+
+xrpd_aligned <- lapply(xrpd_aligned, subset_xrpd,
+                       xmin = 6)
+```
+
+Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and PCA can be carried out in a single step using the `xrpd_pca()` function in `powdR`: 
+
+```{r message=FALSE, warning=FALSE, cache = TRUE}
+pca <- xrpd_pca(xrpd_aligned,
+                mean_center = TRUE,
+                root_transform = 2,
+                components = 10)
+
+#View the variance explained by the first 10 PCs
+pca$eig[1:10,]
+```
+
+From which it can be seen that the first 10 principal components (PCs) of the data account for 96 % of variation in the XRPD data. The resulting cluster analysis will therefore be based upon these 10 components. For simplicity this example will use the first 5 PCs hereafter, which together account for 93 % of total variation.
+
+```{r fig.cap = "The first 5 PCs plotted against one-another", out.width='100%', fig.align='center', fig.asp=2, message=FALSE, warning=FALSE, cache = TRUE}
+library(gridExtra)
+library(ggplot2)
+
+#Define the x-axis components
+x <- c(1, 1, 1, 1,
+       2, 2, 2,
+       3, 3,
+       4)
+
+#Define the y-axis components
+y <- c(2, 3, 4, 5,
+       3, 4, 5,
+       4, 5,
+       5)
+
+#Create and empty list
+p <- list()
+
+#Populate each item in the list using the dimension defined
+#in x and y
+for (i in 1:length(x)) {
+   
+   p[[i]] <- ggplot(data = pca$coords) +
+             geom_point(aes_string(x = paste0("Dim.", x[i]),
+                                   y = paste0("Dim.", y[i])),
+                        shape = 21,
+                        size = 3)
+   
+}
+
+grid.arrange(grobs = p,
+             ncol = 2)
+```

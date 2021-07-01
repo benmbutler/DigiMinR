@@ -1,0 +1,8 @@
+book_filename: "DigiMinR"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files:
+  #html: ["index.Rmd", "01-intro.Rmd"]
+  #latex: ["index.Rmd", "01-intro.Rmd"]

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Working with XRPD data in R | Digital Soil Mineralogy with R</title>
+  <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Working with XRPD data in R | Digital Soil Mineralogy with R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="/figures/dsm_graphic.png" />
+  <meta property="og:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Working with XRPD data in R | Digital Soil Mineralogy with R" />
+  
+  <meta name="twitter:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  <meta name="twitter:image" content="/figures/dsm_graphic.png" />
+
+<meta name="author" content="Benjamin Butler and Steve Hillier" />
+
+
+<meta name="date" content="2021-06-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="quant.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/font-awesome-5.13.0/js/script.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Digital Soil Mineralogy with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#code-conventions"><i class="fa fa-check"></i>Code Conventions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-to-expect"><i class="fa fa-check"></i>What to expect</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-the-authors"><i class="fa fa-check"></i>About the authors</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Working with XRPD data in R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#basic-form"><i class="fa fa-check"></i><b>1.1</b> The basic form of XRPD data</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#loading-data"><i class="fa fa-check"></i><b>1.2</b> Loading XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#powDLL"><i class="fa fa-check"></i><b>1.2.1</b> Option 1: PowDLL</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#loading-directly"><i class="fa fa-check"></i><b>1.2.2</b> Option 2: Loading directly into R</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#loading-multiple"><i class="fa fa-check"></i><b>1.2.3</b> Loading multiple files</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#plotting-data"><i class="fa fa-check"></i><b>1.3</b> Plotting XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#plotting-xy-objects"><i class="fa fa-check"></i><b>1.3.1</b> Plotting <code>XY</code> objects</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#plotting-multixy-objects"><i class="fa fa-check"></i><b>1.3.2</b> Plotting <code>multiXY</code> objects</a></li>
+<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <code>ggplot2</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#manipulating-data"><i class="fa fa-check"></i><b>1.4</b> Manipulating XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#subsetting"><i class="fa fa-check"></i><b>1.4.1</b> Subsetting XRPD data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="intro.html"><a href="intro.html#transformations"><i class="fa fa-check"></i><b>1.4.2</b> Transformations</a></li>
+<li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#interpolation"><i class="fa fa-check"></i><b>1.4.3</b> Interpolation</a></li>
+<li class="chapter" data-level="1.4.4" data-path="intro.html"><a href="intro.html#alignment"><i class="fa fa-check"></i><b>1.4.4</b> Alignment</a></li>
+<li class="chapter" data-level="1.4.5" data-path="intro.html"><a href="intro.html#background"><i class="fa fa-check"></i><b>1.4.5</b> Background fitting</a></li>
+<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to data frames</a></li>
+<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> <span class="math inline">\(2\theta\)</span> transformation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="quant.html"><a href="quant.html"><i class="fa fa-check"></i><b>2</b> Quantitative phase analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quant.html"><a href="quant.html#full-pattern-summation-with-powdr"><i class="fa fa-check"></i><b>2.1</b> Full pattern summation with <code>powdR</code></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="quant.html"><a href="quant.html#powdRlib"><i class="fa fa-check"></i><b>2.1.1</b> The <code>powdRlib</code> object</a></li>
+<li class="chapter" data-level="2.1.2" data-path="quant.html"><a href="quant.html#full-pattern-summation-with-fps"><i class="fa fa-check"></i><b>2.1.2</b> Full pattern summation with <code>fps()</code></a></li>
+<li class="chapter" data-level="2.1.3" data-path="quant.html"><a href="quant.html#afps"><i class="fa fa-check"></i><b>2.1.3</b> Automated full pattern summation</a></li>
+<li class="chapter" data-level="2.1.4" data-path="quant.html"><a href="quant.html#additional-fps-and-afps-functionality"><i class="fa fa-check"></i><b>2.1.4</b> Additional <code>fps()</code> and <code>afps()</code> functionality</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="quant.html"><a href="quant.html#plotting-powdrfps-and-powdrafps-objects"><i class="fa fa-check"></i><b>2.2</b> Plotting <code>powdRfps</code> and <code>powdRafps</code> objects</a></li>
+<li class="chapter" data-level="2.3" data-path="quant.html"><a href="quant.html#quantifying-multiple-samples"><i class="fa fa-check"></i><b>2.3</b> Quantifying multiple samples</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="quant.html"><a href="quant.html#lapply"><i class="fa fa-check"></i><b>2.3.1</b> <code>lapply()</code></a></li>
+<li class="chapter" data-level="2.3.2" data-path="quant.html"><a href="quant.html#parallel-processing"><i class="fa fa-check"></i><b>2.3.2</b> Parallel processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="quant.html"><a href="quant.html#summarising-mineralogy"><i class="fa fa-check"></i><b>2.4</b> Summarising mineralogy</a></li>
+<li class="chapter" data-level="2.5" data-path="quant.html"><a href="quant.html#the-powdr-shiny-app"><i class="fa fa-check"></i><b>2.5</b> The powdR Shiny app</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>3</b> Machine learning with soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-data-1"><i class="fa fa-check"></i><b>3.1</b> Loading data</a></li>
+<li class="chapter" data-level="3.2" data-path="machine-learning.html"><a href="machine-learning.html#cubist-exploration"><i class="fa fa-check"></i><b>3.2</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="machine-learning.html"><a href="machine-learning.html#spatial-data"><i class="fa fa-check"></i><b>3.2.1</b> Spatial data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="machine-learning.html"><a href="machine-learning.html#geochemical-data"><i class="fa fa-check"></i><b>3.2.2</b> Geochemical data</a></li>
+<li class="chapter" data-level="3.2.3" data-path="machine-learning.html"><a href="machine-learning.html#xrpd-data"><i class="fa fa-check"></i><b>3.2.3</b> XRPD data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="machine-learning.html"><a href="machine-learning.html#cubist-pretreatment"><i class="fa fa-check"></i><b>3.3</b> Data pre-treatment</a>
+<ul>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#alignment-1"><i class="fa fa-check"></i>Alignment</a></li>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#subsetting-1"><i class="fa fa-check"></i>Subsetting</a></li>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#mean-centering"><i class="fa fa-check"></i>Mean centering</a></li>
+<li class="chapter" data-level="3.3.1" data-path="machine-learning.html"><a href="machine-learning.html#creation-of-training-and-test-datasets"><i class="fa fa-check"></i><b>3.3.1</b> Creation of training and test datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="machine-learning.html"><a href="machine-learning.html#using-cubist"><i class="fa fa-check"></i><b>3.4</b> Using Cubist</a></li>
+<li class="chapter" data-level="3.5" data-path="machine-learning.html"><a href="machine-learning.html#inspection-of-cubist-models"><i class="fa fa-check"></i><b>3.5</b> Inspection of Cubist models</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
+<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Digital Soil Mineralogy with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="intro" class="section level1" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Working with XRPD data in R</h1>
+<p><em>Benjamin Butler</em></p>
+<p>At this stage it is assumed that you have R and RStudio installed on your computer and have installed the <code>powdR</code> package using <code>install.packages("powdR")</code>. For brief introductions to R, the <a href="https://education.rstudio.com/learn/beginner/">RStudio website has links to useful material</a>. One aspect worth noting is that any R function used throughout this document will have additional help associated with it that can be accessed using <code>?</code>. For example, to access help on the <code>mean()</code> function, use <code>?mean</code>.</p>
+<p>This chapter will work through:</p>
+<ul>
+<li><a href="intro.html#basic-form">The basic form of XRPD data</a></li>
+<li><a href="intro.html#loading-data">Loading XRPD data in R</a></li>
+<li><a href="intro.html#plotting-data">Plotting XRPD data</a></li>
+<li><a href="intro.html#manipulating-data">Manipulating XRPD data</a></li>
+</ul>
+<div id="basic-form" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> The basic form of XRPD data</h2>
+<p>In its most basic form, XRPD data (a diffractogram) is simply comprised of an x-axis (2<span class="math inline">\(\theta\)</span>) and y-axis (counts). The following figure shows a diffratogram for a soil from north east Scotland.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-6-1.png" alt="A diffractogram of a soil developed from Granite in north east Scotland" width="80%" />
+<p class="caption">
+Figure 1.1: A diffractogram of a soil developed from Granite in north east Scotland
+</p>
+</div>
+<p>Each mineral contributing to the observed diffractogram contributes peaks at specific locations along the x-axis, each with chracteristic relative intensities to one-another that are defined by the crystal structure and chemistry. Each mineral can therefore be considered to have a unique “signature.” For quartz, an omnipresent mineral in the world’s soils, this signature is relatively simple:</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-7-1.png" alt="A diffractogram of quartz" width="80%" />
+<p class="caption">
+Figure 1.2: A diffractogram of quartz
+</p>
+</div>
+<p>whereas other soil minerals such as K-feldspar have very different peak positions and relative intensities:</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-8"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-8-1.png" alt="A diffractogram of K-feldspar (orthoclase)" width="80%" />
+<p class="caption">
+Figure 1.3: A diffractogram of K-feldspar (orthoclase)
+</p>
+</div>
+<p>In any given diffractogram there can be a number of different minerals contributing their unique signature to the observed pattern, which ends up simply being the sum of these signatures each scaled by different amounts (scaling factors). These scaling factors are inherently related to a given minerals concentration within the mixture based on the defined diffracting power of each mineral, known as Reference Intensity Ratios (see Chapter <a href="quant.html#quant">2</a>). Together these principles make XRPD the most widely used analytical technique for qualitative and quantitative soil mineralogy. Most XRPD data adhere to this basic form, but often vary in the monochromatic wavelength used and instrumental parameters.</p>
+</div>
+<div id="loading-data" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Loading XRPD data</h2>
+<p>In order to work with XRPD data in R, it first needs to be loaded. XRPD data come in all sorts of proprietary formats (e.g. .raw, .dat and .xrdml), which can make this initial stage of loading data more complicated than it needs to be. In its most basic form, XRPD data is simply comprised of an x-axis (2<span class="math inline">\(\theta\)</span>) and y-axis (counts), and all XRPD data loaded into R throughout this documentation will take this XY form. There are 2 ways of loading proprietary XRPD data into R.</p>
+<div id="powDLL" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Option 1: PowDLL</h3>
+<p>The free software <a href="http://users.uoi.gr/nkourkou/powdll/">PowDLL</a> written by Nikoloas Kourkoumelis, offers excellent for the conversion of different XRPD file types. PowDLL can import and export a large range of XRPD file types including ‘.xy’ files that are most easily loaded into R. These ‘.xy’ files are an ASCII format that simply comprises the two variables (2<span class="math inline">\(\theta\)</span> and counts) separated by a space. The following video from Phys Whiz on YouTube illustrates use of powDLL to create the ‘.xy’ files that we seek to use.</p>
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YUxg4-D-1Bk" frameborder="0" allowfullscreen>
+</iframe>
+</p>
+<p>Once you have your ‘.xy’ files, they can be loaded into R using the <code>read_xy()</code> function from the <code>powdR</code> package. The following reproducible example uses files that are stored within <code>powdR</code> and were recorded on a Siemens D5000 using Co-K<span class="math inline">\(\alpha\)</span> radiation.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="intro.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(powdR)</span>
+<span id="cb4-2"><a href="intro.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="intro.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
+<span id="cb4-4"><a href="intro.html#cb4-4" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy/D5000_1.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb4-5"><a href="intro.html#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="intro.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy1</span></span>
+<span id="cb4-7"><a href="intro.html#cb4-7" aria-hidden="true" tabindex="-1"></a>xy1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(file)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="intro.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Explore the xy data</span></span>
+<span id="cb5-2"><a href="intro.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
+<pre><code>##       tth            counts      
+##  Min.   : 2.00   Min.   :  70.0  
+##  1st Qu.:20.25   1st Qu.: 145.0  
+##  Median :38.50   Median : 236.0  
+##  Mean   :38.50   Mean   : 292.9  
+##  3rd Qu.:56.75   3rd Qu.: 342.0  
+##  Max.   :75.00   Max.   :6532.0</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check the class of xy data</span></span>
+<span id="cb7-2"><a href="intro.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy1)</span></code></pre></div>
+<pre><code>## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
+<p>Notice how the class of <code>xy1</code> is both <code>XY</code> and <code>data.frame</code>. This means that various additional methods for each of these types of object classes can be used to explore and analyse the data. These methods can be viewed using:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;XY&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] align_xy    interpolate plot       
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<p>which shows how functions <a href="intro.html#alignment"><code>align_xy()</code></a>, <a href="intro.html#interpolation"><code>interpolate()</code></a> and <a href="intro.html#plotting-data"><code>plot()</code></a> all have methods for <code>XY</code> class objects. Help on each of these can be sourced using <code>?align_xy.XY</code>, <code>?interpolate.XY</code> and <code>?plot.XY</code>, respectively. When calling these functions it is not necessary to specify the <code>.XY</code> suffix because R will recognise the class and call the relevant method.</p>
+</div>
+<div id="loading-directly" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Option 2: Loading directly into R</h3>
+<p>Alternatively to PowDLL, the <code>extract_xy()</code> function in the <code>powdR</code> package can extract the XY data from a wide range of proprietary XRPD files straight into R via the <code>xylib</code> C++ library implemented behind the scenes in the <code>rxylib</code> package <span class="citation">(<a href="#ref-rxylib2020" role="doc-biblioref">Kreutzer and Johannes Friedrich 2020</a>)</span>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="intro.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
+<span id="cb11-2"><a href="intro.html#cb11-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW/D5000_1.RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb11-3"><a href="intro.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="intro.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy2</span></span>
+<span id="cb11-5"><a href="intro.html#cb11-5" aria-hidden="true" tabindex="-1"></a>xy2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(file)</span></code></pre></div>
+<pre><code>## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the xy data</span></span>
+<span id="cb13-2"><a href="intro.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy2)</span></code></pre></div>
+<pre><code>##       tth            counts      
+##  Min.   : 2.00   Min.   :  70.0  
+##  1st Qu.:20.25   1st Qu.: 145.0  
+##  Median :38.50   Median : 236.0  
+##  Mean   :38.50   Mean   : 292.9  
+##  3rd Qu.:56.75   3rd Qu.: 342.0  
+##  Max.   :75.00   Max.   :6532.0</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy2</span></span>
+<span id="cb15-2"><a href="intro.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy2)</span></code></pre></div>
+<pre><code>## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
+<p>A <strong>word of warning</strong> with <code>extract_xy()</code> is that it does not work with all proprietary file types. In particular you may experience problems with Bruker ‘.raw’ files, in which case the use of PowDLL outlined <a href="intro.html#powDLL">above</a> is recommended instead.</p>
+</div>
+<div id="loading-multiple" class="section level3" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Loading multiple files</h3>
+<p>The two approaches for loading XRPD data outlined above can also be used to load any number of files into R at once. <code>read_xy()</code> and <code>extract_xy()</code> will recognise cases where more than one file path is supplied and therefore load the files into a <code>multiXY</code> object.</p>
+<div id="read_xy" class="section level4" number="1.2.3.1">
+<h4><span class="header-section-number">1.2.3.1</span> <code>read_xy()</code></h4>
+<p>There are five ‘.xy’ files stored within a directory of the <code>powdR</code> package that can be loaded into a <code>multiXY</code> object via:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1" aria-hidden="true" tabindex="-1"></a>paths1 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
+<span id="cb17-2"><a href="intro.html#cb17-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb17-3"><a href="intro.html#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="intro.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
+<span id="cb17-5"><a href="intro.html#cb17-5" aria-hidden="true" tabindex="-1"></a>xy_list1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(paths1)</span>
+<span id="cb17-6"><a href="intro.html#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="intro.html#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy_list1</span></span>
+<span id="cb17-8"><a href="intro.html#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list1)</span></code></pre></div>
+<pre><code>## [1] &quot;multiXY&quot; &quot;list&quot;</code></pre>
+<p>The resulting <code>multiXY</code> object is a list of <code>XY</code> objects, with each <code>XY</code> object being a data frame comprised of the <span class="math inline">\(2\theta\)</span> and count intensities of the XRPD data.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of each item within the multiXY object</span></span>
+<span id="cb19-2"><a href="intro.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1, class)</span></code></pre></div>
+<pre><code>## $D5000_1
+## [1] &quot;XY&quot;         &quot;data.frame&quot;
+## 
+## $D5000_2
+## [1] &quot;XY&quot;         &quot;data.frame&quot;
+## 
+## $D5000_3
+## [1] &quot;XY&quot;         &quot;data.frame&quot;
+## 
+## $D5000_4
+## [1] &quot;XY&quot;         &quot;data.frame&quot;
+## 
+## $D5000_5
+## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
+<p>Each sample within the list can be accessed using the <code>$</code> symbol. For example:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the data within the first sample:</span></span>
+<span id="cb21-2"><a href="intro.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy_list1<span class="sc">$</span>D5000_1)</span></code></pre></div>
+<pre><code>##       tth            counts      
+##  Min.   : 2.00   Min.   :  70.0  
+##  1st Qu.:20.25   1st Qu.: 145.0  
+##  Median :38.50   Median : 236.0  
+##  Mean   :38.50   Mean   : 292.9  
+##  3rd Qu.:56.75   3rd Qu.: 342.0  
+##  Max.   :75.00   Max.   :6532.0</code></pre>
+<p>Alternatively, the same item within <code>xy_list1</code> could be accessed using <code>xy_list1[[1]]</code>. In the same way the <code>XY</code> class objects have methods associated with them, there are a number of different methods for <code>multiXY</code> objects:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;multiXY&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] align_xy       interpolate    multi_xy_to_df plot          
+## see &#39;?methods&#39; for accessing help and source code</code></pre>
+<p>which include <a href="intro.html#alignment"><code>align_xy()</code></a>, <a href="interpolation"><code>interpolate()</code></a>, <a href="intro.html#to-data-frame"><code>multi_xy_to_df()</code></a> and <a href="#plotting"><code>plot</code></a> that are all detailed in subsequent sections.</p>
+</div>
+<div id="extract_xy" class="section level4" number="1.2.3.2">
+<h4><span class="header-section-number">1.2.3.2</span> <code>extract_xy()</code></h4>
+<p>In addition to the five ‘.xy’ files loaded above, there are also five ‘.RAW’ files stored within a separate directory of <code>powdR</code>, that can be loaded in a similar fashion using <code>extract_xy()</code>:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro.html#cb25-1" aria-hidden="true" tabindex="-1"></a>paths2 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
+<span id="cb25-2"><a href="intro.html#cb25-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-3"><a href="intro.html#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="intro.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
+<span id="cb25-5"><a href="intro.html#cb25-5" aria-hidden="true" tabindex="-1"></a>xy_list2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(paths2)</span></code></pre></div>
+<pre><code>## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
+## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
+## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
+## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
+## 
+## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find out what the xy_list2 is</span></span>
+<span id="cb27-2"><a href="intro.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list2)</span></code></pre></div>
+<pre><code>## [1] &quot;multiXY&quot; &quot;list&quot;</code></pre>
+<p>which yields <code>xy_list2</code> that is identical to <code>xy_list1</code>:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="intro.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(xy_list1, xy_list2)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+</div>
+</div>
+<div id="plotting-data" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Plotting XRPD data</h2>
+<p>The <code>powdR</code> package contains <code>plot()</code> methods for both <code>XY</code> and <code>multiXY</code> objects (see <code>?plot.XY</code> and <code>plot.multiXY</code>).</p>
+<div id="plotting-xy-objects" class="section level3" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Plotting <code>XY</code> objects</h3>
+<p>An <code>XY</code> object can be plotted by:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-18"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-18-1.png" alt="An example figure created using the plot method for an XY object." width="80%" />
+<p class="caption">
+Figure 1.4: An example figure created using the plot method for an XY object.
+</p>
+</div>
+<p>where <code>wavelength = "Co"</code> is required so that d-spacings can be computed and displayed when <code>interactive = TRUE</code>.</p>
+</div>
+<div id="plotting-multixy-objects" class="section level3" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Plotting <code>multiXY</code> objects</h3>
+<p>Often it’s useful to plot more than one pattern at the same time, which can be achieved by plotting a <code>multiXY</code> object:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-19"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-19-1.png" alt="An example figure created using the plot method for a multiXY object." width="80%" />
+<p class="caption">
+Figure 1.5: An example figure created using the plot method for a multiXY object.
+</p>
+</div>
+<p>As above, adding <code>interactive = TRUE</code> to the function call will produce an interactive plot. In addition, plotting of <code>XY</code> and <code>multiXY</code> objects also allows you to alter the x-axis limits and normalise the count intensities for easier comparison of specific peaks:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>,</span>
+<span id="cb33-2"><a href="intro.html#cb33-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">32</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-20"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-20-1.png" alt="An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis." width="80%" />
+<p class="caption">
+Figure 1.6: An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis.
+</p>
+</div>
+</div>
+<div id="modifying-plots-with-ggplot2" class="section level3" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Modifying plots with <code>ggplot2</code></h3>
+<p>All plots shown so far are produced behind the scenes using the <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a> package, which will already be present on your machine if you have installed <code>powdR</code>. This means that it is possible to modify the plots in different ways by adding subsequent <code>ggplot2</code> layers, each separated by <code>+</code>. For example, it’s possible to add points of the quartz peak intensities extracted from a <a href="http://rruff.geo.arizona.edu/AMS/amcsd.php">crystal structure database</a> using <code>geom_point()</code>, and then add a title using <code>ggtitle()</code>, followed by changing the theme using <code>theme_bw()</code>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Define the relative intensities of quartz peaks</span></span>
+<span id="cb34-2"><a href="intro.html#cb34-2" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">24.22</span>, <span class="fl">30.99</span>, <span class="fl">42.61</span>, <span class="fl">46.12</span>,</span>
+<span id="cb34-3"><a href="intro.html#cb34-3" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">47.06</span>, <span class="fl">49.62</span>, <span class="fl">53.62</span>, <span class="fl">58.86</span>,</span>
+<span id="cb34-4"><a href="intro.html#cb34-4" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">64.60</span>, <span class="fl">65.18</span>, <span class="fl">70.79</span>, <span class="fl">73.68</span>),</span>
+<span id="cb34-5"><a href="intro.html#cb34-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;intensity&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.20</span>, <span class="fl">1.00</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span>,</span>
+<span id="cb34-6"><a href="intro.html#cb34-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.05</span>, <span class="fl">0.03</span>, <span class="fl">0.11</span>,</span>
+<span id="cb34-7"><a href="intro.html#cb34-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.01</span>, <span class="fl">0.07</span>, <span class="fl">0.03</span>))</span>
+<span id="cb34-8"><a href="intro.html#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="intro.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the ggplot2 package</span></span>
+<span id="cb34-10"><a href="intro.html#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb34-11"><a href="intro.html#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="intro.html#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a plot called p1</span></span>
+<span id="cb34-13"><a href="intro.html#cb34-13" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(xy1, <span class="at">wav =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="intro.html#cb34-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_point</span>(<span class="at">data =</span> quartz, <span class="fu">aes</span>(<span class="at">x =</span> tth, <span class="at">y =</span> intensity), <span class="at">size =</span> <span class="dv">5</span>,</span>
+<span id="cb34-15"><a href="intro.html#cb34-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-16"><a href="intro.html#cb34-16" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ggtitle</span>(<span class="st">&quot;A soil with quartz peaks identified&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-17"><a href="intro.html#cb34-17" aria-hidden="true" tabindex="-1"></a>           <span class="fu">theme_bw</span>()</span>
+<span id="cb34-18"><a href="intro.html#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="intro.html#cb34-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-21"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-21-1.png" alt="A quartz diffractogram with the locations and relative intensities of the quartz peaks identified." width="80%" />
+<p class="caption">
+Figure 1.7: A quartz diffractogram with the locations and relative intensities of the quartz peaks identified.
+</p>
+</div>
+<p>Further help on <code>ggplot2</code> is provided in <a href="https://r4ds.had.co.nz/data-visualisation.html">Hadley Wickham’s excellent documentation</a> on data visualization.</p>
+<p>Plots produced using <code>ggplot2</code> are static and can be exported as high quality images or pdf’s. In some cases it can also be useful to produce an interactive plot, especially when minor features of XRPD data require inspection. For most plots derived from <code>ggplot2</code>, the <code>ggplotly()</code> function from the <code>plotly</code> package can be used to create such interactive plots that will load either in RStudio or your web browser:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb35-2"><a href="intro.html#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="intro.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code></pre></div>
+</div>
+</div>
+<div id="manipulating-data" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Manipulating XRPD data</h2>
+<p>At this stage we have loaded XRPD data into R and to produced plots to visualise both single and multiple patterns. Loading into R opens up almost limitless capabilities for analysing and manipulating the data via the R language and the <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">thousands of open source packages</a> that enhance its functionality. Here some common forms of data manipulation will be introduced:</p>
+<ul>
+<li><a href="intro.html#subsetting">Subsetting</a></li>
+<li><a href="intro.html#transformations">Transformations</a></li>
+<li><a href="intro.html#interpolation">Interpolation</a></li>
+<li><a href="intro.html#alignment">Alignment</a></li>
+<li><a href="intro.html#background">Background fitting</a></li>
+<li><a href="intro.html#to-data-frame">Converting to data frames</a></li>
+<li><a href="intro.html#two-theta-transform"><span class="math inline">\(2\theta\)</span> transformation</a></li>
+</ul>
+<div id="subsetting" class="section level3" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Subsetting XRPD data</h3>
+<p>Quite often the analysis of XRPD data may be applied to a reduced <span class="math inline">\(2\theta\)</span> range to that measured on the diffractometer. This can readily be achieved in R, and offers an opportunity to introduce how functions can be written.</p>
+<p>By summarising <a href="intro.html#loading-directly"><code>xy1</code></a> we can see that the <span class="math inline">\(2\theta\)</span> column has a minimum of 2 and a maximum of 75 degrees.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
+<pre><code>##       tth            counts      
+##  Min.   : 2.00   Min.   :  70.0  
+##  1st Qu.:20.25   1st Qu.: 145.0  
+##  Median :38.50   Median : 236.0  
+##  Mean   :38.50   Mean   : 292.9  
+##  3rd Qu.:56.75   3rd Qu.: 342.0  
+##  Max.   :75.00   Max.   :6532.0</code></pre>
+<p>If we wanted to reduce this to the range of 10–60 <span class="math inline">\(^\circ 2\theta\)</span> then we have a couple of options. First we could extract the relevant data directly using the <code>[,]</code> notation for a data frame, where values before the comma represent rows and values after the comma represent columns:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" aria-hidden="true" tabindex="-1"></a>xy1_sub <span class="ot">&lt;-</span> xy1[xy1<span class="sc">$</span>tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> xy2<span class="sc">$</span>tth <span class="sc">&lt;=</span> <span class="dv">60</span>, ]</span>
+<span id="cb38-2"><a href="intro.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="intro.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1_sub)</span></code></pre></div>
+<pre><code>##       tth           counts      
+##  Min.   :10.0   Min.   :  93.0  
+##  1st Qu.:22.5   1st Qu.: 174.0  
+##  Median :35.0   Median : 256.0  
+##  Mean   :35.0   Mean   : 308.2  
+##  3rd Qu.:47.5   3rd Qu.: 345.0  
+##  Max.   :60.0   Max.   :6532.0</code></pre>
+<p>This first option is quite simple, but if we wanted to apply it to a list of patterns then turning it into a function would be preferable. Here we will create a function called <code>subset_xrpd()</code>, which will be designed for data frames of XRPD data:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" aria-hidden="true" tabindex="-1"></a>subset_xrpd <span class="ot">&lt;-</span> <span class="cf">function</span> (x, xmin, xmax) {</span>
+<span id="cb40-2"><a href="intro.html#cb40-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-3"><a href="intro.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[x[[<span class="dv">1</span>]] <span class="sc">&gt;=</span> xmin <span class="sc">&amp;</span> x[[<span class="dv">1</span>]] <span class="sc">&lt;=</span> xmax, ]</span>
+<span id="cb40-4"><a href="intro.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-5"><a href="intro.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb40-6"><a href="intro.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb40-7"><a href="intro.html#cb40-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Note that <code>x[[1]]</code> is extracting the first column of the XRPD data, whilst in the first example <code>x$tth</code> was used for the same purpose. Use of <code>x[[1]]</code> instead is a little more robust because it will work even if the column names are changed.</p>
+<p>Now that we have created a function to subset the data, it is very easy to apply it to any number of patterns using <code>lapply()</code>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="intro.html#cb41-1" aria-hidden="true" tabindex="-1"></a>xy_list1_sub <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1, subset_xrpd,</span>
+<span id="cb41-2"><a href="intro.html#cb41-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>)</span>
+<span id="cb41-3"><a href="intro.html#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="intro.html#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Similarly we can summarise the data in the list again</span></span>
+<span id="cb41-5"><a href="intro.html#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1_sub, summary)</span></code></pre></div>
+<pre><code>## $D5000_1
+##       tth           counts      
+##  Min.   :10.0   Min.   :  93.0  
+##  1st Qu.:22.5   1st Qu.: 174.0  
+##  Median :35.0   Median : 256.0  
+##  Mean   :35.0   Mean   : 308.2  
+##  3rd Qu.:47.5   3rd Qu.: 345.0  
+##  Max.   :60.0   Max.   :6532.0  
+## 
+## $D5000_2
+##       tth           counts    
+##  Min.   :10.0   Min.   : 176  
+##  1st Qu.:22.5   1st Qu.: 361  
+##  Median :35.0   Median : 469  
+##  Mean   :35.0   Mean   : 557  
+##  3rd Qu.:47.5   3rd Qu.: 730  
+##  Max.   :60.0   Max.   :2094  
+## 
+## $D5000_3
+##       tth           counts      
+##  Min.   :10.0   Min.   :  74.0  
+##  1st Qu.:22.5   1st Qu.: 154.0  
+##  Median :35.0   Median : 193.0  
+##  Mean   :35.0   Mean   : 240.6  
+##  3rd Qu.:47.5   3rd Qu.: 251.0  
+##  Max.   :60.0   Max.   :5150.0  
+## 
+## $D5000_4
+##       tth           counts    
+##  Min.   :10.0   Min.   :  64  
+##  1st Qu.:22.5   1st Qu.: 133  
+##  Median :35.0   Median : 168  
+##  Mean   :35.0   Mean   : 223  
+##  3rd Qu.:47.5   3rd Qu.: 216  
+##  Max.   :60.0   Max.   :7110  
+## 
+## $D5000_5
+##       tth           counts      
+##  Min.   :10.0   Min.   :  51.0  
+##  1st Qu.:22.5   1st Qu.: 102.0  
+##  Median :35.0   Median : 133.0  
+##  Mean   :35.0   Mean   : 202.3  
+##  3rd Qu.:47.5   3rd Qu.: 183.0  
+##  Max.   :60.0   Max.   :6837.0</code></pre>
+</div>
+<div id="transformations" class="section level3" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Transformations</h3>
+<p>As will be introduced in subsequent chapters, log and root transforms of the count intensities of XRPD data can be useful when applying data mining or machine learning methods. Following the same principles as outlined for <a href="intro.html#subsetting">subsetting</a>, these transformations can be applied to any number of patterns in just a few lines of code:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="intro.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a function for log-transforming counts</span></span>
+<span id="cb43-2"><a href="intro.html#cb43-2" aria-hidden="true" tabindex="-1"></a>log_xrpd <span class="ot">&lt;-</span> <span class="cf">function</span> (x) {</span>
+<span id="cb43-3"><a href="intro.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-4"><a href="intro.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  x[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">log10</span>(x[[<span class="dv">2</span>]])</span>
+<span id="cb43-5"><a href="intro.html#cb43-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-6"><a href="intro.html#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb43-7"><a href="intro.html#cb43-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb43-8"><a href="intro.html#cb43-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb43-9"><a href="intro.html#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="intro.html#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co">#apply the function to a list of XRPD data</span></span>
+<span id="cb43-11"><a href="intro.html#cb43-11" aria-hidden="true" tabindex="-1"></a>xy_list1_log <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1,</span>
+<span id="cb43-12"><a href="intro.html#cb43-12" aria-hidden="true" tabindex="-1"></a>                       log_xrpd)</span>
+<span id="cb43-13"><a href="intro.html#cb43-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-14"><a href="intro.html#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the transformed data</span></span>
+<span id="cb43-15"><a href="intro.html#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(xy_list1_log), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-27"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-27-1.png" alt="Log transformed XRPD data." width="80%" />
+<p class="caption">
+Figure 1.8: Log transformed XRPD data.
+</p>
+</div>
+</div>
+<div id="interpolation" class="section level3" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> Interpolation</h3>
+<p>Sometimes XRPD patterns within a given data set may contain a number of different <span class="math inline">\(2\theta\)</span> axes due to the measurements being carried out on different instruments or on the same instrument but with a different set-up. Direct comparison of such data requires that they are interpolated onto the same <span class="math inline">\(2\theta\)</span> axis.</p>
+<p>Here a data set containing 3 samples with different <span class="math inline">\(2\theta\)</span> axes will be created using the <code>soils</code> and <code>rockjock_mixtures</code> data that are pre-loaded within the <code>powdR</code> package:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" aria-hidden="true" tabindex="-1"></a>two_instruments <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;a&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>granite,</span>
+<span id="cb44-2"><a href="intro.html#cb44-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&quot;b&quot;</span> <span class="ot">=</span> rockjock_mixtures<span class="sc">$</span>Mix2))</span>
+<span id="cb44-3"><a href="intro.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="intro.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-28"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-28-1.png" alt="Diffractograms from two different instruments." width="80%" />
+<p class="caption">
+Figure 1.9: Diffractograms from two different instruments.
+</p>
+</div>
+<p>In this example, the data within the <code>two_instruments</code> list will be interpolated onto an artificial <span class="math inline">\(2\theta\)</span> axis called <code>new_tth</code>, which ranges from 10 to 60 <span class="math inline">\(^\circ 2\theta\)</span> with a resolution of 0.02:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="intro.html#cb45-1" aria-hidden="true" tabindex="-1"></a>new_tth <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">60</span>, <span class="fl">0.02</span>)</span>
+<span id="cb45-2"><a href="intro.html#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="intro.html#cb45-3" aria-hidden="true" tabindex="-1"></a>two_instruments_int <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(two_instruments, new_tth)</span>
+<span id="cb45-4"><a href="intro.html#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="intro.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments_int, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-29"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-29-1.png" alt="Interpolated diffractograms from two different instruments." width="80%" />
+<p class="caption">
+Figure 1.10: Interpolated diffractograms from two different instruments.
+</p>
+</div>
+</div>
+<div id="alignment" class="section level3" number="1.4.4">
+<h3><span class="header-section-number">1.4.4</span> Alignment</h3>
+<p>Peak positions in XRPD data commonly shift in response to small variations in specimen height in the instrument. Even seemingly small misalignments between peaks can hinder the analysis of XRPD data <span class="citation">(<a href="#ref-Butler2019" role="doc-biblioref">Butler et al. 2019</a>)</span>. One approach to deal with such peak shifts is to use a mineral with essentially invariant peak positions as an internal standard (e.g. the common mineral quartz), resulting in well aligned data by adding or subtracting a fixed value to the <span class="math inline">\(2\theta\)</span> axis.</p>
+<p>The <code>powdR</code> package contains functionality for aligning single or multiple patterns using the <code>align_xy()</code> function. In the following examples, samples will be aligned to a pure quartz pattern that will be loaded from the <code>powdR</code> package using <code>read_xy()</code></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the location of the quartz xy file</span></span>
+<span id="cb46-2"><a href="intro.html#cb46-2" aria-hidden="true" tabindex="-1"></a>quartz_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/minerals/quartz.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb46-3"><a href="intro.html#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="intro.html#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load the file</span></span>
+<span id="cb46-5"><a href="intro.html#cb46-5" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(quartz_file)</span>
+<span id="cb46-6"><a href="intro.html#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="intro.html#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
+<span id="cb46-8"><a href="intro.html#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
+<span id="cb46-9"><a href="intro.html#cb46-9" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone)),</span>
+<span id="cb46-10"><a href="intro.html#cb46-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb46-11"><a href="intro.html#cb46-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb46-12"><a href="intro.html#cb46-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-30"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-30-1.png" alt="Unaligned diffractograms." width="80%" />
+<p class="caption">
+Figure 1.11: Unaligned diffractograms.
+</p>
+</div>
+<p>As shown in the figure above, the main quartz peaks of these two diffraction patterns do not align. This can be corrected using <code>align_xy()</code>:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the sandstone soil to the quartz pattern</span></span>
+<span id="cb47-2"><a href="intro.html#cb47-2" aria-hidden="true" tabindex="-1"></a>sandstone_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils<span class="sc">$</span>sandstone, <span class="at">std =</span> quartz,</span>
+<span id="cb47-3"><a href="intro.html#cb47-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
+<span id="cb47-4"><a href="intro.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="intro.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
+<span id="cb47-6"><a href="intro.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
+<span id="cb47-7"><a href="intro.html#cb47-7" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone aligned&quot;</span> <span class="ot">=</span> sandstone_aligned)),</span>
+<span id="cb47-8"><a href="intro.html#cb47-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb47-9"><a href="intro.html#cb47-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb47-10"><a href="intro.html#cb47-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-31"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-31-1.png" alt="Aligned diffractograms." width="80%" />
+<p class="caption">
+Figure 1.12: Aligned diffractograms.
+</p>
+</div>
+<p>In cases where multiple patterns require alignment to a given standard, <code>align_xy()</code> can also be applied to <code>multiXY</code> objects:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the unaligned soils data to show misalignments</span></span>
+<span id="cb48-2"><a href="intro.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils, <span class="at">wav =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb48-3"><a href="intro.html#cb48-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-32"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-32-1.png" alt="Unaligned diffractograms in a multiXY object." width="80%" />
+<p class="caption">
+Figure 1.13: Unaligned diffractograms in a multiXY object.
+</p>
+</div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the sandstone soil to the quartz pattern</span></span>
+<span id="cb49-2"><a href="intro.html#cb49-2" aria-hidden="true" tabindex="-1"></a>soils_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils, <span class="at">std =</span> quartz,</span>
+<span id="cb49-3"><a href="intro.html#cb49-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
+<span id="cb49-4"><a href="intro.html#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="intro.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
+<span id="cb49-6"><a href="intro.html#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils_aligned,</span>
+<span id="cb49-7"><a href="intro.html#cb49-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb49-8"><a href="intro.html#cb49-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb49-9"><a href="intro.html#cb49-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-33"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-33-1.png" alt="Aligned diffractograms in a multiXY object." width="80%" />
+<p class="caption">
+Figure 1.14: Aligned diffractograms in a multiXY object.
+</p>
+</div>
+</div>
+<div id="background" class="section level3" number="1.4.5">
+<h3><span class="header-section-number">1.4.5</span> Background fitting</h3>
+<p>Sometimes it is beneficial to fit and subtract the background from XRPD data. To achieve this, the <code>powdR</code> package includes the <code>bkg()</code> function which uses the peak filling method implemented in the <code>baseline</code> package <span class="citation">(<a href="#ref-baseline2010" role="doc-biblioref">Liland, Almøy, and Mevik 2010</a>)</span>. The fitting provided by the <code>bkg()</code> function uses four adjustable parameters that each have pre-loaded defaults (see <code>?bkg</code>):</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="intro.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit a background to the sandstone-derived soil</span></span>
+<span id="cb50-2"><a href="intro.html#cb50-2" aria-hidden="true" tabindex="-1"></a>granite_bkg <span class="ot">&lt;-</span> <span class="fu">bkg</span>(soils<span class="sc">$</span>granite)</span>
+<span id="cb50-3"><a href="intro.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="intro.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co">#summarise the resulting data</span></span>
+<span id="cb50-5"><a href="intro.html#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(granite_bkg)</span></code></pre></div>
+<pre><code>##            Length Class  Mode   
+## tth        1693   -none- numeric
+## counts     1693   -none- numeric
+## background 1693   -none- numeric</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the data and add a square root transform to aid interpretation</span></span>
+<span id="cb52-2"><a href="intro.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(granite_bkg) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="intro.html#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-34"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-34-1.png" alt="Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation." width="80%" />
+<p class="caption">
+Figure 1.15: Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation.
+</p>
+</div>
+<p>It is then simple to derive a background-subtracted <code>XY</code> object:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit a background to the sandstone-derived soil</span></span>
+<span id="cb53-2"><a href="intro.html#cb53-2" aria-hidden="true" tabindex="-1"></a>sandstone_bkg_sub <span class="ot">&lt;-</span> <span class="fu">as_xy</span>(<span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>tth,</span>
+<span id="cb53-3"><a href="intro.html#cb53-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">&quot;counts&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>counts <span class="sc">-</span> </span>
+<span id="cb53-4"><a href="intro.html#cb53-4" aria-hidden="true" tabindex="-1"></a>                                                 granite_bkg<span class="sc">$</span>background))</span>
+<span id="cb53-5"><a href="intro.html#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="intro.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sandstone_bkg_sub, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-35"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-35-1.png" alt="Background subtracted diffractogram." width="80%" />
+<p class="caption">
+Figure 1.16: Background subtracted diffractogram.
+</p>
+</div>
+<p>Sometimes the default values for the adjustable parameters (see <code>?bkg</code>) are not appropriate, and in such cases tuning of the parameters can be an iterative process. To help with this, there is a background fitting <a href="https://shiny.rstudio.com/">Shiny</a> app that can be loaded from the <code>powdR</code> package using <code>run_bkg()</code>. This app will load in your default web browser and allows for the four adjustable parameters to be tuned to a given sample that is loaded into the app in ‘.xy’ format.</p>
+</div>
+<div id="to-data-frame" class="section level3" number="1.4.6">
+<h3><span class="header-section-number">1.4.6</span> Converting to data frames</h3>
+<p><code>multiXY</code> objects can be converted to data frames using the <code>multi_xy_to_df()</code> function. When using this function, all samples within the <code>multiXY</code> object must be on the same <span class="math inline">\(2\theta\)</span> axis, which can be ensured using the <code>interpolate()</code> function <a href="intro.html#interpolation">outlined above</a>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert xy_list1 to a dataframe</span></span>
+<span id="cb54-2"><a href="intro.html#cb54-2" aria-hidden="true" tabindex="-1"></a>xy_df1 <span class="ot">&lt;-</span> <span class="fu">multi_xy_to_df</span>(xy_list1, <span class="at">tth =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-3"><a href="intro.html#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="intro.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Show the first 6 rows of the derived data frame</span></span>
+<span id="cb54-5"><a href="intro.html#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(xy_df1)</span></code></pre></div>
+<pre><code>##    tth D5000_1 D5000_2 D5000_3 D5000_4 D5000_5
+## 1 2.00    2230    2334    2381    2323    2169
+## 2 2.02    2012    2222    2297    2128    2021
+## 3 2.04    1950    2031    2211    2056    1929
+## 4 2.06    1828    1972    2077    1918    1823
+## 5 2.08    1715    1896    2000    1861    1757
+## 6 2.10    1603    1701    1868    1799    1673</code></pre>
+<p>In cases where the <span class="math inline">\(2\theta\)</span> column is not required, the use of <code>tth = FALSE</code> in the function call will result in only the count intensities being included in the output.</p>
+</div>
+<div id="two-theta-transform" class="section level3" number="1.4.7">
+<h3><span class="header-section-number">1.4.7</span> <span class="math inline">\(2\theta\)</span> transformation</h3>
+<p>Laboratory XRPD data are usually collected using either Cu or Co X-ray tubes, which each have characteristic K<span class="math inline">\(\alpha\)</span> wavelengths (e.g. Cu-K<span class="math inline">\(\alpha\)</span> = 1.54056 Angstroms whereas Co-K<span class="math inline">\(\alpha\)</span> = 1.78897 Angstroms). These wavelengths determine the <span class="math inline">\(2\theta\)</span> at which the conditions for diffraction are met via Braggs Law:</p>
+<p><span class="math display">\[
+\begin{aligned}
+n\lambda = 2d\sin\theta
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(n\)</span> is an integer describing the diffraction order, <span class="math inline">\(\lambda\)</span> is the wavelength (Angstroms) and <span class="math inline">\(d\)</span> is the atomic spacing (Angstroms).</p>
+<p>In some instances it can be useful to transform the <span class="math inline">\(2\theta\)</span> axis of a given sample so that the <span class="math inline">\(2\theta\)</span> peak positions are representative of a measured made using a different X-ray source. This can be achieved using the <code>tth_transform()</code> function:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a multiXY object for this transform example</span></span>
+<span id="cb56-2"><a href="intro.html#cb56-2" aria-hidden="true" tabindex="-1"></a>transform_eg <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;Co&quot;</span> <span class="ot">=</span> xy_list1<span class="sc">$</span>D5000_1,</span>
+<span id="cb56-3"><a href="intro.html#cb56-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">&quot;Cu&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone))</span>
+<span id="cb56-4"><a href="intro.html#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="intro.html#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot two patterns recorded using different wavelengths</span></span>
+<span id="cb56-6"><a href="intro.html#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
+<span id="cb56-7"><a href="intro.html#cb56-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb56-8"><a href="intro.html#cb56-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb56-9"><a href="intro.html#cb56-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-37-1"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-37-1.png" alt="Data obtained from Co and Cu X-ray tubes prior to 2theta transformation." width="80%" />
+<p class="caption">
+Figure 1.17: Data obtained from Co and Cu X-ray tubes prior to 2theta transformation.
+</p>
+</div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#transform the 2theta of the &quot;Co&quot; sample to &quot;Cu&quot;</span></span>
+<span id="cb57-2"><a href="intro.html#cb57-2" aria-hidden="true" tabindex="-1"></a>transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth <span class="ot">&lt;-</span> <span class="fu">tth_transform</span>(transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth,</span>
+<span id="cb57-3"><a href="intro.html#cb57-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">from =</span> <span class="fl">1.78897</span>,</span>
+<span id="cb57-4"><a href="intro.html#cb57-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">to =</span> <span class="fl">1.54056</span>)</span>
+<span id="cb57-5"><a href="intro.html#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="intro.html#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Replot data after transformation</span></span>
+<span id="cb57-7"><a href="intro.html#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
+<span id="cb57-8"><a href="intro.html#cb57-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb57-9"><a href="intro.html#cb57-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb57-10"><a href="intro.html#cb57-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-37-2"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-37-2.png" alt="Data obtained from Co and Cu X-ray tubes prior to 2theta transformation." width="80%" />
+<p class="caption">
+Figure 1.18: Data obtained from Co and Cu X-ray tubes prior to 2theta transformation.
+</p>
+</div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="intro.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#transform the 2theta of the &quot;Co&quot; sample to &quot;Cu&quot;</span></span>
+<span id="cb58-2"><a href="intro.html#cb58-2" aria-hidden="true" tabindex="-1"></a>transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth <span class="ot">&lt;-</span> <span class="fu">tth_transform</span>(transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth,</span>
+<span id="cb58-3"><a href="intro.html#cb58-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">from =</span> <span class="fl">1.78897</span>,</span>
+<span id="cb58-4"><a href="intro.html#cb58-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">to =</span> <span class="fl">1.54056</span>)</span>
+<span id="cb58-5"><a href="intro.html#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-6"><a href="intro.html#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Replot data after transformation</span></span>
+<span id="cb58-7"><a href="intro.html#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
+<span id="cb58-8"><a href="intro.html#cb58-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb58-9"><a href="intro.html#cb58-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb58-10"><a href="intro.html#cb58-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-38"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-38-1.png" alt="Data obtained from Co and Cu X-ray tubes after 2theta transformation." width="80%" />
+<p class="caption">
+Figure 1.19: Data obtained from Co and Cu X-ray tubes after 2theta transformation.
+</p>
+</div>
+<p>Note how prior to the <span class="math inline">\(2\theta\)</span> transformation, the dominant peaks in each pattern (associated with quartz in both cases) do not align. After the <span class="math inline">\(2\theta\)</span> transformation the peaks are almost aligned, with a small additional <span class="math inline">\(2\theta\)</span> shift that could be computed using the <code>align_xy()</code> function <a href="intro.html#alignment">outlined above</a>. Whilst Cu and Co are the most common X-ray sources for laboratory diffractometers, <code>tth_transform()</code> can accept any numeric wavelength value.</p>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Butler2019" class="csl-entry">
+Butler, Benjamin M, Andrew M Sila, Keith D Shepherd, Mercy Nyambura, Chris J Gilmore, Nikolaos Kourkoumelis, and Stephen Hillier. 2019. <span>“Pre-Treatment of Soil x-Ray Powder Diffraction Data for Cluster Analysis.”</span> <em>Geoderma</em> 337: 413–24. <a href="https://doi.org/10.1016/j.geoderma.2018.09.044">https://doi.org/10.1016/j.geoderma.2018.09.044</a>.
+</div>
+<div id="ref-rxylib2020" class="csl-entry">
+Kreutzer, Sebastian, and Johannes Friedrich. 2020. <em>Rxylib: Import XY-Data into r</em>. <a href="https://CRAN.R-project.org/package=rxylib">https://CRAN.R-project.org/package=rxylib</a>.
+</div>
+<div id="ref-baseline2010" class="csl-entry">
+Liland, Kristian Hovde, Trygve Almøy, and Bjørn-Helge Mevik. 2010. <span>“Optimal Choice of Baseline Correction for Multivariate Calibration of Spectra.”</span> <em>Applied Spectroscopy</em> 64: 1007–16. <a href="https://doi.org/10.1366/000370210792434350">https://doi.org/10.1366/000370210792434350</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="quant.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

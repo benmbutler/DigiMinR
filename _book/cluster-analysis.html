@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Cluster analysis of soil XRPD data | Digital Soil Mineralogy with R</title>
+  <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Cluster analysis of soil XRPD data | Digital Soil Mineralogy with R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="/figures/dsm_graphic.png" />
+  <meta property="og:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Cluster analysis of soil XRPD data | Digital Soil Mineralogy with R" />
+  
+  <meta name="twitter:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
+  <meta name="twitter:image" content="/figures/dsm_graphic.png" />
+
+<meta name="author" content="Benjamin Butler and Steve Hillier" />
+
+
+<meta name="date" content="2021-06-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="machine-learning.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/font-awesome-5.13.0/js/script.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Digital Soil Mineralogy with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#code-conventions"><i class="fa fa-check"></i>Code Conventions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#what-to-expect"><i class="fa fa-check"></i>What to expect</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#about-the-authors"><i class="fa fa-check"></i>About the authors</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Working with XRPD data in R</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#basic-form"><i class="fa fa-check"></i><b>1.1</b> The basic form of XRPD data</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#loading-data"><i class="fa fa-check"></i><b>1.2</b> Loading XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#powDLL"><i class="fa fa-check"></i><b>1.2.1</b> Option 1: PowDLL</a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#loading-directly"><i class="fa fa-check"></i><b>1.2.2</b> Option 2: Loading directly into R</a></li>
+<li class="chapter" data-level="1.2.3" data-path="intro.html"><a href="intro.html#loading-multiple"><i class="fa fa-check"></i><b>1.2.3</b> Loading multiple files</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#plotting-data"><i class="fa fa-check"></i><b>1.3</b> Plotting XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#plotting-xy-objects"><i class="fa fa-check"></i><b>1.3.1</b> Plotting <code>XY</code> objects</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#plotting-multixy-objects"><i class="fa fa-check"></i><b>1.3.2</b> Plotting <code>multiXY</code> objects</a></li>
+<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <code>ggplot2</code></a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#manipulating-data"><i class="fa fa-check"></i><b>1.4</b> Manipulating XRPD data</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="intro.html"><a href="intro.html#subsetting"><i class="fa fa-check"></i><b>1.4.1</b> Subsetting XRPD data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="intro.html"><a href="intro.html#transformations"><i class="fa fa-check"></i><b>1.4.2</b> Transformations</a></li>
+<li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#interpolation"><i class="fa fa-check"></i><b>1.4.3</b> Interpolation</a></li>
+<li class="chapter" data-level="1.4.4" data-path="intro.html"><a href="intro.html#alignment"><i class="fa fa-check"></i><b>1.4.4</b> Alignment</a></li>
+<li class="chapter" data-level="1.4.5" data-path="intro.html"><a href="intro.html#background"><i class="fa fa-check"></i><b>1.4.5</b> Background fitting</a></li>
+<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to data frames</a></li>
+<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> <span class="math inline">\(2\theta\)</span> transformation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="quant.html"><a href="quant.html"><i class="fa fa-check"></i><b>2</b> Quantitative phase analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="quant.html"><a href="quant.html#full-pattern-summation-with-powdr"><i class="fa fa-check"></i><b>2.1</b> Full pattern summation with <code>powdR</code></a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="quant.html"><a href="quant.html#powdRlib"><i class="fa fa-check"></i><b>2.1.1</b> The <code>powdRlib</code> object</a></li>
+<li class="chapter" data-level="2.1.2" data-path="quant.html"><a href="quant.html#full-pattern-summation-with-fps"><i class="fa fa-check"></i><b>2.1.2</b> Full pattern summation with <code>fps()</code></a></li>
+<li class="chapter" data-level="2.1.3" data-path="quant.html"><a href="quant.html#afps"><i class="fa fa-check"></i><b>2.1.3</b> Automated full pattern summation</a></li>
+<li class="chapter" data-level="2.1.4" data-path="quant.html"><a href="quant.html#additional-fps-and-afps-functionality"><i class="fa fa-check"></i><b>2.1.4</b> Additional <code>fps()</code> and <code>afps()</code> functionality</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="quant.html"><a href="quant.html#plotting-powdrfps-and-powdrafps-objects"><i class="fa fa-check"></i><b>2.2</b> Plotting <code>powdRfps</code> and <code>powdRafps</code> objects</a></li>
+<li class="chapter" data-level="2.3" data-path="quant.html"><a href="quant.html#quantifying-multiple-samples"><i class="fa fa-check"></i><b>2.3</b> Quantifying multiple samples</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="quant.html"><a href="quant.html#lapply"><i class="fa fa-check"></i><b>2.3.1</b> <code>lapply()</code></a></li>
+<li class="chapter" data-level="2.3.2" data-path="quant.html"><a href="quant.html#parallel-processing"><i class="fa fa-check"></i><b>2.3.2</b> Parallel processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="quant.html"><a href="quant.html#summarising-mineralogy"><i class="fa fa-check"></i><b>2.4</b> Summarising mineralogy</a></li>
+<li class="chapter" data-level="2.5" data-path="quant.html"><a href="quant.html#the-powdr-shiny-app"><i class="fa fa-check"></i><b>2.5</b> The powdR Shiny app</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>3</b> Machine learning with soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-data-1"><i class="fa fa-check"></i><b>3.1</b> Loading data</a></li>
+<li class="chapter" data-level="3.2" data-path="machine-learning.html"><a href="machine-learning.html#cubist-exploration"><i class="fa fa-check"></i><b>3.2</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="machine-learning.html"><a href="machine-learning.html#spatial-data"><i class="fa fa-check"></i><b>3.2.1</b> Spatial data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="machine-learning.html"><a href="machine-learning.html#geochemical-data"><i class="fa fa-check"></i><b>3.2.2</b> Geochemical data</a></li>
+<li class="chapter" data-level="3.2.3" data-path="machine-learning.html"><a href="machine-learning.html#xrpd-data"><i class="fa fa-check"></i><b>3.2.3</b> XRPD data</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="machine-learning.html"><a href="machine-learning.html#cubist-pretreatment"><i class="fa fa-check"></i><b>3.3</b> Data pre-treatment</a>
+<ul>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#alignment-1"><i class="fa fa-check"></i>Alignment</a></li>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#subsetting-1"><i class="fa fa-check"></i>Subsetting</a></li>
+<li class="chapter" data-level="" data-path="machine-learning.html"><a href="machine-learning.html#mean-centering"><i class="fa fa-check"></i>Mean centering</a></li>
+<li class="chapter" data-level="3.3.1" data-path="machine-learning.html"><a href="machine-learning.html#creation-of-training-and-test-datasets"><i class="fa fa-check"></i><b>3.3.1</b> Creation of training and test datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="machine-learning.html"><a href="machine-learning.html#using-cubist"><i class="fa fa-check"></i><b>3.4</b> Using Cubist</a></li>
+<li class="chapter" data-level="3.5" data-path="machine-learning.html"><a href="machine-learning.html#inspection-of-cubist-models"><i class="fa fa-check"></i><b>3.5</b> Inspection of Cubist models</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
+<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Digital Soil Mineralogy with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cluster-analysis" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Cluster analysis of soil XRPD data</h1>
+<p><em>Benjamin Butler</em></p>
+<p>This chapter will demonstrate the use of cluster analysis to identify mineral-nutrient relationships in African soils. The examples provided for the cluster analysis use the data presented in <span class="citation"><a href="#ref-Butler2020" role="doc-biblioref">Butler et al.</a> (<a href="#ref-Butler2020" role="doc-biblioref">2020</a>)</span> that is hosted <a href="https://doi.org/10.17632/r6g94fgx55.1">here</a> on Mendeley Data. To run the examples in this chapter on your own machine, you will need to download the soil property data in ‘.csv’ format and the XRPD data in a zipped folder of ‘xy’ files. Please simply save these files to your own directory, and unzip the zipped folder containing the ‘.xy’ files. <strong>Skip this step if you have already downloaded these files for the examples in Chapter <a href="machine-learning.html#machine-learning">3</a></strong>,</p>
+<a href="https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/9b742b95-c071-4e3a-a227-939efa034ac7/file_downloaded">
+<button class="btn btn-danger"><i class="fa fa-save"></i> Download soil property csv</button>
+</a>
+<a href="https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/ef33d276-e39c-4b64-b9aa-f2d1d69c51b3/file_downloaded">
+<button class="btn btn-danger"><i class="fa fa-save"></i> Download zipped XRPD data</button>
+</a>
+<div id="loading-data-2" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Loading data</h2>
+<p>Once you have downloaded the data required for this chapter, it can be loaded into R by modifying the paths in the following code:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="cluster-analysis.html#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(powdR)</span>
+<span id="cb154-2"><a href="cluster-analysis.html#cb154-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-3"><a href="cluster-analysis.html#cb154-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the soil property data</span></span>
+<span id="cb154-4"><a href="cluster-analysis.html#cb154-4" aria-hidden="true" tabindex="-1"></a>props <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">&quot;path/to/your/file/clusters_and_properties.csv&quot;</span>)</span>
+<span id="cb154-5"><a href="cluster-analysis.html#cb154-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-6"><a href="cluster-analysis.html#cb154-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the XRPD data</span></span>
+<span id="cb154-7"><a href="cluster-analysis.html#cb154-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-8"><a href="cluster-analysis.html#cb154-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Get the full file paths</span></span>
+<span id="cb154-9"><a href="cluster-analysis.html#cb154-9" aria-hidden="true" tabindex="-1"></a>xrpd_paths <span class="ot">&lt;-</span>  <span class="fu">dir</span>(<span class="st">&quot;path/to/xrd&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb154-10"><a href="cluster-analysis.html#cb154-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb154-11"><a href="cluster-analysis.html#cb154-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the data</span></span>
+<span id="cb154-12"><a href="cluster-analysis.html#cb154-12" aria-hidden="true" tabindex="-1"></a>xrpd <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(<span class="at">files =</span> xrpd_paths)</span></code></pre></div>
+</div>
+<div id="clustering-pca" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Principal component analysis</h2>
+<p>The cluster analysis in this Chapter is applied to principal components of soil XRPD data derived using Principal Component Analysis (PCA; <span class="citation"><a href="#ref-Jolliffe1986" role="doc-biblioref">Jolliffe</a> (<a href="#ref-Jolliffe1986" role="doc-biblioref">1986</a>)</span>). Prior to applying cluster analysis to the XRPD data via this approach, it is important to apply corrections for sample-independent variation such as small <span class="math inline">\(2\theta\)</span> misalignments and/or fluctuations in count intensities. For this example, the pre-treatment routine will be based on that defined in <span class="citation"><a href="#ref-Butler2020" role="doc-biblioref">Butler et al.</a> (<a href="#ref-Butler2020" role="doc-biblioref">2020</a>)</span>, and will involve alignment, subsetting, square root transformation and mean centering. Together these correct for common experimental aberrations so that the variation in the observed data is almost entirely sample-dependent. The pre-treatment steps used here also match those described in Section @ref(#cubist-pretreatment), excepted for the additional step of square root transforming the data, which acts to reduced the relative intensity of quartz peaks that can often dominate the overall variation in diffraction data.</p>
+<p>Alignment of the data can be carried out using the <code>align_xy()</code> function <a href="machine-learning.html#cubist-pretreatment">outlined above</a>, which aligns each sample within the dataset to a pure quartz pattern:</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="cluster-analysis.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the rockjock data</span></span>
+<span id="cb155-2"><a href="cluster-analysis.html#cb155-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock)</span>
+<span id="cb155-3"><a href="cluster-analysis.html#cb155-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-4"><a href="cluster-analysis.html#cb155-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract a quartz pattern from rockjock</span></span>
+<span id="cb155-5"><a href="cluster-analysis.html#cb155-5" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">as_xy</span>(<span class="fu">data.frame</span>(rockjock<span class="sc">$</span>tth,</span>
+<span id="cb155-6"><a href="cluster-analysis.html#cb155-6" aria-hidden="true" tabindex="-1"></a>                           rockjock<span class="sc">$</span>xrd<span class="sc">$</span>QUARTZ))</span>
+<span id="cb155-7"><a href="cluster-analysis.html#cb155-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-8"><a href="cluster-analysis.html#cb155-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the xrpd data to this quartz pattern</span></span>
+<span id="cb155-9"><a href="cluster-analysis.html#cb155-9" aria-hidden="true" tabindex="-1"></a><span class="co">#using a restricted 2theta range of 10 to 60</span></span>
+<span id="cb155-10"><a href="cluster-analysis.html#cb155-10" aria-hidden="true" tabindex="-1"></a>xrpd_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(xrpd, <span class="at">std =</span> quartz,</span>
+<span id="cb155-11"><a href="cluster-analysis.html#cb155-11" aria-hidden="true" tabindex="-1"></a>                         <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>,</span>
+<span id="cb155-12"><a href="cluster-analysis.html#cb155-12" aria-hidden="true" tabindex="-1"></a>                         <span class="at">xshift =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p>Aligned data can then be subset to <span class="math inline">\(2\theta\)</span> &gt; 6 so that the <a href="machine-learning.html#cubist-pretreatment">high background at low angles</a> in the data can be removed.</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="cluster-analysis.html#cb156-1" aria-hidden="true" tabindex="-1"></a>subset_xrpd <span class="ot">&lt;-</span> <span class="cf">function</span> (x, xmin) {</span>
+<span id="cb156-2"><a href="cluster-analysis.html#cb156-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb156-3"><a href="cluster-analysis.html#cb156-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[x[[<span class="dv">1</span>]] <span class="sc">&gt;=</span> xmin, ]</span>
+<span id="cb156-4"><a href="cluster-analysis.html#cb156-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb156-5"><a href="cluster-analysis.html#cb156-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb156-6"><a href="cluster-analysis.html#cb156-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb156-7"><a href="cluster-analysis.html#cb156-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb156-8"><a href="cluster-analysis.html#cb156-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb156-9"><a href="cluster-analysis.html#cb156-9" aria-hidden="true" tabindex="-1"></a>xrpd_aligned <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xrpd_aligned, subset_xrpd,</span>
+<span id="cb156-10"><a href="cluster-analysis.html#cb156-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">xmin =</span> <span class="dv">6</span>)</span></code></pre></div>
+<p>Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and PCA can be carried out in a single step using the <code>xrpd_pca()</code> function in <code>powdR</code>:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="cluster-analysis.html#cb157-1" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">xrpd_pca</span>(xrpd_aligned,</span>
+<span id="cb157-2"><a href="cluster-analysis.html#cb157-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">mean_center =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb157-3"><a href="cluster-analysis.html#cb157-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">root_transform =</span> <span class="dv">2</span>,</span>
+<span id="cb157-4"><a href="cluster-analysis.html#cb157-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">components =</span> <span class="dv">10</span>)</span>
+<span id="cb157-5"><a href="cluster-analysis.html#cb157-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-6"><a href="cluster-analysis.html#cb157-6" aria-hidden="true" tabindex="-1"></a><span class="co">#View the variance explained by the first 10 PCs</span></span>
+<span id="cb157-7"><a href="cluster-analysis.html#cb157-7" aria-hidden="true" tabindex="-1"></a>pca<span class="sc">$</span>eig[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code></pre></div>
+<pre><code>##        eigenvalue variance.percent cumulative.variance.percent
+## Dim.1  32315.9160       81.3717652                    81.37177
+## Dim.2   2075.7930        5.2268653                    86.59863
+## Dim.3   1069.7986        2.6937624                    89.29239
+## Dim.4    742.7063        1.8701411                    91.16253
+## Dim.5    611.8038        1.5405275                    92.70306
+## Dim.6    418.6753        1.0542281                    93.75729
+## Dim.7    388.2599        0.9776419                    94.73493
+## Dim.8    214.5578        0.5402586                    95.27519
+## Dim.9    182.8921        0.4605239                    95.73571
+## Dim.10   144.1440        0.3629558                    96.09867</code></pre>
+<p>From which it can be seen that the first 10 principal components (PCs) of the data account for 96 % of variation in the XRPD data. The resulting cluster analysis will therefore be based upon these 10 components. For simplicity this example will use the first 5 PCs hereafter, which together account for 93 % of total variation.</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="cluster-analysis.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb159-2"><a href="cluster-analysis.html#cb159-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb159-3"><a href="cluster-analysis.html#cb159-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-4"><a href="cluster-analysis.html#cb159-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Define the x-axis components</span></span>
+<span id="cb159-5"><a href="cluster-analysis.html#cb159-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb159-6"><a href="cluster-analysis.html#cb159-6" aria-hidden="true" tabindex="-1"></a>       <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>,</span>
+<span id="cb159-7"><a href="cluster-analysis.html#cb159-7" aria-hidden="true" tabindex="-1"></a>       <span class="dv">3</span>, <span class="dv">3</span>,</span>
+<span id="cb159-8"><a href="cluster-analysis.html#cb159-8" aria-hidden="true" tabindex="-1"></a>       <span class="dv">4</span>)</span>
+<span id="cb159-9"><a href="cluster-analysis.html#cb159-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-10"><a href="cluster-analysis.html#cb159-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Define the y-axis components</span></span>
+<span id="cb159-11"><a href="cluster-analysis.html#cb159-11" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>,</span>
+<span id="cb159-12"><a href="cluster-analysis.html#cb159-12" aria-hidden="true" tabindex="-1"></a>       <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>,</span>
+<span id="cb159-13"><a href="cluster-analysis.html#cb159-13" aria-hidden="true" tabindex="-1"></a>       <span class="dv">4</span>, <span class="dv">5</span>,</span>
+<span id="cb159-14"><a href="cluster-analysis.html#cb159-14" aria-hidden="true" tabindex="-1"></a>       <span class="dv">5</span>)</span>
+<span id="cb159-15"><a href="cluster-analysis.html#cb159-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-16"><a href="cluster-analysis.html#cb159-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Create and empty list</span></span>
+<span id="cb159-17"><a href="cluster-analysis.html#cb159-17" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb159-18"><a href="cluster-analysis.html#cb159-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-19"><a href="cluster-analysis.html#cb159-19" aria-hidden="true" tabindex="-1"></a><span class="co">#Populate each item in the list using the dimension defined</span></span>
+<span id="cb159-20"><a href="cluster-analysis.html#cb159-20" aria-hidden="true" tabindex="-1"></a><span class="co">#in x and y</span></span>
+<span id="cb159-21"><a href="cluster-analysis.html#cb159-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)) {</span>
+<span id="cb159-22"><a href="cluster-analysis.html#cb159-22" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb159-23"><a href="cluster-analysis.html#cb159-23" aria-hidden="true" tabindex="-1"></a>   p[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> pca<span class="sc">$</span>coords) <span class="sc">+</span></span>
+<span id="cb159-24"><a href="cluster-analysis.html#cb159-24" aria-hidden="true" tabindex="-1"></a>             <span class="fu">geom_point</span>(<span class="fu">aes_string</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, x[i]),</span>
+<span id="cb159-25"><a href="cluster-analysis.html#cb159-25" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, y[i])),</span>
+<span id="cb159-26"><a href="cluster-analysis.html#cb159-26" aria-hidden="true" tabindex="-1"></a>                        <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb159-27"><a href="cluster-analysis.html#cb159-27" aria-hidden="true" tabindex="-1"></a>                        <span class="at">size =</span> <span class="dv">3</span>)</span>
+<span id="cb159-28"><a href="cluster-analysis.html#cb159-28" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb159-29"><a href="cluster-analysis.html#cb159-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb159-30"><a href="cluster-analysis.html#cb159-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb159-31"><a href="cluster-analysis.html#cb159-31" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> p,</span>
+<span id="cb159-32"><a href="cluster-analysis.html#cb159-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-94"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-94-1.png" alt="The first 5 PCs plotted against one-another" width="100%" />
+<p class="caption">
+Figure 4.1: The first 5 PCs plotted against one-another
+</p>
+</div>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Butler2020" class="csl-entry">
+Butler, Benjamin M, Javier Palarea-Albaladejo, Keith D Shepherd, Kamau M Nyambura, Erick K Towett, Andrew M Sila, and Stephen Hillier. 2020. <span>“Mineral–Nutrient Relationships in <span class="nocase">African soils assessed using cluster analysis of X-ray powder diffraction patterns and compositional methods</span>.”</span> <em>Geoderma</em> 375: 114474. <a href="https://doi.org/10.1016/j.geoderma.2020.114474">https://doi.org/10.1016/j.geoderma.2020.114474</a>.
+</div>
+<div id="ref-Jolliffe1986" class="csl-entry">
+Jolliffe, IT. 1986. <span>“Principal Component Analysis. Series: Springer Series in Statistics.”</span> Springer, NY.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="machine-learning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
