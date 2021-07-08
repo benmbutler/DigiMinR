@@ -56,11 +56,7 @@ library(powdR)
 #Load the soil property data
 props <- read.csv(file = "data/clusters_and_properties.csv")
 
-#Get the full file paths
-xrpd_paths <-  dir("data/xrd", full.names = TRUE)
-
-#Load the XRPD data
-xrpd <- read_xy(files = xrpd_paths)
+load("data/xrpd.Rdata")
 ```
 
 ## Data exploration {#cubist-exploration}

@@ -55,10 +55,7 @@ library(powdR)
 props <- read.csv(file = "data/clusters_and_properties.csv")
 
 #Get the full file paths
-xrpd_paths <-  dir("data/xrd", full.names = TRUE)
-
-#Load the XRPD data
-xrpd <- read_xy(files = xrpd_paths)
+load("data/xrpd.Rdata")
 ```
 
 ## Principal component analysis {#clustering-pca}
@@ -412,7 +409,7 @@ grid.arrange(grobs = p,
 ## Exploring results
 Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored and interpreted. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised:
 
-```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 1.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
+```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 9.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
 library(leaflet)
 library(plyr)
 
@@ -427,7 +424,7 @@ leaflet(clust_sub[which(clust_sub$NEW_CLUSTER == 9), ]) %>%
 
 Furthermore, the XRPD data of each cluster can be visualised, illustrating that even though samples within each cluster are dispersed across sub-Saharan Africa, their XRPD signals (and, hence mineralogies) are very similar, which can readily be plotted with a little manipulation of the data:
 
-```{r, fig.cap = "Clustered pre-treated XRPD from Cluster 1.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
+```{r, fig.cap = "Clustered pre-treated XRPD from Cluster 9.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
 #Create a blank list to populate
 cluster_xrpd <- list()
 

@@ -718,7 +718,7 @@ Figure 4.7: The formation of distinct clusters by retaining the samples within e
 <div id="htmlwidget-e68247c13f8408c30ded" style="width:100%;height:480px;" class="leaflet html-widget"></div>
 <script type="application/json" data-for="htmlwidget-e68247c13f8408c30ded">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[-6.04692984,-6.11749,-6.07987,-5.30757999,-3.06374502,-3.0296979,-3.00909805,-3.06098199,-8.07075501,-22.80366,-24.24041833,-24.21673333,-24.19569833,-24.16965333,-24.24200667,14.809575,14.83139,14.83103333,14.858365,14.869855,14.80238833,14.83648167,14.853915,9.217246667,-7.337718333,-7.31389,-16.221305,-21.7232,-15.897394,-15.867407,-15.85138333],[36.4438591,36.4577,36.5067,37.47093964,33.01008606,33.01520157,33.01538086,33.03066254,37.33062744,35.31284167,34.33520333,34.37512,34.37663333,34.38194667,34.39977333,-7.843511667,-7.843868333,-7.823068333,-7.82084,-7.819491667,-7.802876667,-7.809873333,-7.781675,5.73423,15.73058833,15.76066667,14.94596167,26.4957,26.093142,26.098539,26.095875],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-24.24200667,14.869855],"lng":[-7.843868333,37.47093964]}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
-Figure 4.8: Interactive map of the soil samples associated with Cluster 1.
+Figure 4.8: Interactive map of the soil samples associated with Cluster 9.
 </p>
 </div>
 <p>Furthermore, the XRPD data of each cluster can be visualised, illustrating that even though samples within each cluster are dispersed across sub-Saharan Africa, their XRPD signals (and, hence mineralogies) are very similar, which can readily be plotted with a little manipulation of the data:</p>
@@ -733,9 +733,9 @@ Figure 4.8: Interactive map of the soil samples associated with Cluster 1.
 <span id="cb180-9"><a href="cluster-analysis.html#cb180-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot cluster 9</span></span>
 <span id="cb180-10"><a href="cluster-analysis.html#cb180-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(cluster_xrpd<span class="sc">$</span>Cluster<span class="fl">.9</span>), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-101"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-101-1.png" alt="Clustered pre-treated XRPD from Cluster 1." width="100%" />
+<img src="DigiMinR_files/figure-html/unnamed-chunk-101-1.png" alt="Clustered pre-treated XRPD from Cluster 9." width="100%" />
 <p class="caption">
-Figure 4.9: Clustered pre-treated XRPD from Cluster 1.
+Figure 4.9: Clustered pre-treated XRPD from Cluster 9.
 </p>
 </div>
 
