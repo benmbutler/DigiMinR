@@ -1,5 +1,4 @@
 # Working with XRPD data in R {#intro}
-*Benjamin Butler*
 
 At this stage it is assumed that you have R and RStudio installed on your computer and have installed the `powdR` package using `install.packages("powdR")`. For brief introductions to R, the [RStudio website has links to useful material](https://education.rstudio.com/learn/beginner/). One aspect worth noting is that any R function used throughout this document will have additional help associated with it that can be accessed using `?`. For example, to access help on the `mean()` function, use `?mean`.
 

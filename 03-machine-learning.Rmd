@@ -1,5 +1,4 @@
 # Machine learning with soil XRPD data {#machine-learning}
-*Benjamin Butler*
 
 This chapter will demonstrate the use of the Cubist machine learning algorithm to predict and interpret soil properties from XRPD data. Cubist is an extension of Quinlan's M5 model tree [@Quinlan1992], and is featured in the CRAN repository under the same name for use in the R statistical software environment [@R-Cubist]. Cubist defines a series of conditions based on predictor variables (i.e. the XRPD measurement intervals) that partition the data. At each partition there is a multivariate linear model used to predict the output (i.e. the soil property). 
 
@@ -94,7 +93,7 @@ leaflet(props[props$Sentinel_site == "Bana",]) %>%
 ```
 
 ### Geochemical data
-The `props` data contains a wide range of geochemical variables including pH, total organic carbon (TOC), total element concentrations (columns 9 to 15) and Mehlich-3 extractable element concentrations (columns 16 to 23). The example provided in this chapter will focus on total concentrations of K, determined using X-ray Fluorescence (@Butler2020), but the code can be easily adjusted and used for any other soil property within the dataset.
+The `props` data contains a wide range of geochemical variables including pH, total organic carbon (TOC), total element concentrations (columns 9 to 15) and Mehlich-3 extractable element concentrations (columns 16 to 23). The example provided in this chapter will focus on total concentrations of K, determined using X-ray Fluorescence [@Butler2020], but the code can be easily adjusted and used for any other soil property within the dataset.
 
 ```{r, fig.cap = "Histogram of total K concentrations (log transformed)", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 library(ggplot2)
@@ -151,7 +150,7 @@ plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
      xlim = c(26,27))
 ```
 
-Alignment of the data in this way is important because even seemingly small misalignments between peaks can hinder the comparison of XRPD data by multivariate methods, and hence reduce the effectiveness of the analysis (@Butler2019).
+Alignment of the data in this way is important because even seemingly small misalignments between peaks can hinder the comparison of XRPD data by multivariate methods, and hence reduce the effectiveness of the analysis [@Butler2019].
 
 ### Subsetting {-}
 In Figure \@ref(fig:didy-all-fig) it can be observed that below ~4 $^\circ2\theta$ there is a tall tail in count intensities. This tail can be removed by subsetting the data using the code [described above](#subsetting).

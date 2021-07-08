@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-06-25" />
+<meta name="date" content="2021-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="intro.html"/>
 <link rel="next" href="machine-learning.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -242,7 +242,16 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
-<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a></li>
+<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#interpreting-pricipal-components"><i class="fa fa-check"></i><b>4.2.1</b> Interpreting pricipal components</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#fuzzy-clustering"><i class="fa fa-check"></i><b>4.3</b> Fuzzy clustering</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#cluster-membership"><i class="fa fa-check"></i><b>4.3.1</b> Cluster membership</a></li>
+<li class="chapter" data-level="4.3.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#subsetting-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Subsetting Clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="cluster-analysis.html"><a href="cluster-analysis.html#exploring-results"><i class="fa fa-check"></i><b>4.4</b> Exploring results</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -267,7 +276,6 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="quant" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Quantitative phase analysis</h1>
-<p><em>Benjamin Butler and Steve Hillier</em></p>
 <p>This chapter describes methods for quantitative analysis implemented within the <code>powdR</code> package using a range of reproducible examples. Detailed accounts of these methods are provided in <span class="citation"><a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation"><a href="#ref-Butler2021powdR" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
 <p>One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) signals within a diffractogram can be related to
 their concentrations within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.</p>
@@ -329,8 +337,8 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 </div>
 <div id="rockjock" class="section level4" number="2.1.1.1">
 <h4><span class="header-section-number">2.1.1.1</span> Pre-loaded <code>powdRlib</code> objects</h4>
-<p>There are two <code>powdRlib</code> objects provided as part of the <code>powdR</code> package. The first is <code>minerals</code> (accessed via <code>data(minerals)</code>), which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is <code>rockjock</code> (accessed via <code>data(rockjock)</code>), which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The <code>rockjock</code> library in <code>powdR</code> uses data from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> thanks to the permission of Dennis Eberl. In <code>rockjock</code>, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All <code>rockjock</code> data were analysed using Cu K<span class="math inline">\(\alpha\)</span> radiation.</p>
-<p>To accompany the <code>rockjock</code> reference library, a list of eight synthetic mixtures from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> are also included in <code>powdR</code> in the <code>rockjock_mixtures</code> data (accessed via <code>data(rockjock_mixtures)</code>), and the known compositions of these mixtures provided in the <code>rockjock_weights</code> data (accessed via <code>data(rockjock_weights)</code>).</p>
+<p>There are two <code>powdRlib</code> objects provided as part of the <code>powdR</code> package. The first is <code>minerals</code> [accessed via <code>data(minerals)</code>], which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is <code>rockjock</code> [accessed via <code>data(rockjock)</code>], which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The <code>rockjock</code> library in <code>powdR</code> uses data from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> thanks to the permission of Dennis Eberl. In <code>rockjock</code>, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All <code>rockjock</code> data were analysed using Cu K<span class="math inline">\(\alpha\)</span> radiation. The final library is <code>afsis</code> [accessed via <code>data(minerals)</code>], which contains 21 reference patterns measured on a Bruker D2 phaser as part of the XRPD data analysis undertaken for Africa Soil Information Service Sentinel Site programme.</p>
+<p>To accompany the <code>rockjock</code> reference library, a list of eight synthetic mixtures from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> are also included in <code>powdR</code> in the <code>rockjock_mixtures</code> data [accessed via <code>data(rockjock_mixtures)</code>], and the known compositions of these mixtures provided in the <code>rockjock_weights</code> data [accessed via <code>data(rockjock_weights)</code>].</p>
 </div>
 <div id="subsetting-a-powdrlib-object" class="section level4" number="2.1.1.2">
 <h4><span class="header-section-number">2.1.1.2</span> Subsetting a <code>powdRlib</code> object</h4>
@@ -391,6 +399,12 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <span id="cb76-7"><a href="quant.html#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the number of reference patterns in the merged library</span></span>
 <span id="cb76-8"><a href="quant.html#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(merged_lib<span class="sc">$</span>phases)</span></code></pre></div>
 <pre><code>## [1] 182</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="quant.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the afsis library</span></span>
+<span id="cb78-2"><a href="quant.html#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(afsis)</span>
+<span id="cb78-3"><a href="quant.html#cb78-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-4"><a href="quant.html#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(rockjock<span class="sc">$</span>tth, afsis<span class="sc">$</span>tth)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="quant.html#cb80-1" aria-hidden="true" tabindex="-1"></a>rockjock_afsis <span class="ot">&lt;-</span> <span class="fu">merge</span>(rockjock, afsis)</span></code></pre></div>
 <p>In simpler cases where two libraries are already on the same <span class="math inline">\(2\theta\)</span> axis and were measured using the same instrumental parameters, only the use of <code>merge()</code> would be required.</p>
 </div>
 </div>
@@ -410,20 +424,20 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <li><code>omit_std</code> is used to define whether the internal standard is omitted from the output and phase concentrations recomputed accordingly.</li>
 <li><code>align</code> is used to define the maximum positive or negative shift in <span class="math inline">\(2\theta\)</span> that is permitted during <a href="intro.html#alignment">alignment</a> of the sample to the reference pattern that is specified in the <code>std</code> argument.</li>
 </ol>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="quant.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock_mixtures)</span>
-<span id="cb78-2"><a href="quant.html#cb78-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-3"><a href="quant.html#cb78-3" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb78-4"><a href="quant.html#cb78-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
-<span id="cb78-5"><a href="quant.html#cb78-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb78-6"><a href="quant.html#cb78-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb78-7"><a href="quant.html#cb78-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb78-8"><a href="quant.html#cb78-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb78-9"><a href="quant.html#cb78-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
-<span id="cb78-10"><a href="quant.html#cb78-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
-<span id="cb78-11"><a href="quant.html#cb78-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb78-12"><a href="quant.html#cb78-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="dv">20</span>,</span>
-<span id="cb78-13"><a href="quant.html#cb78-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">omit_std =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb78-14"><a href="quant.html#cb78-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="quant.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock_mixtures)</span>
+<span id="cb81-2"><a href="quant.html#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="quant.html#cb81-3" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb81-4"><a href="quant.html#cb81-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
+<span id="cb81-5"><a href="quant.html#cb81-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb81-6"><a href="quant.html#cb81-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb81-7"><a href="quant.html#cb81-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb81-8"><a href="quant.html#cb81-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb81-9"><a href="quant.html#cb81-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
+<span id="cb81-10"><a href="quant.html#cb81-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
+<span id="cb81-11"><a href="quant.html#cb81-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb81-12"><a href="quant.html#cb81-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="dv">20</span>,</span>
+<span id="cb81-13"><a href="quant.html#cb81-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">omit_std =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb81-14"><a href="quant.html#cb81-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Aligning sample to the internal standard
 ## -Interpolating library to same 2theta scale as aligned sample
@@ -433,7 +447,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Omitting internal standard from phase concentrations
 ## ***Full pattern summation complete***</code></pre>
 <p>Once computed, the <code>fps()</code> function produces a <code>powdRfps</code> object, which is a bundle of data in list format that contains the outputs (see <code>?fps.powdRlib</code>).</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="quant.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="quant.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code></pre></div>
 <pre><code>##                        Length Class      Mode   
 ## tth                    2989   -none-     numeric
 ## fitted                 2989   -none-     numeric
@@ -446,7 +460,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## coefficients              6   -none-     numeric
 ## inputs                   16   -none-     list</code></pre>
 <p>The phase concentrations can be accessed in the <code>phases</code> data frame of the <code>powdRfps</code> object:</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="quant.html#cb82-1" aria-hidden="true" tabindex="-1"></a>fit1<span class="sc">$</span>phases</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="quant.html#cb85-1" aria-hidden="true" tabindex="-1"></a>fit1<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##               phase_id    phase_name       rir phase_percent
 ## 2   ORDERED_MICROCLINE    K-feldspar 0.9654312       4.51300
 ## 3          LABRADORITE   Plagioclase 0.8113040      24.15963
@@ -454,21 +468,21 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 5       ILLITE_1M_RM30        Illite 0.2768664       8.02925
 ## 6  MONTMORILLONITE_WYO Smectite (Di) 0.3202779      51.18163</code></pre>
 <p>Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 %:</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="quant.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="quant.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
 <pre><code>## [1] 102.4923</code></pre>
 <p>Unlike other software where only certain phases can be used as an internal standard, any phase can be defined in <code>powdR</code>. For example, the <code>rockjock_mixtures$Mix5</code> sample contains 20 % quartz (see <code>data(rockjock_weights)</code>), thus adding <code>"QUARTZ"</code> as the <code>std</code> argument results in this reference pattern becoming the internal standard instead.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="quant.html#cb86-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb86-2"><a href="quant.html#cb86-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix5,</span>
-<span id="cb86-3"><a href="quant.html#cb86-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb86-4"><a href="quant.html#cb86-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb86-5"><a href="quant.html#cb86-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb86-6"><a href="quant.html#cb86-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb86-7"><a href="quant.html#cb86-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb86-8"><a href="quant.html#cb86-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;QUARTZ&quot;</span>),</span>
-<span id="cb86-9"><a href="quant.html#cb86-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;QUARTZ&quot;</span>,</span>
-<span id="cb86-10"><a href="quant.html#cb86-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="dv">20</span>,</span>
-<span id="cb86-11"><a href="quant.html#cb86-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">omit_std =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb86-12"><a href="quant.html#cb86-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="quant.html#cb89-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb89-2"><a href="quant.html#cb89-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix5,</span>
+<span id="cb89-3"><a href="quant.html#cb89-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb89-4"><a href="quant.html#cb89-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb89-5"><a href="quant.html#cb89-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb89-6"><a href="quant.html#cb89-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb89-7"><a href="quant.html#cb89-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb89-8"><a href="quant.html#cb89-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;QUARTZ&quot;</span>),</span>
+<span id="cb89-9"><a href="quant.html#cb89-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;QUARTZ&quot;</span>,</span>
+<span id="cb89-10"><a href="quant.html#cb89-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="dv">20</span>,</span>
+<span id="cb89-11"><a href="quant.html#cb89-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">omit_std =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb89-12"><a href="quant.html#cb89-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Aligning sample to the internal standard
 ## -Interpolating library to same 2theta scale as aligned sample
@@ -477,14 +491,14 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Using internal standard concentration of 20 % to compute phase concentrations
 ## -Omitting internal standard from phase concentrations
 ## ***Full pattern summation complete***</code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="quant.html#cb88-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span>phases</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="quant.html#cb91-1" aria-hidden="true" tabindex="-1"></a>fit2<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##               phase_id    phase_name       rir phase_percent
 ## 1             CORUNDUM      Corundum 1.0000000     24.893125
 ## 3   ORDERED_MICROCLINE    K-feldspar 0.9654312     41.334625
 ## 4          LABRADORITE   Plagioclase 0.8113040      9.809250
 ## 5 KAOLINITE_DRY_BRANCH     Kaolinite 0.5812875      5.399625
 ## 6  MONTMORILLONITE_WYO Smectite (Di) 0.3202779     14.022375</code></pre>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="quant.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit2<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="quant.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit2<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
 <pre><code>## [1] 95.459</code></pre>
 <p>It’s also possible to “close” the mineral composition so that the weight percentages sum to 100. This can be achieved in two ways:</p>
 <ol style="list-style-type: decimal">
@@ -492,25 +506,25 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <li>By applying the <code>close_quant()</code> function to the <code>powdRfps</code> output.</li>
 </ol>
 <p>For example, the phase composition in <code>fit2</code> created above can be closed using:</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="quant.html#cb92-1" aria-hidden="true" tabindex="-1"></a>fit2c <span class="ot">&lt;-</span> <span class="fu">close_quant</span>(fit2)</span>
-<span id="cb92-2"><a href="quant.html#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-3"><a href="quant.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit2c<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="quant.html#cb95-1" aria-hidden="true" tabindex="-1"></a>fit2c <span class="ot">&lt;-</span> <span class="fu">close_quant</span>(fit2)</span>
+<span id="cb95-2"><a href="quant.html#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="quant.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit2c<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
 </div>
 <div id="full-pattern-summation-without-an-internal-standard" class="section level4" number="2.1.2.2">
 <h4><span class="header-section-number">2.1.2.2</span> Full pattern summation <strong>without</strong> an internal standard</h4>
 <p>In cases where an internal standard is not added to a sample, phase quantification can be achieved by assuming that all detectable phases can be identified and that they sum to 100 weight %. By setting the <code>std_conc</code> argument of <code>fps()</code> to <code>NA</code>, or leaving it out of the function call, it will be assumed that the sample has been prepared without an internal standard and the phase concentrations computed accordingly.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="quant.html#cb94-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb94-2"><a href="quant.html#cb94-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
-<span id="cb94-3"><a href="quant.html#cb94-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb94-4"><a href="quant.html#cb94-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb94-5"><a href="quant.html#cb94-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb94-6"><a href="quant.html#cb94-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb94-7"><a href="quant.html#cb94-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
-<span id="cb94-8"><a href="quant.html#cb94-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
-<span id="cb94-9"><a href="quant.html#cb94-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="cn">NA</span>,</span>
-<span id="cb94-10"><a href="quant.html#cb94-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb94-11"><a href="quant.html#cb94-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="quant.html#cb97-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb97-2"><a href="quant.html#cb97-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
+<span id="cb97-3"><a href="quant.html#cb97-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb97-4"><a href="quant.html#cb97-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb97-5"><a href="quant.html#cb97-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb97-6"><a href="quant.html#cb97-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb97-7"><a href="quant.html#cb97-7" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
+<span id="cb97-8"><a href="quant.html#cb97-8" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
+<span id="cb97-9"><a href="quant.html#cb97-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">std_conc =</span> <span class="cn">NA</span>,</span>
+<span id="cb97-10"><a href="quant.html#cb97-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb97-11"><a href="quant.html#cb97-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Aligning sample to the internal standard
 ## -Interpolating library to same 2theta scale as aligned sample
@@ -519,7 +533,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Internal standard concentration unknown. Assuming phases sum to 100 %
 ## ***Full pattern summation complete***</code></pre>
 <p>In this case the phase specified in the <code>std</code> argument is only used for <span class="math inline">\(2\theta\)</span> <a href="intro.html#alignment">alignment</a>, and is always included in the computed phase concentrations.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="quant.html#cb96-1" aria-hidden="true" tabindex="-1"></a>fit3<span class="sc">$</span>phases</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="quant.html#cb99-1" aria-hidden="true" tabindex="-1"></a>fit3<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##               phase_id    phase_name       rir phase_percent
 ## 1             CORUNDUM      Corundum 1.0000000       19.6090
 ## 2   ORDERED_MICROCLINE    K-feldspar 0.9654312        3.5399
@@ -528,28 +542,28 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 5       ILLITE_1M_RM30        Illite 0.2768664        6.2978
 ## 6  MONTMORILLONITE_WYO Smectite (Di) 0.3202779       40.1449</code></pre>
 <p>Furthermore, the phase concentrations computed using this approach will always sum to 100 %.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="quant.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit3<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="quant.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit3<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
 </div>
 <div id="full-pattern-summation-with-data-harmonisation" class="section level4" number="2.1.2.3">
 <h4><span class="header-section-number">2.1.2.3</span> Full pattern summation with data harmonisation</h4>
 <p>It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2<span class="math inline">\(\theta\)</span> range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), <code>fps()</code> contains a logical <code>harmonise</code> argument (default <code>= TRUE</code>). When the sample and library contain non-identical 2<span class="math inline">\(\theta\)</span> axes, <code>harmonise = TRUE</code> will convert the data onto the same axis by determining the overlapping 2<span class="math inline">\(\theta\)</span> range and interpolating to the coarsest resolution available.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="quant.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a sample with a shorter 2theta axis than the library</span></span>
-<span id="cb100-2"><a href="quant.html#cb100-2" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> <span class="fu">subset</span>(rockjock_mixtures<span class="sc">$</span>Mix1, tth <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;</span> <span class="dv">55</span>)</span>
-<span id="cb100-3"><a href="quant.html#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-4"><a href="quant.html#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Reduce the resolution by selecting only odd rows of the data</span></span>
-<span id="cb100-5"><a href="quant.html#cb100-5" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> Mix1_short[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(Mix1_short), <span class="dv">2</span>),]</span>
-<span id="cb100-6"><a href="quant.html#cb100-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-7"><a href="quant.html#cb100-7" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb100-8"><a href="quant.html#cb100-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> Mix1_short,</span>
-<span id="cb100-9"><a href="quant.html#cb100-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb100-10"><a href="quant.html#cb100-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb100-11"><a href="quant.html#cb100-11" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb100-12"><a href="quant.html#cb100-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb100-13"><a href="quant.html#cb100-13" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
-<span id="cb100-14"><a href="quant.html#cb100-14" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
-<span id="cb100-15"><a href="quant.html#cb100-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb100-16"><a href="quant.html#cb100-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="quant.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a sample with a shorter 2theta axis than the library</span></span>
+<span id="cb103-2"><a href="quant.html#cb103-2" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> <span class="fu">subset</span>(rockjock_mixtures<span class="sc">$</span>Mix1, tth <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;</span> <span class="dv">55</span>)</span>
+<span id="cb103-3"><a href="quant.html#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="quant.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Reduce the resolution by selecting only odd rows of the data</span></span>
+<span id="cb103-5"><a href="quant.html#cb103-5" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> Mix1_short[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(Mix1_short), <span class="dv">2</span>),]</span>
+<span id="cb103-6"><a href="quant.html#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="quant.html#cb103-7" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb103-8"><a href="quant.html#cb103-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> Mix1_short,</span>
+<span id="cb103-9"><a href="quant.html#cb103-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb103-10"><a href="quant.html#cb103-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb103-11"><a href="quant.html#cb103-11" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb103-12"><a href="quant.html#cb103-12" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb103-13"><a href="quant.html#cb103-13" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
+<span id="cb103-14"><a href="quant.html#cb103-14" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;CORUNDUM&quot;</span>),</span>
+<span id="cb103-15"><a href="quant.html#cb103-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb103-16"><a href="quant.html#cb103-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Harmonising library to the same 2theta resolution as the sample
 ## -Aligning sample to the internal standard
@@ -558,7 +572,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Computing phase concentrations
 ## -Internal standard concentration unknown. Assuming phases sum to 100 %
 ## ***Full pattern summation complete***</code></pre>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="quant.html#cb102-1" aria-hidden="true" tabindex="-1"></a>fit4<span class="sc">$</span>phases</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="quant.html#cb105-1" aria-hidden="true" tabindex="-1"></a>fit4<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##               phase_id    phase_name       rir phase_percent
 ## 1             CORUNDUM      Corundum 1.0000000       19.5079
 ## 2   ORDERED_MICROCLINE    K-feldspar 0.9654312        3.8663
@@ -579,12 +593,12 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <li><code>amorphous_lod</code> is used to define the LOD (in weight %) of the phases specified in the <code>amorphous</code> argument.</li>
 </ol>
 <p>Here the <code>rockjock</code> library, containing 169 reference patterns, will be used to quantify one of the samples in the <code>rockjock_mixtures</code> data. Note that when using <code>afps()</code>, omission of the <code>refs</code> argument in the function call will automatically result in all phases from the reference library being used in the fitting process.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="quant.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Produce the fit</span></span>
-<span id="cb104-2"><a href="quant.html#cb104-2" aria-hidden="true" tabindex="-1"></a>a_fit1 <span class="ot">&lt;-</span> <span class="fu">afps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb104-3"><a href="quant.html#cb104-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
-<span id="cb104-4"><a href="quant.html#cb104-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb104-5"><a href="quant.html#cb104-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fl">0.3</span>,</span>
-<span id="cb104-6"><a href="quant.html#cb104-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">lod =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="quant.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Produce the fit</span></span>
+<span id="cb107-2"><a href="quant.html#cb107-2" aria-hidden="true" tabindex="-1"></a>a_fit1 <span class="ot">&lt;-</span> <span class="fu">afps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb107-3"><a href="quant.html#cb107-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
+<span id="cb107-4"><a href="quant.html#cb107-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb107-5"><a href="quant.html#cb107-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">align =</span> <span class="fl">0.3</span>,</span>
+<span id="cb107-6"><a href="quant.html#cb107-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">lod =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Using all reference patterns in the library
 ## -Aligning sample to the internal standard
@@ -599,14 +613,14 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Internal standard concentration unknown. Assuming phases sum to 100 %
 ## ***Automated full pattern summation complete***</code></pre>
 <p>Once computed, the <code>afps</code> function produces a <code>powdRafps</code> object, which is a bundle of data in list format that contains the outputs (see <code>?afps.powdRlib</code>). When large libraries such a <code>rockjock</code> are used to quantify a given sample, the resulting output is likely contain several different reference patterns for a given mineral, for example:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="quant.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(a_fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_name)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="quant.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(a_fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_name)</span></code></pre></div>
 <pre><code>## 
 ##    Background      Corundum        Illite    K-feldspar     Kaolinite 
 ##             1             1             2             1             1 
 ##   Plagioclase Smectite (Di) 
 ##             3             2</code></pre>
 <p>Illustrates that the resulting output contains 2 reference patterns for both illite and Smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by <code>afps()</code>. This information is grouped together and summed in the <code>phases_grouped</code> data frame within the <code>powdRafps</code> object:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="quant.html#cb108-1" aria-hidden="true" tabindex="-1"></a>a_fit1<span class="sc">$</span>phases_grouped</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="quant.html#cb111-1" aria-hidden="true" tabindex="-1"></a>a_fit1<span class="sc">$</span>phases_grouped</span></code></pre></div>
 <pre><code>##      phase_name phase_percent
 ## 1      Corundum       19.2449
 ## 2    Background        0.0001
@@ -627,8 +641,8 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <div id="regrouping-phases-in-powdrfps-and-powdrafps-objects" class="section level4" number="2.1.4.2">
 <h4><span class="header-section-number">2.1.4.2</span> Regrouping phases in <code>powdRfps</code> and <code>powdRafps</code> objects</h4>
 <p>Occasionally it can be useful to apply a different grouping structure to the phases quantified within a <code>powdRfps</code> or <code>powdRafps</code> object. This can be achieved using the <code>regroup</code> function (see <code>?regroup.powdRfps</code> and <code>?regroup.powdRafps</code>):</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="quant.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co">#View the phases of the a_fit1 output</span></span>
-<span id="cb110-2"><a href="quant.html#cb110-2" aria-hidden="true" tabindex="-1"></a>a_fit1<span class="sc">$</span>phases</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="quant.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#View the phases of the a_fit1 output</span></span>
+<span id="cb113-2"><a href="quant.html#cb113-2" aria-hidden="true" tabindex="-1"></a>a_fit1<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##                 phase_id    phase_name          rir phase_percent
 ## 1               CORUNDUM      Corundum 1.000000e+00       19.2449
 ## 2               BACK_NEG    Background 1.000000e+04        0.0001
@@ -641,32 +655,32 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 9         ILLITE_1M_RM30        Illite 2.768664e-01        4.9353
 ## 10   MONTMORILLONITE_WYO Smectite (Di) 3.202779e-01       23.9201
 ## 11 ILLITE_R0_5_PERCENT_I        Illite 2.620735e-01        2.9752</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="quant.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the phase IDs for the regrouping structure</span></span>
-<span id="cb112-2"><a href="quant.html#cb112-2" aria-hidden="true" tabindex="-1"></a>rg_id <span class="ot">&lt;-</span> a_fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_id</span>
-<span id="cb112-3"><a href="quant.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-4"><a href="quant.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new grouping structure for those IDs</span></span>
-<span id="cb112-5"><a href="quant.html#cb112-5" aria-hidden="true" tabindex="-1"></a>rg_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Non-clay&quot;</span>, <span class="co">#CORUNDUM</span></span>
-<span id="cb112-6"><a href="quant.html#cb112-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Background&quot;</span>, <span class="co">#BACK_NEG</span></span>
-<span id="cb112-7"><a href="quant.html#cb112-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#ORDERED_MICROCLINE</span></span>
-<span id="cb112-8"><a href="quant.html#cb112-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#ANDESINE</span></span>
-<span id="cb112-9"><a href="quant.html#cb112-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#LABRADORITE</span></span>
-<span id="cb112-10"><a href="quant.html#cb112-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#BYTOWNITE</span></span>
-<span id="cb112-11"><a href="quant.html#cb112-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#ORD_KAOLINITE</span></span>
-<span id="cb112-12"><a href="quant.html#cb112-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#CA_MONTMORILLONITE</span></span>
-<span id="cb112-13"><a href="quant.html#cb112-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#ILLITE_1M_RM30</span></span>
-<span id="cb112-14"><a href="quant.html#cb112-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#MONTMORILLONITE_WYO</span></span>
-<span id="cb112-15"><a href="quant.html#cb112-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span> <span class="co">#ILLITE_R0_5_PERCENT_I</span></span>
-<span id="cb112-16"><a href="quant.html#cb112-16" aria-hidden="true" tabindex="-1"></a>              )</span>
-<span id="cb112-17"><a href="quant.html#cb112-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-18"><a href="quant.html#cb112-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a data frame from that structure</span></span>
-<span id="cb112-19"><a href="quant.html#cb112-19" aria-hidden="true" tabindex="-1"></a>rg_str <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;phase_id&quot;</span> <span class="ot">=</span> rg_id,</span>
-<span id="cb112-20"><a href="quant.html#cb112-20" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;phase_name&quot;</span> <span class="ot">=</span> rg_name)</span>
-<span id="cb112-21"><a href="quant.html#cb112-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-22"><a href="quant.html#cb112-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Regroup the data in a_fit1</span></span>
-<span id="cb112-23"><a href="quant.html#cb112-23" aria-hidden="true" tabindex="-1"></a>a_fit1_rg <span class="ot">&lt;-</span> <span class="fu">regroup</span>(a_fit1, rg_str)</span>
-<span id="cb112-24"><a href="quant.html#cb112-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb112-25"><a href="quant.html#cb112-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the regrouped data</span></span>
-<span id="cb112-26"><a href="quant.html#cb112-26" aria-hidden="true" tabindex="-1"></a>a_fit1_rg<span class="sc">$</span>phases_grouped</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="quant.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the phase IDs for the regrouping structure</span></span>
+<span id="cb115-2"><a href="quant.html#cb115-2" aria-hidden="true" tabindex="-1"></a>rg_id <span class="ot">&lt;-</span> a_fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_id</span>
+<span id="cb115-3"><a href="quant.html#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="quant.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a new grouping structure for those IDs</span></span>
+<span id="cb115-5"><a href="quant.html#cb115-5" aria-hidden="true" tabindex="-1"></a>rg_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Non-clay&quot;</span>, <span class="co">#CORUNDUM</span></span>
+<span id="cb115-6"><a href="quant.html#cb115-6" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Background&quot;</span>, <span class="co">#BACK_NEG</span></span>
+<span id="cb115-7"><a href="quant.html#cb115-7" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#ORDERED_MICROCLINE</span></span>
+<span id="cb115-8"><a href="quant.html#cb115-8" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#ANDESINE</span></span>
+<span id="cb115-9"><a href="quant.html#cb115-9" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#LABRADORITE</span></span>
+<span id="cb115-10"><a href="quant.html#cb115-10" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Non-clay&quot;</span>, <span class="co">#BYTOWNITE</span></span>
+<span id="cb115-11"><a href="quant.html#cb115-11" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#ORD_KAOLINITE</span></span>
+<span id="cb115-12"><a href="quant.html#cb115-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#CA_MONTMORILLONITE</span></span>
+<span id="cb115-13"><a href="quant.html#cb115-13" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#ILLITE_1M_RM30</span></span>
+<span id="cb115-14"><a href="quant.html#cb115-14" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span>, <span class="co">#MONTMORILLONITE_WYO</span></span>
+<span id="cb115-15"><a href="quant.html#cb115-15" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Clay&quot;</span> <span class="co">#ILLITE_R0_5_PERCENT_I</span></span>
+<span id="cb115-16"><a href="quant.html#cb115-16" aria-hidden="true" tabindex="-1"></a>              )</span>
+<span id="cb115-17"><a href="quant.html#cb115-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-18"><a href="quant.html#cb115-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a data frame from that structure</span></span>
+<span id="cb115-19"><a href="quant.html#cb115-19" aria-hidden="true" tabindex="-1"></a>rg_str <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;phase_id&quot;</span> <span class="ot">=</span> rg_id,</span>
+<span id="cb115-20"><a href="quant.html#cb115-20" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;phase_name&quot;</span> <span class="ot">=</span> rg_name)</span>
+<span id="cb115-21"><a href="quant.html#cb115-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-22"><a href="quant.html#cb115-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Regroup the data in a_fit1</span></span>
+<span id="cb115-23"><a href="quant.html#cb115-23" aria-hidden="true" tabindex="-1"></a>a_fit1_rg <span class="ot">&lt;-</span> <span class="fu">regroup</span>(a_fit1, rg_str)</span>
+<span id="cb115-24"><a href="quant.html#cb115-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-25"><a href="quant.html#cb115-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the regrouped data</span></span>
+<span id="cb115-26"><a href="quant.html#cb115-26" aria-hidden="true" tabindex="-1"></a>a_fit1_rg<span class="sc">$</span>phases_grouped</span></code></pre></div>
 <pre><code>##   phase_name phase_percent
 ## 1 Background        0.0001
 ## 2       Clay       58.8721
@@ -677,40 +691,40 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <div id="plotting-powdrfps-and-powdrafps-objects" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Plotting <code>powdRfps</code> and <code>powdRafps</code> objects</h2>
 <p>Plotting results <code>powdRfps</code> and <code>powdRafps</code> objects, derived from <code>fps()</code> and <code>afps()</code>, respectively, is achieved using <code>plot()</code> (see <code>?plot.powdRfps</code> and <code>?plot.powdRafps</code>).</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="quant.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-59"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-59-1.png" alt="Example output from plotting a powdRfps or powdRafps object." width="672" />
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="quant.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-60"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-60-1.png" alt="Example output from plotting a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.2: Example output from plotting a powdRfps or powdRafps object.
 </p>
 </div>
 <p>When plotting <code>powdRfps</code> or <code>powdRafps</code> objects the wavelength must be defined because it is required to compute d-spacings that are shown when <code>interactive = TRUE</code>. As with other plotting methods outlined in Section <a href="intro.html#plotting-data">1.3</a>, interactive <code>ggplotly()</code> outputs can be created using <code>interactive = TRUE</code>.</p>
 <p>In addition to above, plotting for <code>powdRfps</code> and <code>powdRafps</code> objects can be further adjusted by the <code>group</code>, <code>mode</code> and <code>xlim</code> arguments. When the <code>group</code> argument is set to <code>TRUE</code>, the patterns within the fit are grouped and summed according to phase names, which can help simplify the plot:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="quant.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb115-2"><a href="quant.html#cb115-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">group =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb115-3"><a href="quant.html#cb115-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-60"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-60-1.png" alt="Plotting a powdRfps or powdRafps object with the reference patterns grouped." width="672" />
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="quant.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb118-2"><a href="quant.html#cb118-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">group =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb118-3"><a href="quant.html#cb118-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-61"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-61-1.png" alt="Plotting a powdRfps or powdRafps object with the reference patterns grouped." width="672" />
 <p class="caption">
 Figure 2.3: Plotting a powdRfps or powdRafps object with the reference patterns grouped.
 </p>
 </div>
 <p>The <code>mode</code> argument can be one of <code>"fit"</code> (the default), <code>"residuals"</code> or <code>"both"</code>, for example:</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="quant.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb116-2"><a href="quant.html#cb116-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;residuals&quot;</span>,</span>
-<span id="cb116-3"><a href="quant.html#cb116-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-61"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-61-1.png" alt="Plotting the residuals of a powdRfps or powdRafps object." width="672" />
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="quant.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb119-2"><a href="quant.html#cb119-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;residuals&quot;</span>,</span>
+<span id="cb119-3"><a href="quant.html#cb119-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-62"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-62-1.png" alt="Plotting the residuals of a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.4: Plotting the residuals of a powdRfps or powdRafps object.
 </p>
 </div>
 <p>or alternatively both the fit and residuals can be plotted using <code>mode = "both"</code> and the <span class="math inline">\(2\theta\)</span> axis restricted using the <code>xlim</code> argument:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="quant.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb117-2"><a href="quant.html#cb117-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;both&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">30</span>),</span>
-<span id="cb117-3"><a href="quant.html#cb117-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-62"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-62-1.png" alt="Plotting both the fit and residuals of a powdRfps or powdRafps object." width="672" />
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="quant.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb120-2"><a href="quant.html#cb120-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;both&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">30</span>),</span>
+<span id="cb120-3"><a href="quant.html#cb120-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-63"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-63-1.png" alt="Plotting both the fit and residuals of a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps object.
 </p>
@@ -721,17 +735,17 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 <div id="lapply" class="section level3" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> <code>lapply()</code></h3>
 <p>The simplest way to quantify multiple samples via either <code>fps()</code> and <code>afps()</code> is by wrapping either of the functions in <code>lapply()</code> and supplying a list of diffractograms. The following example wraps the <code>fps()</code> function in <code>lapply</code> and applies the function to the first three items within the <code>rockjock_mixtures</code> data.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="quant.html#cb118-1" aria-hidden="true" tabindex="-1"></a>multi_fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(rockjock_mixtures[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], fps,</span>
-<span id="cb118-2"><a href="quant.html#cb118-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">lib =</span> rockjock,</span>
-<span id="cb118-3"><a href="quant.html#cb118-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb118-4"><a href="quant.html#cb118-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb118-5"><a href="quant.html#cb118-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb118-6"><a href="quant.html#cb118-6" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb118-7"><a href="quant.html#cb118-7" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb118-8"><a href="quant.html#cb118-8" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
-<span id="cb118-9"><a href="quant.html#cb118-9" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb118-10"><a href="quant.html#cb118-10" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;QUARTZ&quot;</span>),</span>
-<span id="cb118-11"><a href="quant.html#cb118-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="quant.html#cb121-1" aria-hidden="true" tabindex="-1"></a>multi_fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(rockjock_mixtures[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], fps,</span>
+<span id="cb121-2"><a href="quant.html#cb121-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">lib =</span> rockjock,</span>
+<span id="cb121-3"><a href="quant.html#cb121-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb121-4"><a href="quant.html#cb121-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb121-5"><a href="quant.html#cb121-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb121-6"><a href="quant.html#cb121-6" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb121-7"><a href="quant.html#cb121-7" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb121-8"><a href="quant.html#cb121-8" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
+<span id="cb121-9"><a href="quant.html#cb121-9" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb121-10"><a href="quant.html#cb121-10" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;QUARTZ&quot;</span>),</span>
+<span id="cb121-11"><a href="quant.html#cb121-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">align =</span> <span class="fl">0.3</span>)</span></code></pre></div>
 <pre><code>## 
 ## -Aligning sample to the internal standard
 ## -Interpolating library to same 2theta scale as aligned sample
@@ -755,55 +769,55 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 ## -Internal standard concentration unknown. Assuming phases sum to 100 %
 ## ***Full pattern summation complete***</code></pre>
 <p>When using <code>lapply</code> in this way, the names of the items within the list or <a href="intro.html#loading-data"><code>multiXY</code> object</a> supplied to the function are inherited by the output:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="quant.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rockjock_mixtures[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="quant.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(rockjock_mixtures[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])</span></code></pre></div>
 <pre><code>## [1] &quot;Mix1&quot; &quot;Mix2&quot; &quot;Mix3&quot;</code></pre>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="quant.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(multi_fit)</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="quant.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(multi_fit)</span></code></pre></div>
 <pre><code>## [1] &quot;Mix1&quot; &quot;Mix2&quot; &quot;Mix3&quot;</code></pre>
 </div>
 <div id="parallel-processing" class="section level3" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Parallel processing</h3>
 <p>Whilst <code>lapply</code> is a simple way to quantify multiple samples, the computation remains restricted to a single core. Computation time can be reduced many-fold by allowing different cores of your machine to process one sample at a time, which can be achieved using the <code>doParallel</code> and <code>foreach</code> packages:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="quant.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install the foreach and doParallel package</span></span>
-<span id="cb124-2"><a href="quant.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;foreach&quot;</span>, <span class="st">&quot;doParallel&quot;</span>))</span>
-<span id="cb124-3"><a href="quant.html#cb124-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-4"><a href="quant.html#cb124-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load the packages</span></span>
-<span id="cb124-5"><a href="quant.html#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span>
-<span id="cb124-6"><a href="quant.html#cb124-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
-<span id="cb124-7"><a href="quant.html#cb124-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-8"><a href="quant.html#cb124-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Detect number of cores on machine</span></span>
-<span id="cb124-9"><a href="quant.html#cb124-9" aria-hidden="true" tabindex="-1"></a>UseCores <span class="ot">&lt;-</span> <span class="fu">detectCores</span>()</span>
-<span id="cb124-10"><a href="quant.html#cb124-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-11"><a href="quant.html#cb124-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Register the cluster using n - 1 cores </span></span>
-<span id="cb124-12"><a href="quant.html#cb124-12" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(UseCores<span class="dv">-1</span>)</span>
-<span id="cb124-13"><a href="quant.html#cb124-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-14"><a href="quant.html#cb124-14" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span>
-<span id="cb124-15"><a href="quant.html#cb124-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-16"><a href="quant.html#cb124-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Use foreach loop and %dopar% to compute in parallel</span></span>
-<span id="cb124-17"><a href="quant.html#cb124-17" aria-hidden="true" tabindex="-1"></a>multi_fit <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%dopar%</span></span>
-<span id="cb124-18"><a href="quant.html#cb124-18" aria-hidden="true" tabindex="-1"></a>  (powdR<span class="sc">::</span><span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
-<span id="cb124-19"><a href="quant.html#cb124-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">smpl =</span> rockjock_mixtures[[i]],</span>
-<span id="cb124-20"><a href="quant.html#cb124-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb124-21"><a href="quant.html#cb124-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
-<span id="cb124-22"><a href="quant.html#cb124-22" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;LABRADORITE&quot;</span>,</span>
-<span id="cb124-23"><a href="quant.html#cb124-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
-<span id="cb124-24"><a href="quant.html#cb124-24" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
-<span id="cb124-25"><a href="quant.html#cb124-25" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
-<span id="cb124-26"><a href="quant.html#cb124-26" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;CORUNDUM&quot;</span>,</span>
-<span id="cb124-27"><a href="quant.html#cb124-27" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;QUARTZ&quot;</span>),</span>
-<span id="cb124-28"><a href="quant.html#cb124-28" aria-hidden="true" tabindex="-1"></a>               <span class="at">align =</span> <span class="fl">0.3</span>))</span>
-<span id="cb124-29"><a href="quant.html#cb124-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-30"><a href="quant.html#cb124-30" aria-hidden="true" tabindex="-1"></a><span class="co">#name the items in the aquant_parallel list</span></span>
-<span id="cb124-31"><a href="quant.html#cb124-31" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(multi_fit) <span class="ot">&lt;-</span> <span class="fu">names</span>(rockjock_mixtures)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb124-32"><a href="quant.html#cb124-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb124-33"><a href="quant.html#cb124-33" aria-hidden="true" tabindex="-1"></a><span class="co">#stop the cluster</span></span>
-<span id="cb124-34"><a href="quant.html#cb124-34" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="quant.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install the foreach and doParallel package</span></span>
+<span id="cb127-2"><a href="quant.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;foreach&quot;</span>, <span class="st">&quot;doParallel&quot;</span>))</span>
+<span id="cb127-3"><a href="quant.html#cb127-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="quant.html#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load the packages</span></span>
+<span id="cb127-5"><a href="quant.html#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span>
+<span id="cb127-6"><a href="quant.html#cb127-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb127-7"><a href="quant.html#cb127-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-8"><a href="quant.html#cb127-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Detect number of cores on machine</span></span>
+<span id="cb127-9"><a href="quant.html#cb127-9" aria-hidden="true" tabindex="-1"></a>UseCores <span class="ot">&lt;-</span> <span class="fu">detectCores</span>()</span>
+<span id="cb127-10"><a href="quant.html#cb127-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-11"><a href="quant.html#cb127-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Register the cluster using n - 1 cores </span></span>
+<span id="cb127-12"><a href="quant.html#cb127-12" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(UseCores<span class="dv">-1</span>)</span>
+<span id="cb127-13"><a href="quant.html#cb127-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-14"><a href="quant.html#cb127-14" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span>
+<span id="cb127-15"><a href="quant.html#cb127-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-16"><a href="quant.html#cb127-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Use foreach loop and %dopar% to compute in parallel</span></span>
+<span id="cb127-17"><a href="quant.html#cb127-17" aria-hidden="true" tabindex="-1"></a>multi_fit <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%dopar%</span></span>
+<span id="cb127-18"><a href="quant.html#cb127-18" aria-hidden="true" tabindex="-1"></a>  (powdR<span class="sc">::</span><span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
+<span id="cb127-19"><a href="quant.html#cb127-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">smpl =</span> rockjock_mixtures[[i]],</span>
+<span id="cb127-20"><a href="quant.html#cb127-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">std =</span> <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb127-21"><a href="quant.html#cb127-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ORDERED_MICROCLINE&quot;</span>,</span>
+<span id="cb127-22"><a href="quant.html#cb127-22" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;LABRADORITE&quot;</span>,</span>
+<span id="cb127-23"><a href="quant.html#cb127-23" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;KAOLINITE_DRY_BRANCH&quot;</span>,</span>
+<span id="cb127-24"><a href="quant.html#cb127-24" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;MONTMORILLONITE_WYO&quot;</span>,</span>
+<span id="cb127-25"><a href="quant.html#cb127-25" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;ILLITE_1M_RM30&quot;</span>,</span>
+<span id="cb127-26"><a href="quant.html#cb127-26" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;CORUNDUM&quot;</span>,</span>
+<span id="cb127-27"><a href="quant.html#cb127-27" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;QUARTZ&quot;</span>),</span>
+<span id="cb127-28"><a href="quant.html#cb127-28" aria-hidden="true" tabindex="-1"></a>               <span class="at">align =</span> <span class="fl">0.3</span>))</span>
+<span id="cb127-29"><a href="quant.html#cb127-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-30"><a href="quant.html#cb127-30" aria-hidden="true" tabindex="-1"></a><span class="co">#name the items in the aquant_parallel list</span></span>
+<span id="cb127-31"><a href="quant.html#cb127-31" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(multi_fit) <span class="ot">&lt;-</span> <span class="fu">names</span>(rockjock_mixtures)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb127-32"><a href="quant.html#cb127-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-33"><a href="quant.html#cb127-33" aria-hidden="true" tabindex="-1"></a><span class="co">#stop the cluster</span></span>
+<span id="cb127-34"><a href="quant.html#cb127-34" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code></pre></div>
 <p>Note how the call to <code>fps</code> uses the notation <code>powdR::fps()</code>, which specifies the accessing of the <code>fps()</code> function from the <code>powdR</code> package.</p>
 </div>
 </div>
 <div id="summarising-mineralogy" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Summarising mineralogy</h2>
 <p>When multiple samples are quantified it is often useful to report the phase concentrations of all of the samples in a single table. For a given list of <code>powdRfps</code> and/or <code>powdRafps</code> objects, the <code>summarise_mineralogy()</code> function yields such summary tables, for example:</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="quant.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_mineralogy</span>(multi_fit, <span class="at">type =</span> <span class="st">&quot;grouped&quot;</span>, <span class="at">order =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="quant.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_mineralogy</span>(multi_fit, <span class="at">type =</span> <span class="st">&quot;grouped&quot;</span>, <span class="at">order =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##   sample_id Kaolinite Corundum Plagioclase Smectite (Di)  Illite K-feldspar
 ## 1      Mix1   11.4255  19.6390     18.9222       40.2223  6.0943     3.4771
 ## 2      Mix2   19.9893  20.1257     34.2955        3.1401  9.8914     7.9668
@@ -814,8 +828,8 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 ## 3 7.7318</code></pre>
 <p>where <code>type = "grouped"</code> denotes that phases with the same <code>phase_name</code> will be summed together, and <code>order = TRUE</code> specifies that the columns will be ordered from most common to least common (assessed by the sum of each column). Using <code>type = "all"</code> instead would result in tabulation of all phase IDs.</p>
 <p>In addition to the quantitative mineral data, three objective parameters that summarise the quality of the fit can be appended to the table via the logical <code>rwp</code>, <code>r</code> and <code>delta</code> arguments.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="quant.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_mineralogy</span>(multi_fit, <span class="at">type =</span> <span class="st">&quot;grouped&quot;</span>, <span class="at">order =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb127-2"><a href="quant.html#cb127-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">rwp =</span> <span class="cn">TRUE</span>, <span class="at">r =</span> <span class="cn">TRUE</span>, <span class="at">delta =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="quant.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_mineralogy</span>(multi_fit, <span class="at">type =</span> <span class="st">&quot;grouped&quot;</span>, <span class="at">order =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb130-2"><a href="quant.html#cb130-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">rwp =</span> <span class="cn">TRUE</span>, <span class="at">r =</span> <span class="cn">TRUE</span>, <span class="at">delta =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##   sample_id Kaolinite Corundum Plagioclase Smectite (Di)  Illite K-feldspar
 ## 1      Mix1   11.4255  19.6390     18.9222       40.2223  6.0943     3.4771
 ## 2      Mix2   19.9893  20.1257     34.2955        3.1401  9.8914     7.9668

@@ -1,5 +1,4 @@
 # Quantitative phase analysis {#quant}
-*Benjamin Butler and Steve Hillier*
 
 This chapter describes methods for quantitative analysis implemented within the `powdR` package using a range of reproducible examples. Detailed accounts of these methods are provided in @Butler2021rc and @Butler2021powdR.
 
@@ -53,9 +52,9 @@ plot(my_lib, wavelength = "Cu",
 
 
 #### Pre-loaded `powdRlib` objects {#rockjock}
-There are two `powdRlib` objects provided as part of the `powdR` package. The first is `minerals` (accessed via `data(minerals)`), which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is `rockjock` (accessed via `data(rockjock)`), which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The `rockjock` library in `powdR` uses data from the original RockJock program [@Eberl2003] thanks to the permission of Dennis Eberl. In `rockjock`, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All `rockjock` data were analysed using Cu K$\alpha$ radiation.
+There are two `powdRlib` objects provided as part of the `powdR` package. The first is `minerals` [accessed via `data(minerals)`], which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is `rockjock` [accessed via `data(rockjock)`], which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The `rockjock` library in `powdR` uses data from the original RockJock program [@Eberl2003] thanks to the permission of Dennis Eberl. In `rockjock`, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All `rockjock` data were analysed using Cu K$\alpha$ radiation. The final library is `afsis` [accessed via `data(minerals)`], which contains 21 reference patterns measured on a Bruker D2 phaser as part of the XRPD data analysis undertaken for Africa Soil Information Service Sentinel Site programme.
 
-To accompany the `rockjock` reference library, a list of eight synthetic mixtures from the original RockJock program [@Eberl2003] are also included in `powdR` in the `rockjock_mixtures` data (accessed via `data(rockjock_mixtures)`), and the known compositions of these mixtures provided in the `rockjock_weights` data (accessed via `data(rockjock_weights)`).
+To accompany the `rockjock` reference library, a list of eight synthetic mixtures from the original RockJock program [@Eberl2003] are also included in `powdR` in the `rockjock_mixtures` data [accessed via `data(rockjock_mixtures)`], and the known compositions of these mixtures provided in the `rockjock_weights` data [accessed via `data(rockjock_weights)`].
 
 #### Subsetting a `powdRlib` object
 Occasionally it may be useful to subset a reference library to a smaller selection. This can be achieved using `subset()`, which for `powdRlib` objects accepts three arguments; `x`, `refs` and `mode` (see `?subset.powdRlib`). The `x` argument specifies the `powdRlib` object to be subset, `refs` specifies the ID's and/or names of phases to select, and `mode` specifies whether these phases are kept (`mode = "keep"`) or removed (`mode = "remove"`).
@@ -113,6 +112,15 @@ merged_lib <- merge(rockjock, minerals_i)
 
 #Check the number of reference patterns in the merged library
 nrow(merged_lib$phases)
+```
+
+```{r, message = FALSE, warning = FALSE, cache = TRUE}
+#Load the afsis library
+data(afsis)
+
+identical(rockjock$tth, afsis$tth)
+
+rockjock_afsis <- merge(rockjock, afsis)
 ```
 
 In simpler cases where two libraries are already on the same $2\theta$ axis and were measured using the same instrumental parameters, only the use of `merge()` would be required.

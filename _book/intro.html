@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-06-25" />
+<meta name="date" content="2021-07-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="quant.html"/>
-<script src="libs/header-attrs-2.8/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -242,7 +242,16 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
-<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a></li>
+<li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#interpreting-pricipal-components"><i class="fa fa-check"></i><b>4.2.1</b> Interpreting pricipal components</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="cluster-analysis.html"><a href="cluster-analysis.html#fuzzy-clustering"><i class="fa fa-check"></i><b>4.3</b> Fuzzy clustering</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#cluster-membership"><i class="fa fa-check"></i><b>4.3.1</b> Cluster membership</a></li>
+<li class="chapter" data-level="4.3.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#subsetting-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Subsetting Clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="cluster-analysis.html"><a href="cluster-analysis.html#exploring-results"><i class="fa fa-check"></i><b>4.4</b> Exploring results</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -267,7 +276,6 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="intro" class="section level1" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Working with XRPD data in R</h1>
-<p><em>Benjamin Butler</em></p>
 <p>At this stage it is assumed that you have R and RStudio installed on your computer and have installed the <code>powdR</code> package using <code>install.packages("powdR")</code>. For brief introductions to R, the <a href="https://education.rstudio.com/learn/beginner/">RStudio website has links to useful material</a>. One aspect worth noting is that any R function used throughout this document will have additional help associated with it that can be accessed using <code>?</code>. For example, to access help on the <code>mean()</code> function, use <code>?mean</code>.</p>
 <p>This chapter will work through:</p>
 <ul>
