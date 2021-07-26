@@ -9,7 +9,7 @@ Of the approaches available for quantitative XRPD, the simple Reference Intensit
 
 As mentioned in Chapter \@ref(intro), a given diffractogram can be modeled as the sum of pure diffractograms for all detectable phases, each scaled by different amounts (scaling factors). By combining these scaling factors with RIRs, phase concentrations can be calculated. Hereafter this approach is referred to as **full pattern summation**.
 
-Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the "reference library" containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn't possible and the data can be harmonised accordingly. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs [see Section 2 in [@Butler2021rc]].
+Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the "reference library" containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn't possible and the data can be harmonised accordingly. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs [see Section 2 in @Butler2021rc].
 
 ## Full pattern summation with `powdR`
 
@@ -91,7 +91,7 @@ nrow(rockjock_2$phases)
 #### Interpolating and merging `powdRlib` objects
 Two `powdRlib` objects from different instruments can be interpolated and then merged using the `interpolate` and `merge` methods (see `?interpolate.powdRlib` and `merge.powdRlib`), respectively. For example, the `minerals` library can be merged with the `rockjock` library following interpolation using:
 
-```{r, message = FALSE, warning = FALSE, cache = TRUE}
+```{r message = FALSE, warning = FALSE, cache = TRUE}
 #Load the minerals library
 data(minerals)
 
@@ -105,7 +105,8 @@ data(rockjock)
 nrow(rockjock$phases)
 
 #interpolate minerals library onto same 2theta as rockjock
-minerals_i <- interpolate(minerals, new_tth = rockjock$tth)
+minerals_i <- interpolate(minerals,
+                          new_tth = rockjock$tth)
 
 #merge the libraries
 merged_lib <- merge(rockjock, minerals_i)
@@ -113,6 +114,8 @@ merged_lib <- merge(rockjock, minerals_i)
 #Check the number of reference patterns in the merged library
 nrow(merged_lib$phases)
 ```
+
+In simpler cases where two libraries are already on the same $2\theta$ axis and were measured using the same instrumental parameters, only the use of `merge()` would be required.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 #Load the afsis library
@@ -122,8 +125,6 @@ identical(rockjock$tth, afsis$tth)
 
 rockjock_afsis <- merge(rockjock, afsis)
 ```
-
-In simpler cases where two libraries are already on the same $2\theta$ axis and were measured using the same instrumental parameters, only the use of `merge()` would be required.
 
 ### Full pattern summation with `fps()`
 Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R](#loading-data), you have everything needed for quantitative analysis via full pattern summation.  Full pattern summation in `powdR` is provided via the `fps()` function, whilst an automated version is provided in [`afps()`](#afps). Details of the equations and routines implemented in `fps()` and `afps()` are provided in @Butler2021rc and @Butler2021powdR. 

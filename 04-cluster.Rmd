@@ -5,7 +5,7 @@ This chapter will demonstrate the use of cluster analysis to identify mineral-nu
 ```{r, echo=FALSE, cache = TRUE}
 if (knitr:::is_html_output())
 {
-  download_link(
+  downloadthis::download_link(
   link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/9b742b95-c071-4e3a-a227-939efa034ac7/file_downloaded",
   button_label = "Download soil property csv",
   button_type = "danger",
@@ -19,7 +19,7 @@ if (knitr:::is_html_output())
 ```{r, echo=FALSE, cache = TRUE}
 if (knitr:::is_html_output())
 {
-  download_link(
+  downloadthis::download_link(
   link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/ef33d276-e39c-4b64-b9aa-f2d1d69c51b3/file_downloaded",
   button_label = "Download zipped XRPD data",
   button_type = "danger",
@@ -30,12 +30,30 @@ if (knitr:::is_html_output())
 }
 ```
 
-## Loading data
-Once you have downloaded the data required for this chapter, it can be loaded into R by modifying the paths in the following code:
+## Loading packages and data
+This chapter will use a number of packages that should already be installed on your machine, but will also use the **reshape2**, **e1071** and **leaflet** packages that may need to be installed if you have not used them before:
+
+```{r, eval = FALSE}
+#install reshape2
+install.packages(c("reshape2", "e1071", "leaflet"))
+```
+
+```{r}
+#load the relevant packages
+library(reshape2)
+library(e1071)
+library(leaflet)
+library(powdR)
+library(ggplot2)
+library(plotly)
+library(gridExtra)
+library(leaflet)
+library(plyr)
+```
+
+Once you have loaded the packages and downloaded the data required for this chapter, the data can be loaded into R by modifying the paths in the following code:
 
 ```{r, eval=FALSE}
-library(powdR)
-
 #Load the soil property data
 props <- read.csv(file = "path/to/your/file/clusters_and_properties.csv")
 
@@ -49,8 +67,6 @@ xrpd <- read_xy(files = xrpd_paths)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(powdR)
-
 #Load the soil property data
 props <- read.csv(file = "data/clusters_and_properties.csv")
 
@@ -89,14 +105,14 @@ subset_xrpd <- function (x, xmin) {
   
 }
 
-xrpd_aligned <- lapply(xrpd_aligned, subset_xrpd,
-                       xmin = 6)
+xrpd_aligned_sub <- lapply(xrpd_aligned, subset_xrpd,
+                           xmin = 6)
 ```
 
 Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and PCA can be carried out in a single step using the `xrpd_pca()` function in `powdR`: 
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE}
-pca <- xrpd_pca(xrpd_aligned,
+pca <- xrpd_pca(xrpd_aligned_sub,
                 mean_center = TRUE,
                 root_transform = 2,
                 components = 5)
@@ -107,10 +123,7 @@ pca$eig[1:10,]
 
 From which it can be seen that the first 5 principal components (PCs) of the data account for 93 % of variation in the XRPD data. The resulting cluster analysis will therefore be based upon these 10 components. For simplicity this example will use the first 5 PCs hereafter, which together account for 93 % of total variation.
 
-```{r fig.cap = "The first 5 PCs plotted against one-another", out.width='100%', fig.align='center', fig.asp=2, message=FALSE, warning=FALSE, cache = TRUE}
-library(gridExtra)
-library(ggplot2)
-
+```{r fig.cap = "The first 5 PCs plotted against one-another", out.width='100%', fig.align='center', fig.asp=2.3, message=FALSE, warning=FALSE, cache = TRUE}
 #Define the x-axis components
 x <- c(1, 1, 1, 1,
        2, 2, 2,
@@ -246,8 +259,6 @@ Now that the XRPD data have been reduced to a discrete set of variables using PC
 When applying cluster analysis, the selection of the most appropriate number of clusters can prove to be subjective and, in some cases difficult. There are a number of approaches that can be used to objectively define the most appropriate number of clusters [@Rossel2016; @Butler2020]. Here, for simplicity the number of clusters will be manually set to 9.
 
 ```{r cluster-fig, fig.cap = "Pre-treated XRPD data clustered into 9 groups.", out.width='100%', fig.align='center', fig.asp=2, cache = TRUE, message = FALSE, warning = FALSE}
-library(e1071)
-
 #Apply the fuzzy-c-means algorithm to the PCs
 fcm <- cmeans(pca$coords[-1],
               center = 9)
@@ -409,10 +420,7 @@ grid.arrange(grobs = p,
 ## Exploring results
 Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored and interpreted. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised:
 
-```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 9.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
-library(leaflet)
-library(plyr)
-
+```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 9.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 clust_sub <- join(members_sub[c("SSN", "NEW_CLUSTER")],
                   props, by = "SSN") 
 
@@ -436,3 +444,165 @@ names(cluster_xrpd)[i] <- paste0("Cluster.", i)
 #Plot cluster 9
 plot(as_multi_xy(cluster_xrpd$Cluster.9), wavelength = "Cu", normalise = TRUE)
 ```
+
+Given that the soil mineral composition ultimately governs the total concentrations of nutrients and their phyto-availability, there nine mineralogically different clusters should display contrasting geochemical properties. These geochemical properties are present in the `props` data already loaded, and the cluster factor can be added to these data:
+
+```{r, cache = TRUE, message = FALSE, warning = FALSE}
+#Join clust_sub to props
+props_sub <- join(clust_sub[c("SSN", "NEW_CLUSTER")],
+                  props,
+                  by = "SSN")
+
+#Rename the clusters to C1... C9
+props_sub$NEW_CLUSTER <- paste0("C", props_sub$NEW_CLUSTER)
+
+#Subset the data to the variables of interest
+total_nutrients <- subset(props_sub,
+                          select = c(NEW_CLUSTER,
+                                     TOC, K, Ca,
+                                     Mn, Fe, Ni,
+                                     Cu, Zn))
+```
+
+After which, the relative enrichments and deficiencies of each cluster for these total nutrient concentrations can be visualised using barplots:
+
+```{r, fig.cap = "Average total nutrient concentrations of each cluster expressed as deviation in log-ratio scale from the geometric mean. Values below zero represent average concentrations lower than that for the entire dataset, whilst values above zero represent the opposite.", out.width='100%', fig.align='center', fig.asp=0.75,cache = TRUE, message = FALSE, warning = FALSE}
+#Create geometric mean function
+gmean <- function(x) {exp(mean(log(x)))}
+
+#Compute overall geometric means for each nutrient (i.e. column)
+total_nutrients_gmeans <- apply(total_nutrients[-1], 2, gmean) 
+
+#Compute the geometric mean for each nutrient by cluster
+cluster_gmeans <- by(total_nutrients[-1],
+                     as.factor(total_nutrients$NEW_CLUSTER),
+                     function(x) apply(x, 2, gmean))
+
+#Bind the data by row
+cluster_gmeans <- do.call(rbind, cluster_gmeans)
+
+#Calculate log-ratios by dividing by the geometric mean
+#of each nutrient
+bp <- apply(cluster_gmeans,1,
+            function(x) log(x/total_nutrients_gmeans))
+
+
+#Use melt from the reshape2 package so that the data are
+#in the right format for ggplot2:
+bpm <- melt(bp)
+
+#Create a barplot using ggplot2
+g1 <- ggplot(bpm,
+             aes(fill=Var1, y=value, x=Var2)) +
+      geom_bar(position="dodge", stat="identity") +
+      theme(legend.title = element_blank()) +
+      xlab("Cluster") +
+      ylab("")
+
+#Make the barplot interactive
+ggplotly(g1)
+```
+
+The resulting barplot illustrates how the nine clusters defined by the XRPD data are characterised by contrasting geochemical compositions. Clusters 8 and 9 are by far the most deficient in all nutrients, whilst Clusters 1, 2 and 3 are enriched in all nutrients (with the exception of K in Cluster 1). Interestingly, soils in Cluster 6 have the highest concentrations of total K on average, but are generally deficient in other nutrients. The relationships between the geochemical compositions of each cluster and the mineralogy can be interpreted by quantifying the mean diffractogram of each cluster using the full pattern summation functions outlined in Chapter \@ref(quant):
+
+```{r, fig.cap = "The mean diffractogram of Cluster 9.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
+#Create a blank list to be populated
+xrpd_clusters <- list()
+
+#Calculate the mean diffractogram of each cluster
+for (i in 1:9) {
+  
+  #Extract the SSN for the cluster
+  ssns <- clust_sub$SSN[which(clust_sub$NEW_CLUSTER == i)]
+  
+  #Extract the aligned xrpd data and make sure it is a multiXY object
+  xrpd_clusters[[i]] <- as_multi_xy(xrpd_aligned[ssns])
+  
+  names(xrpd_clusters)[i] <- paste0("Cluster.", i)
+  
+  #Convert to a data frame
+  xrpd_clusters[[i]] <- multi_xy_to_df(xrpd_clusters[[i]],
+                                       tth = TRUE)
+  
+  #Calculate mean diffractogram
+  xrpd_clusters[[i]] <- as_xy(data.frame("tth" = xrpd_clusters[[i]]$tth,
+                                         "counts" = rowMeans(xrpd_clusters[[i]][-1])))
+  
+}
+
+#Plot the mean diffractogram of Cluster 9
+plot(xrpd_clusters$Cluster.9, wavelength = "Cu")
+```
+
+Now that the mean diffractogram of each cluster has been computed. The mineralogy of each diffractogram can be quantified [using `afps()`](#afps) using the`rockjock_afsis` library created above, yielding an approximate average of the mineral composition of each cluster:
+
+```{r, eval = FALSE, cache = TRUE, message = FALSE, warning = FALSE, results= 'hide'}
+#Define the names of the minerals to supply to afps
+usuals <- c("Quartz", "Kaolinite",
+            "Halloysite", "Dickite",
+            "Smectite (Di)", "Smectite (ML)",
+            "Illite", "Mica (Di)", "Muscovite",
+            "K-feldspar", "Plagioclase",
+            "Goethite", "Maghemite", "Ilmenite",
+            "Hematite", "Gibbsite", "Magnetite",
+            "Anatase", "Amphibole", "Pyroxene",
+            "Calcite", "Gypsum", "Organic matter",
+            "HUMIC_ACID", "FERRIHYDRITE_HUMBUG_CREEK",
+            "FERRIHYDRITE",
+            "BACK_POS")
+
+#Define the amorphous phases
+amorph <- c("ORGANIC_MATTER", "ORGANIC_AFSIS",
+            "HUMIC_ACID", "FERRIHYDRITE_HUMBUG_CREEK",
+            "FERRIHYDRITE")
+
+clusters_quant <- multi_fit <- lapply(xrpd_clusters, afps,
+                                      lib = rockjock_afsis,
+                                      std = "QUARTZ_1_AFSIS",
+                                      refs = usuals,
+                                      amorphous = amorph,
+                                      align = 0.2,
+                                      lod = 0.05,
+                                      amorphous_lod = 0,
+                                      force = "BACK_POS")
+
+#Load the regrouping structure the data
+rj_rg <- read.csv("data/rockjock_phases_regroup.csv")
+afsis_rg <- read.csv("data/afsis_phases_regroup.csv")
+
+#lapply the regrouping structure
+clusters_quant_rg <- lapply(clusters_quant,
+                            regroup,
+                            y = rbind(rj_rg,afsis_rg))
+
+#Extract the quantitative data
+quant_table <- summarise_mineralogy(clusters_quant_rg,
+                                    type = "grouped",
+                                    order = TRUE)
+
+#Reduce to the 10 most common phases for a barplot
+quant_table <- quant_table[1:11]
+```
+
+The resulting quantification can then be plotted:
+
+```{r, eval = FALSE, fig.cap = "Mineral compositions of the nine clusters based on the mean diffractogram", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE, results= 'hide'}
+#Rename clusters C1 to C9
+rownames(quant_table) <- paste0("C", rownames(quant_table))
+
+#Use melt from the reshape2 package so that the data are
+#in the right format for ggplot2:
+quant_table_m <- melt(quant_table)
+
+#Create a barplot using ggplot2
+g2 <- ggplot(quant_table_m,
+             aes(fill=Var1, y=value, x=Var2)) +
+      geom_bar(position="dodge", stat="identity") +
+      theme(legend.title = element_blank()) +
+      xlab("Cluster") +
+      ylab("")
+
+#Make the barplot interactive
+ggplotly(g2)
+```
+

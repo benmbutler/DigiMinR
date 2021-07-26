@@ -7,7 +7,7 @@ The examples presented herein for the use of Cubist will use data from @Butler20
 ```{r, echo=FALSE, cache = TRUE}
 if (knitr:::is_html_output())
 {
-  download_link(
+  downloadthis::download_link(
   link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/9b742b95-c071-4e3a-a227-939efa034ac7/file_downloaded",
   button_label = "Download soil property csv",
   button_type = "danger",
@@ -21,7 +21,7 @@ if (knitr:::is_html_output())
 ```{r, echo=FALSE, cache = TRUE}
 if (knitr:::is_html_output())
 {
-  download_link(
+  downloadthis::download_link(
   link = "https://data.mendeley.com/public-files/datasets/r6g94fgx55/files/ef33d276-e39c-4b64-b9aa-f2d1d69c51b3/file_downloaded",
   button_label = "Download zipped XRPD data",
   button_type = "danger",

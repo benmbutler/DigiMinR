@@ -24,17 +24,17 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-07-08" />
+<meta name="date" content="2021-07-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="cluster-analysis.html"/>
+<link rel="prev" href="mars.html"/>
 
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -62,6 +62,12 @@
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/plotly-binding-4.9.4.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -189,7 +195,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#plotting-xy-objects"><i class="fa fa-check"></i><b>1.3.1</b> Plotting <code>XY</code> objects</a></li>
 <li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#plotting-multixy-objects"><i class="fa fa-check"></i><b>1.3.2</b> Plotting <code>multiXY</code> objects</a></li>
-<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#manipulating-data"><i class="fa fa-check"></i><b>1.4</b> Manipulating XRPD data</a>
 <ul>
@@ -198,8 +204,8 @@ div.csl-indent {
 <li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#interpolation"><i class="fa fa-check"></i><b>1.4.3</b> Interpolation</a></li>
 <li class="chapter" data-level="1.4.4" data-path="intro.html"><a href="intro.html#alignment"><i class="fa fa-check"></i><b>1.4.4</b> Alignment</a></li>
 <li class="chapter" data-level="1.4.5" data-path="intro.html"><a href="intro.html#background"><i class="fa fa-check"></i><b>1.4.5</b> Background fitting</a></li>
-<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to data frames</a></li>
-<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> <span class="math inline">\(2\theta\)</span> transformation</a></li>
+<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to and from data frames</a></li>
+<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> 2θ transformation</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="quant.html"><a href="quant.html"><i class="fa fa-check"></i><b>2</b> Quantitative phase analysis</a>
@@ -241,7 +247,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
+<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-packages-and-data"><i class="fa fa-check"></i><b>4.1</b> Loading packages and data</a></li>
 <li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#interpreting-pricipal-components"><i class="fa fa-check"></i><b>4.2.1</b> Interpreting pricipal components</a></li>
@@ -252,6 +258,15 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#subsetting-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Subsetting Clusters</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="cluster-analysis.html"><a href="cluster-analysis.html#exploring-results"><i class="fa fa-check"></i><b>4.4</b> Exploring results</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mars.html"><a href="mars.html"><i class="fa fa-check"></i><b>5</b> From Mars to Mull: Interplanetary comparison of soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="mars.html"><a href="mars.html#data"><i class="fa fa-check"></i><b>5.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="mars.html"><a href="mars.html#mars-science-laboratory-xrpd-data"><i class="fa fa-check"></i><b>5.1.1</b> Mars Science Laboratory XRPD Data</a></li>
+<li class="chapter" data-level="5.1.2" data-path="mars.html"><a href="mars.html#scottish-soil-xrpd-data"><i class="fa fa-check"></i><b>5.1.2</b> Scottish Soil XRPD data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="mars.html"><a href="mars.html#data-manipulation"><i class="fa fa-check"></i><b>5.2</b> Data manipulation</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -279,6 +294,15 @@ div.csl-indent {
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div class="csl-entry">
+Bish, David L, DF Blake, DT Vaniman, SJ Chipera, RV Morris, DW Ming, AH Treiman, et al. 2013. <span>“<span class="nocase">X-ray diffraction results from Mars Science Laboratory: Mineralogy of Rocknest at Gale crater</span>.”</span> <em>Science</em> 341 (6153). <a href="https://doi.org/10.1126/science.1238932">https://doi.org/10.1126/science.1238932</a>.
+</div>
+<div class="csl-entry">
+Bristow, Thomas F, David L Bish, David T Vaniman, Richard V Morris, David F Blake, John P Grotzinger, Elizabeth B Rampe, et al. 2015. <span>“<span class="nocase">The origin and implications of clay minerals from Yellowknife Bay, Gale crater, Mars</span>.”</span> <em>American Mineralogist</em> 100 (4): 824–36. <a href="https://doi.org/10.2138/am-2015-5077CCBYNCND">https://doi.org/10.2138/am-2015-5077CCBYNCND</a>.
+</div>
+<div class="csl-entry">
+Bristow, Thomas F, Elizabeth B Rampe, Cherie N Achilles, David F Blake, Steve J Chipera, Patricia Craig, Joy A Crisp, et al. 2018. <span>“<span class="nocase">Clay mineral diversity and abundance in sedimentary rocks of Gale crater, Mars</span>.”</span> <em>Science Advances</em> 4 (6): eaar3330. <a href="https://doi.org/10.1126/sciadv.aar3330">https://doi.org/10.1126/sciadv.aar3330</a>.
+</div>
+<div class="csl-entry">
 Butler, Benjamin M, and Stephen Hillier. 2021a. <span>“<span>AUTOMATED FULL-PATTERN SUMMATION OF X-RAY POWDER DIFFRACTION DATA FOR HIGH-THROUGHPUT QUANTIFICATION OF CLAY-BEARING MIXTURES</span>.”</span> <em>Clays and Clay Minerals</em>. <a href="https://doi.org/10.1007/s42860-020-00105-6">https://doi.org/10.1007/s42860-020-00105-6</a>.
 </div>
 <div class="csl-entry">
@@ -300,6 +324,9 @@ Cheng, Joe, Bhaskar Karambelkar, and Yihui Xie. 2021. <em>Leaflet: Create Intera
 Eberl, D. D. 2003. <span>“<span class="nocase">User’s guide to ROCKJOCK - A program for determining quantitative mineralogy from powder X-ray diffraction data</span>.”</span> Boulder, CA: USGS.
 </div>
 <div class="csl-entry">
+Grotzinger, John P, Do Y Sumner, LC Kah, K Stack, S Gupta, L Edgar, D Rubin, et al. 2014. <span>“<span class="nocase">A habitable fluvio-lacustrine environment at Yellowknife Bay, Gale Crater, Mars</span>.”</span> <em>Science</em> 343 (6169). <a href="https://doi.org/10.1126/science.1242777">https://doi.org/10.1126/science.1242777</a>.
+</div>
+<div class="csl-entry">
 Jolliffe, IT. 1986. <span>“Principal Component Analysis. Series: Springer Series in Statistics.”</span> Springer, NY.
 </div>
 <div class="csl-entry">
@@ -315,13 +342,22 @@ Kuhn, Max, and Ross Quinlan. 2021. <em>Cubist: Rule- and Instance-Based Regressi
 Liland, Kristian Hovde, Trygve Almøy, and Bjørn-Helge Mevik. 2010. <span>“Optimal Choice of Baseline Correction for Multivariate Calibration of Spectra.”</span> <em>Applied Spectroscopy</em> 64: 1007–16. <a href="https://doi.org/10.1366/000370210792434350">https://doi.org/10.1366/000370210792434350</a>.
 </div>
 <div class="csl-entry">
+Marlow, Jeffrey J, Zita Martins, and Mark A Sephton. 2008. <span>“Mars on Earth: Soil Analogues for Future Mars Missions.”</span> <em>Astronomy &amp; Geophysics</em> 49 (2): 2–20. <a href="https://doi.org/10.1111/j.1468-4004.2008.49220.x">https://doi.org/10.1111/j.1468-4004.2008.49220.x</a>.
+</div>
+<div class="csl-entry">
 Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedrich Leisch. 2021. <em>E1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien</em>. <a href="https://CRAN.R-project.org/package=e1071">https://CRAN.R-project.org/package=e1071</a>.
 </div>
 <div class="csl-entry">
 Quinlan, John R. 1992. <span>“Learning with Continuous Classes.”</span> In <em>5th Australian Joint Conference on Artificial Intelligence</em>, 92:343–48. World Scientific.
 </div>
 <div class="csl-entry">
-Rossel, RA Viscarra, T Behrens, E Ben-Dor, DJ Brown, JAM Demattê, Keith D Shepherd, Z Shi, et al. 2016. <span>“A Global Spectral Library to Characterize the World’s Soil.”</span> <em>Earth-Science Reviews</em> 155: 198–230.
+Rossel, RA Viscarra, T Behrens, E Ben-Dor, DJ Brown, JAM Demattê, Keith D Shepherd, Z Shi, et al. 2016. <span>“A Global Spectral Library to Characterize the World’s Soil.”</span> <em>Earth-Science Reviews</em> 155: 198–230. <a href="https://doi.org/10.1016/j.earscirev.2016.01.012">https://doi.org/10.1016/j.earscirev.2016.01.012</a>.
+</div>
+<div class="csl-entry">
+Vaniman, D. 2012. <span>“Mars Science Laboratory Chemistry &amp; Mineralogy RDR Data V1.0, MSL-m-CHEMIN-4-RDR-V1.0.”</span> <em>NASA Planetary Data System</em>.
+</div>
+<div class="csl-entry">
+Vaniman, D, DL Bish, DW Ming, TF Bristow, RV Morris, DF Blake, SJ Chipera, et al. 2014. <span>“<span class="nocase">Mineralogy of a mudstone at Yellowknife Bay, Gale crater, Mars</span>.”</span> <em>Science</em> 343 (6169). <a href="https://doi.org/10.1126/science.1243480 ">https://doi.org/10.1126/science.1243480</a>.
 </div>
 </div>
 </div>
@@ -330,7 +366,7 @@ Rossel, RA Viscarra, T Behrens, E Ben-Dor, DJ Brown, JAM Demattê, Keith D Sheph
           </div>
         </div>
       </div>
-<a href="cluster-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mars.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

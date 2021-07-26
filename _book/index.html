@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-07-08" />
+<meta name="date" content="2021-07-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,7 +34,7 @@
 
 <link rel="next" href="intro.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.5.1/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -62,6 +62,12 @@
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/plotly-binding-4.9.4.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -189,7 +195,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#plotting-xy-objects"><i class="fa fa-check"></i><b>1.3.1</b> Plotting <code>XY</code> objects</a></li>
 <li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#plotting-multixy-objects"><i class="fa fa-check"></i><b>1.3.2</b> Plotting <code>multiXY</code> objects</a></li>
-<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <code>ggplot2</code></a></li>
+<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#manipulating-data"><i class="fa fa-check"></i><b>1.4</b> Manipulating XRPD data</a>
 <ul>
@@ -198,8 +204,8 @@ div.csl-indent {
 <li class="chapter" data-level="1.4.3" data-path="intro.html"><a href="intro.html#interpolation"><i class="fa fa-check"></i><b>1.4.3</b> Interpolation</a></li>
 <li class="chapter" data-level="1.4.4" data-path="intro.html"><a href="intro.html#alignment"><i class="fa fa-check"></i><b>1.4.4</b> Alignment</a></li>
 <li class="chapter" data-level="1.4.5" data-path="intro.html"><a href="intro.html#background"><i class="fa fa-check"></i><b>1.4.5</b> Background fitting</a></li>
-<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to data frames</a></li>
-<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> <span class="math inline">\(2\theta\)</span> transformation</a></li>
+<li class="chapter" data-level="1.4.6" data-path="intro.html"><a href="intro.html#to-data-frame"><i class="fa fa-check"></i><b>1.4.6</b> Converting to and from data frames</a></li>
+<li class="chapter" data-level="1.4.7" data-path="intro.html"><a href="intro.html#two-theta-transform"><i class="fa fa-check"></i><b>1.4.7</b> 2θ transformation</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="quant.html"><a href="quant.html"><i class="fa fa-check"></i><b>2</b> Quantitative phase analysis</a>
@@ -241,7 +247,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-data-2"><i class="fa fa-check"></i><b>4.1</b> Loading data</a></li>
+<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-packages-and-data"><i class="fa fa-check"></i><b>4.1</b> Loading packages and data</a></li>
 <li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#interpreting-pricipal-components"><i class="fa fa-check"></i><b>4.2.1</b> Interpreting pricipal components</a></li>
@@ -252,6 +258,15 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#subsetting-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Subsetting Clusters</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="cluster-analysis.html"><a href="cluster-analysis.html#exploring-results"><i class="fa fa-check"></i><b>4.4</b> Exploring results</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="mars.html"><a href="mars.html"><i class="fa fa-check"></i><b>5</b> From Mars to Mull: Interplanetary comparison of soil XRPD data</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="mars.html"><a href="mars.html#data"><i class="fa fa-check"></i><b>5.1</b> Data</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="mars.html"><a href="mars.html#mars-science-laboratory-xrpd-data"><i class="fa fa-check"></i><b>5.1.1</b> Mars Science Laboratory XRPD Data</a></li>
+<li class="chapter" data-level="5.1.2" data-path="mars.html"><a href="mars.html#scottish-soil-xrpd-data"><i class="fa fa-check"></i><b>5.1.2</b> Scottish Soil XRPD data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="mars.html"><a href="mars.html#data-manipulation"><i class="fa fa-check"></i><b>5.2</b> Data manipulation</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -277,7 +292,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Digital Soil Mineralogy with R</h1>
 <p class="author"><em>Benjamin Butler and Steve Hillier</em></p>
-<p class="date" style="margin-top: 1.5em;"><em>2021-07-08</em></p>
+<p class="date" style="margin-top: 1.5em;"><em>2021-07-26</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered">
 <h1>Preface</h1>
@@ -307,7 +322,7 @@ div.csl-indent {
 <li>Chapter <a href="quant.html#quant">2</a>: Quantitative analysis of XRPD data using full pattern summation</li>
 <li>Chapter <a href="machine-learning.html#machine-learning">3</a>: The use of machine learning to predict and interpret soil properties from XRPD data</li>
 <li>Chapter <a href="cluster-analysis.html#cluster-analysis">4</a>: The application of cluster analysis to identify discrete groups of soils based on mineralogy</li>
-<li>Chapter 5: Identifying soils analogues for Martian mineralogy based on XRPD data</li>
+<li>Chapter @ref{mars}: Identifying soils analogues for Martian mineralogy based on XRPD data</li>
 </ul>
 <p>Each chapter contains reproducible R code along with written explanations and video tutorials. With exception to Chapter <a href="intro.html#intro">1</a>, all chapters are standalone so there is no need to read everything!</p>
 </div>
