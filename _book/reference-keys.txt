@@ -108,3 +108,12 @@ data
 mars-science-laboratory-xrpd-data
 scottish-soil-xrpd-data
 data-manipulation
+fig:unnamed-chunk-9
+fig:unnamed-chunk-10
+fig:unnamed-chunk-11
+fig:unnamed-chunk-12
+fig:unnamed-chunk-13
+fig:unnamed-chunk-14
+fig:unnamed-chunk-15
+ggplot2-intro
+loading-packages-and-data-1

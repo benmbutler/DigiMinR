@@ -144,6 +144,9 @@ This strong peak is associated with quartz, which is omnipresent in soil dataset
 
 
 ## Data pre-treatment {#cubist-pretreatment}
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/__8IWU7Um5s" frameborder="0" allowfullscreen></iframe></p>
+
 Prior to applying Cubist to the XRPD data, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities.
 
 ### Alignment {-}
@@ -225,6 +228,9 @@ selection <- sample(1:nrow(props),
 ```
 
 ## Using Cubist
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/Y9TOveVOUxQ" frameborder="0" allowfullscreen></iframe></p>
+
 Here Cubist will be applied to the XRPD data in order to predict and interpret total K concentrations. Underpinning this approach is the principle that a soil diffractogram represents a reproducible signature of that soil's mineral composition, and the mineral composition is a key controller of total K concentrations. The code can be readily adapted to any of the other properties within the data, or to your own soil XRPD data and associated properties.
 
 To run Cubist the XRPD data need to be supplied in dataframe format, with each row of the dataframe representing a sample. The XRPD data can easily be converted to a dataframe using the `multi_xy_to_df` function [outlined above](#to-data-frame):
@@ -275,6 +281,9 @@ cor(log(props$K[-selection]), log(predict_K))^2
 The Cubist model for K prediction therefore results in a relatively accurate prediction of K, with an $R^2$ of ~0.9. This indicates that Cubist is able to extract appropriate variables from the XRPD data and use them to predict chemical soil properties.
 
 ## Inspection of Cubist models
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/FR_1y4W6cTk" frameborder="0" allowfullscreen></iframe></p>
+
 The variables that Cubist selects can be plotted in order to decipher the mineral contributions to a given soil property:
 
 ```{r feature-plot, fig.cap = "Features selected by Cubist for the prediction of K. Grey sticks denote the fraction of variable use in the regression models and black sticks denote the fraction of variable use in decision. Red line is the mean diffractogram for the dataset.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
