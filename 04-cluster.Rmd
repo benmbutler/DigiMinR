@@ -31,14 +31,14 @@ if (knitr:::is_html_output())
 ```
 
 ## Loading packages and data
-This chapter will use a number of packages that should already be installed on your machine, but will also use the **reshape2**, **e1071** and **leaflet** packages that may need to be installed if you have not used them before:
+This chapter will use a number of packages that should already be installed on your machine, but will also use the **reshape2** and **e1071**packages that may need to be installed if you have not used them before:
 
 ```{r, eval = FALSE}
-#install reshape2
-install.packages(c("reshape2", "e1071", "leaflet"))
+#install packages that haven't been used in the course before
+install.packages(c("reshape2", "e1071"))
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 #load the relevant packages
 library(reshape2)
 library(e1071)
@@ -51,7 +51,7 @@ library(leaflet)
 library(plyr)
 ```
 
-Once you have loaded the packages and downloaded the data required for this chapter, the data can be loaded into R by modifying the paths in the following code:
+Once you have loaded the packages and downloaded the data required for this chapter (note that it is the same data as that used in Chapter \@ref(machine-learning)), the data can be loaded into R by modifying the paths in the following code:
 
 ```{r, eval=FALSE}
 #Load the soil property data
@@ -64,14 +64,22 @@ xrpd_paths <-  dir("path/to/xrd", full.names = TRUE)
 
 #Load the data
 xrpd <- read_xy(files = xrpd_paths)
+
+#Make sure the data are interpolated onto the same 2theta scale
+#as there are small differences within the dataset
+xrpd <- interpolate(xrpd, new_tth = xrpd$icr030336$tth)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#This will run in the background because echo = FALSE
+
 #Load the soil property data
 props <- read.csv(file = "data/clusters_and_properties.csv")
 
-#Get the full file paths
-load("data/xrpd.Rdata")
+load("data/afsis_xrpd_df.Rdata")
+
+#Convert it back to a multiXY list
+xrpd <- as_multi_xy(xrpd)
 ```
 
 ## Principal component analysis {#clustering-pca}
@@ -536,7 +544,7 @@ plot(xrpd_clusters$Cluster.9, wavelength = "Cu")
 
 Now that the mean diffractogram of each cluster has been computed. The mineralogy of each diffractogram can be quantified [using `afps()`](#afps) using the`rockjock_afsis` library created above, yielding an approximate average of the mineral composition of each cluster:
 
-```{r, eval = FALSE, cache = TRUE, message = FALSE, warning = FALSE, results= 'hide'}
+```{r, cache = TRUE, message = FALSE, warning = FALSE, results= 'hide'}
 #Define the names of the minerals to supply to afps
 usuals <- c("Quartz", "Kaolinite",
             "Halloysite", "Dickite",
@@ -566,14 +574,15 @@ clusters_quant <- multi_fit <- lapply(xrpd_clusters, afps,
                                       amorphous_lod = 0,
                                       force = "BACK_POS")
 
-#Load the regrouping structure the data
-rj_rg <- read.csv("data/rockjock_phases_regroup.csv")
-afsis_rg <- read.csv("data/afsis_phases_regroup.csv")
+#Load the regrouping structures for rockjock and afsis
+data(rockjock_regroup)
+data(afsis_regroup)
 
 #lapply the regrouping structure
 clusters_quant_rg <- lapply(clusters_quant,
                             regroup,
-                            y = rbind(rj_rg,afsis_rg))
+                            y = rbind(rockjock_regroup[1:2],
+                                      afsis_regroup[1:2]))
 
 #Extract the quantitative data
 quant_table <- summarise_mineralogy(clusters_quant_rg,
@@ -581,22 +590,22 @@ quant_table <- summarise_mineralogy(clusters_quant_rg,
                                     order = TRUE)
 
 #Reduce to the 10 most common phases for a barplot
-quant_table <- quant_table[1:11]
+quant_table <- quant_table[2:11]
 ```
 
 The resulting quantification can then be plotted:
 
-```{r, eval = FALSE, fig.cap = "Mineral compositions of the nine clusters based on the mean diffractogram", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE, results= 'hide'}
+```{r, fig.cap = "Mineral compositions of the nine clusters based on the mean diffractogram", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
 #Rename clusters C1 to C9
 rownames(quant_table) <- paste0("C", rownames(quant_table))
 
 #Use melt from the reshape2 package so that the data are
 #in the right format for ggplot2:
-quant_table_m <- melt(quant_table)
+quant_table_m <- melt(as.matrix(quant_table))
 
 #Create a barplot using ggplot2
 g2 <- ggplot(quant_table_m,
-             aes(fill=Var1, y=value, x=Var2)) +
+             aes(fill=Var2, y=value, x=Var1)) +
       geom_bar(position="dodge", stat="identity") +
       theme(legend.title = element_blank()) +
       xlab("Cluster") +

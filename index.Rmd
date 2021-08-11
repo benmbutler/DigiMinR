@@ -54,9 +54,9 @@ This document is divided into chapters that each detail specific aspects of Digi
 * Chapter \@ref(quant): Quantitative analysis of XRPD data using full pattern summation
 * Chapter \@ref(machine-learning): The use of machine learning to predict and interpret soil properties from XRPD data
 * Chapter \@ref(cluster-analysis): The application of cluster analysis to identify discrete groups of soils based on mineralogy
-* Chapter \@ref{mars}: Identifying soils analogues for Martian mineralogy based on XRPD data
+* Chapter \@ref(mars): Identifying soils analogues for Martian mineralogy based on XRPD data
 
-Each chapter contains reproducible R code along with written explanations and video tutorials. With exception to Chapter \@ref(intro), all chapters are standalone so there is no need to read everything!
+Each chapter contains reproducible R code along with written explanations. For those that prefer video tutorials, there are a number of embedded YouTube videos throughout the course material that describe and explain the R code. With exception to Chapter \@ref(intro), all chapters are standalone so there is no need to read everything!
 
 ## About the authors {-}
 * [**Benjamin Butler**](https://www.hutton.ac.uk/staff/benjamin-butler) is a Digital Mineralogist at the James Hutton Institute, Aberdeen, UK. His interests centre around the use of XRPD to characterise the mineral composition of environmental mixtures such as soils, construction and demolition waste, and sea ice. As an active R user he has authored the `powdR` package that provides a range of methods for quantitative analysis of XRPD data using full pattern summation. Aside from dealing with data, he is involved in regular soil surveys on forestry land across Scotland, allowing him to observe soils from the digging to the databases.

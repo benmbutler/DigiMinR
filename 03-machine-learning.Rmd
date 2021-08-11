@@ -32,12 +32,29 @@ if (knitr:::is_html_output())
 }
 ```
 
-## Loading data
-Once you have downloaded the data required for this chapter, it can be loaded into R by modifying the paths in the following code:
+## Loading packages and data
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/BTZv9QE1n94" frameborder="0" allowfullscreen></iframe></p>
+
+This chapter will use a number of packages that should already be installed on your machine, but will also use the **leaflet** and **Cubist** packages that may need to be installed if you have not used them before:
+
+```{r, eval = FALSE}
+#install packages that haven't been used on this course so far
+install.packages(c("leaflet" and "Cubist"))
+```
+
+```{r, message = FALSE, warning = FALSE}
+#load the relevant packages
+library(powdR)
+library(leaflet)
+library(ggplot2)
+library(Cubist)
+library(plotly)
+```
+
+Once you have loaded the packages and downloaded the data required for this chapter, the data can be loaded into R by modifying the paths in the following code:
 
 ```{r, eval=FALSE}
-library(powdR)
-
 #Load the soil property data
 props <- read.csv(file = "path/to/your/file/clusters_and_properties.csv")
 
@@ -48,19 +65,26 @@ xrpd_paths <-  dir("path/to/xrd", full.names = TRUE)
 
 #Load the data
 xrpd <- read_xy(files = xrpd_paths)
+
+#Make sure the data are interpolated onto the same 2theta scale
+#as there are small differences within the dataset
+xrpd <- interpolate(xrpd, new_tth = xrpd$icr030336$tth)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(powdR)
+#This will run in the background because echo = FALSE
 
 #Load the soil property data
 props <- read.csv(file = "data/clusters_and_properties.csv")
 
-load("data/xrpd.Rdata")
+load("data/afsis_xrpd_df.Rdata")
+
+#Convert it back to a multiXY list
+xrpd <- as_multi_xy(xrpd)
 ```
 
 ## Data exploration {#cubist-exploration}
-The data represent 935 sub-soil samples from sub-Saharan Africa, sampled as part of the AfSIS Sentinel Site programme using the [Land Degradation Surveillance Framework](http://landscapeportal.org/blog/2015/03/25/the-land-degradation-surveillance-framework-ldsf/). A range of soil attributes and properties are provided in the `props` data, whilst each item within the `xrpd` data is an XY diffractogram of the soil. The names of `xrpd` data correspond to unique identifiers in the `props$SSN` column:
+The dataset used in this chapter is comprised 935 sub-soil samples from sub-Saharan Africa, sampled as part of the AfSIS Sentinel Site programme using the [Land Degradation Surveillance Framework](http://landscapeportal.org/blog/2015/03/25/the-land-degradation-surveillance-framework-ldsf/). A range of soil attributes and properties are provided in the `props` data, whilst each item within the `xrpd` data is an XY diffractogram of the soil. The names of `xrpd` data match the unique identifiers in the `props$SSN` column:
 
 ```{r, cache = TRUE}
 #Check that the names of the xrpd data match the SSN column in props
@@ -68,32 +92,32 @@ identical(names(xrpd), props$SSN)
 ```
 
 ### Spatial data
-The first 4 columns of the `props` data include the unique `SSN` identifier of each sample, the name of the Sentinel Site, and the sample location (Longitude and Latitude). Initial exploration of the spatial distribution of the dataset can be achieved using the `leaflet` package [@R-leaflet], which can be installed using `install.packages(leaflet)`. A detailed guide of how to use `leaflet` in R is beyond the scope of this documentation, but the code used below can be adapted to produce basic plots of geo-referenced point data. `Leaflet` maps are built up in layers similar to the principle of `ggplot2` figures, with each layer being separated by a `%>%`, which can be written in R using the Ctrl+Shift+M shortcut. 
+The first 4 columns of the `props` data include the unique `SSN` identifier of each sample, the name of the Sentinel Site, and the sample location (Longitude and Latitude). Initial exploration of the spatial distribution of the dataset can be achieved using the **leaflet** package [@R-leaflet]. A detailed guide of how to use **leaflet** in R is beyond the scope of this documentation, but the code used below can be adapted to produce basic plots of geo-referenced point data. **leaflet** maps are built up in layers similar to the principle of [**ggplot2** figures](#ggplot2-intro), with each layer being separated by a `%>%`, which can be written in R using the Ctrl+Shift+M shortcut. 
 
 ```{r, fig.cap = "Interactive map of the Sentinel Site data showing all 60 sites across sub-Saharan Africa.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
-library(leaflet)
-
 leaflet(props) %>% #create a leaflet object from props
   addTiles() %>% #add the default tiles for the map surface
   addCircleMarkers(~Longitude, ~Latitude)
 ```
 
-The first map above shows the 60 Sentinel Sites within the dataset that together reflect the various agro-ecological regions of sub-Saharan Africa. By zooming in ON one of the sentinel sites, it can be observed that it is comprised of a random grid of up to 16 samples within a 10 x 10 km area:
+The map resulting from the above code shows the 60 Sentinel Sites within the dataset that together account for many of the agro-ecological regions of sub-Saharan Africa. By zooming in on the Sentinel Sites individually, it can be observed that each is comprised of a random grid of up to 16 samples within a 10 x 10 km area [@Butler2020]:
 
-```{r, fig.cap = "Interactive map of the Sentinel Site data showing all one of the sites and the sixteen sampling locations within it.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
-library(leaflet)
-
+```{r, fig.cap = "Interactive map of the Bana Sentinel Site showing the sixteen sampling locations within the 10 x 10 km grid.", out.width='100%', message=FALSE, warning=FALSE, cache = TRUE}
 leaflet(props[props$Sentinel_site == "Bana",]) %>%
   addTiles() %>% 
   addCircleMarkers(~Longitude, ~Latitude)
 ```
 
 ### Geochemical data
-The `props` data contains a wide range of geochemical variables including pH, total organic carbon (TOC), total element concentrations (columns 9 to 15) and Mehlich-3 extractable element concentrations (columns 16 to 23). The example provided in this chapter will focus on total concentrations of K, determined using X-ray Fluorescence [@Butler2020], but the code can be easily adjusted and used for any other soil property within the dataset.
+The `props` data contains a wide range of geochemical variables including pH, total organic carbon (TOC), total element concentrations (columns 9 to 15) and Mehlich-3 extractable element concentrations (columns 16 to 23). The examples provided in this chapter will focus on total concentrations of K, determined using X-ray Fluorescence [@Butler2020], but the code can be easily adjusted for any other soil property within the dataset.
+
+Here the K concentration data will be summarised using the `summary()` function plotted as a histogram using **ggplot2**:
 
 ```{r, fig.cap = "Histogram of total K concentrations (log transformed)", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
-library(ggplot2)
+#summarise the K concentration data
+summary(props$K)
 
+#Produce a histrogram of the log transformed K data
 ggplot(data = props, aes(log(K))) +
   geom_histogram()
 ```
@@ -107,7 +131,7 @@ plot(as_multi_xy(xrpd[props$SSN[props$Sentinel_site == "Didy"]]),
      normalise = TRUE)
 ```
 
-Visualising the data in this way shows how the strongest peak in each diffractogram at the 'Didy' Sentinel Site occurs at approximately 26 $^\circ2\theta$. Further inspection of this peak shows how there are minor adjustments in alignment that will need to be applied to the data:
+Visualising the data in this way shows how the strongest peak in each diffractogram at the 'Didy' Sentinel Site occurs at approximately 26 $^\circ$2θ. Further inspection of this peak shows how there are minor adjustments in alignment that will need to be applied to the data:
 
 ```{r, fig.cap = "The major quartz peak of the diffractograms associated with the Didy site, highlighting small 2theta misalignments.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 plot(as_multi_xy(xrpd[props$Sentinel_site == "Didy"]),
@@ -120,10 +144,10 @@ This strong peak is associated with quartz, which is omnipresent in soil dataset
 
 
 ## Data pre-treatment {#cubist-pretreatment}
-Prior to applying Cubist to the XRPD data, it is important to apply corrections for sample-independent variation such as small $2\theta$ misalignments and/or fluctuations in count intensities.
+Prior to applying Cubist to the XRPD data, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities.
 
 ### Alignment {-}
-The small $2\theta$ misalignments identified [above](#cubist-exploration) can be corrected for using the [`align_xy()` function](#alignment) in `powdR`. Quartz is omnipresent within the dataset and therefore the samples can be aligned to a pure quartz pattern. A pure quartz pattern can be created from the `rockjock` library, and then used for sample alignment within a restricted $2\theta$ range.
+The small 2θ misalignments identified [above](#cubist-exploration) can be corrected for using the [`align_xy()` function](#alignment) in `powdR`. Quartz is omnipresent within the dataset and therefore the samples can be aligned to a pure quartz pattern. A pure quartz pattern can be created from the `rockjock` library, and then used for sample alignment within a restricted 2θ range.
 
 ```{r, fig.cap = "A pure quartz pattern extracted from the rockjock reference library.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Extract a quartz pattern from rockjock
@@ -149,19 +173,11 @@ plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
 Alignment of the data in this way is important because even seemingly small misalignments between peaks can hinder the comparison of XRPD data by multivariate methods, and hence reduce the effectiveness of the analysis [@Butler2019].
 
 ### Subsetting {-}
-In Figure \@ref(fig:didy-all-fig) it can be observed that below ~4 $^\circ2\theta$ there is a tall tail in count intensities. This tail can be removed by subsetting the data using the code [described above](#subsetting).
+In Figure \@ref(fig:didy-all-fig) it can be observed that below ~4 $^\circ$ 2θ there is a tall tail in count intensities. This tail can be removed by subsetting the data using the code [described above](#subsetting).
 
 ```{r, fig.cap = "Aligned diffractograms subset to remove data below 5 degrees 2theta.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
-subset_xrpd <- function (x, xmin, xmax) {
-  
-  x <- x[x[[1]] >= xmin & x[[1]] <= xmax, ]
-  
-  return(x)
-  
-}
-
-xrpd_pt <- lapply(xrpd_pt, subset_xrpd,
-               xmin = 5, xmax = 75)
+xrpd_pt <- lapply(xrpd_pt, subset,
+                  tth >= 5 & tth <= 75)
 
 plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
      wavelength = "Cu")
@@ -296,7 +312,7 @@ xlab("2theta") +
 theme_bw()
 ```
 
-Figure \@ref(fig:feature-plot) shows how the most important variables for prediction of K concentrations are found between 25 and 30 $^\circ2\theta$. To further aid with interpretation of such regions, these plots can be combined with data from [full pattern summation](#quant) so that the variables selected by Cubist can be attributed to specific minerals. For example:
+Figure \@ref(fig:feature-plot) shows how the most important variables for prediction of K concentrations are found between 25 and 30 $^\circ$2θ. To further aid with interpretation of such regions, these plots can be combined with data from [full pattern summation](#quant) so that the variables selected by Cubist can be attributed to specific minerals. For example:
 
 ```{r, warning=FALSE, cache = TRUE}
 f1 <- fps(lib = rockjock,
@@ -313,7 +329,7 @@ f1 <- fps(lib = rockjock,
           align = 0.2)
 ```
 
-yields a reasonable fit of the data, as can be inspected using `plot(f1, wavelength = "Cu", interactive = TRUE)`. To help identify what minerals the variables between 25 and 30 $^\circ2\theta$ are associated with, the results in `f1` can be combined with the results in `K_usage`:
+yields a reasonable fit of the data, as can be inspected using `plot(f1, wavelength = "Cu", interactive = TRUE)`. To help identify what minerals the variables between 25 and 30 $^\circ2$2θ are associated with, the results in `f1` can be combined with the results in `K_usage`:
 
 ```{r advanced-feature-plot, fig.cap = "Combining the results from full pattern summation with the features selected by Cubist for prediction of K concentrations.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Create a plot of the full pattern summation results

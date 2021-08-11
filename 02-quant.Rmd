@@ -14,6 +14,9 @@ Full pattern summation is particularly suitable for mixtures containing crystall
 ## Full pattern summation with `powdR`
 
 ### The `powdRlib` object {#powdRlib}
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen></iframe></p>
+
 A key component of the full pattern summation functions within `powdR` is the library of reference patterns. These are stored within a `powdRlib` object created from two basic components using the `powdRlib()` constructor function. The first component, specified via the `xrd_table` argument of `powdRlib()`, is a data frame of the count intensities of the reference patterns, with their 2$\theta$ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the `minerals_xrd` data:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
@@ -98,10 +101,7 @@ data(minerals)
 #Check the number of reference patterns
 nrow(minerals$phases)
 
-#Load the rockjock library
-data(rockjock)
-
-#Check the number of reference patterns
+#Check the number of reference patterns in rockjock
 nrow(rockjock$phases)
 
 #interpolate minerals library onto same 2theta as rockjock
@@ -127,6 +127,9 @@ rockjock_afsis <- merge(rockjock, afsis)
 ```
 
 ### Full pattern summation with `fps()`
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen></iframe></p>
+
 Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R](#loading-data), you have everything needed for quantitative analysis via full pattern summation.  Full pattern summation in `powdR` is provided via the `fps()` function, whilst an automated version is provided in [`afps()`](#afps). Details of the equations and routines implemented in `fps()` and `afps()` are provided in @Butler2021rc and @Butler2021powdR. 
 
 `fps()` is specifically applied to `powdRlib` objects, and accepts a wide range of arguments that are detailed in the package documentation (see `?fps.powdRlib`). Here the [`rockjock` and `rockjock_mixtures` data](#rockjock) will be used to demonstrate the main features of `fps()` and the various ways in which it can be used.
@@ -265,6 +268,9 @@ fit4$phases
 ```
 
 ### Automated full pattern summation {#afps}
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/B7W5zXnlrGU" frameborder="0" allowfullscreen></iframe></p>
+
 The selection of suitable reference patterns for full pattern summation can often be challenging and time consuming. An attempt to automate this process is provided in the `afps()` function, which can select appropriate reference patterns from a reference library and subsequently exclude reference patterns based on limit of detection estimates. Such an approach is considered particularly advantageous when quantifying high-throughput XRPD datasets that display considerable mineralogical variation such as the [Reynolds Cup](https://www.clays.org/reynolds/). Detailed accounts of the `afps()` function are provided in @Butler2021rc and @Butler2021powdR.
 
 All of the principles and arguments outlined above for the `fps()` function apply to the use of `afps()`. When using `afps()`, there are a few additional arguments that need to be defined:
@@ -279,10 +285,10 @@ Here the `rockjock` library, containing 169 reference patterns, will be used to 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 #Produce the fit
 a_fit1 <- afps(lib = rockjock,
-             smpl = rockjock_mixtures$Mix1,
-             std = "CORUNDUM",
-             align = 0.3,
-             lod = 1)
+               smpl = rockjock_mixtures$Mix1,
+               std = "CORUNDUM",
+               align = 0.3,
+               lod = 1)
 ```
 
 Once computed, the `afps` function produces a `powdRafps` object, which is a bundle of data in list format that contains the outputs (see `?afps.powdRlib`). When large libraries such a `rockjock` are used to quantify a given sample, the resulting output is likely contain several different reference patterns for a given mineral, for example:
@@ -291,7 +297,7 @@ Once computed, the `afps` function produces a `powdRafps` object, which is a bun
 table(a_fit1$phases$phase_name)
 ```
 
-Illustrates that the resulting output contains 2 reference patterns for both illite and Smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by `afps()`. This information is grouped together and summed in the `phases_grouped` data frame within the `powdRafps` object:
+Illustrates that the resulting output contains 2 reference patterns for both illite and smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by `afps()`. This information is grouped together and summed in the `phases_grouped` data frame within the `powdRafps` object:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 a_fit1$phases_grouped
@@ -310,39 +316,28 @@ This shifting process is designed to correct for small linear differences in the
 Occasionally it can be useful to apply a different grouping structure to the phases quantified within a `powdRfps` or `powdRafps` object. This can be achieved using the `regroup` function (see `?regroup.powdRfps` and `?regroup.powdRafps`):
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
-#View the phases of the a_fit1 output
-a_fit1$phases
+#Load the rockjock regrouping structure
+data(rockjock_regroup)
 
-#Extract the phase IDs for the regrouping structure
-rg_id <- a_fit1$phases$phase_id
+#Check the first 6 rows of the data
+head(rockjock_regroup)
 
-#Create a new grouping structure for those IDs
-rg_name <- c("Non-clay", #CORUNDUM
-              "Background", #BACK_NEG
-              "Non-clay", #ORDERED_MICROCLINE
-              "Non-clay", #ANDESINE
-              "Non-clay", #LABRADORITE
-              "Non-clay", #BYTOWNITE
-              "Clay", #ORD_KAOLINITE
-              "Clay", #CA_MONTMORILLONITE
-              "Clay", #ILLITE_1M_RM30
-              "Clay", #MONTMORILLONITE_WYO
-              "Clay" #ILLITE_R0_5_PERCENT_I
-              )
+#Regroup the data in a_fit1 using the coarsest resolution
+#(i.e. select columns 1 and 3 from the data)
+a_fit1_rg <- regroup(a_fit1, rockjock_regroup[c(1,3)])
 
-#Create a data frame from that structure
-rg_str <- data.frame("phase_id" = rg_id,
-                     "phase_name" = rg_name)
+#Check the changes made to the data
+a_fit1_rg$phases
 
-#Regroup the data in a_fit1
-a_fit1_rg <- regroup(a_fit1, rg_str)
-
-#Check the regrouped data
+#Check the new grouped data
 a_fit1_rg$phases_grouped
 ```
 
 
 ## Plotting `powdRfps` and `powdRafps` objects
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/XEw-KHov2mI" frameborder="0" allowfullscreen></iframe></p>
+
 Plotting results `powdRfps` and `powdRafps` objects, derived from `fps()` and `afps()`, respectively, is achieved using `plot()` (see `?plot.powdRfps` and `?plot.powdRafps`).
 
 ```{r, fig.cap = "Example output from plotting a powdRfps or powdRafps object.", message = FALSE, warning = FALSE, fig.align='center', cache = TRUE}
@@ -377,6 +372,8 @@ plot(a_fit1, wavelength = "Cu",
 
 ## Quantifying multiple samples
 
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/baUcGgkdzZM" frameborder="0" allowfullscreen></iframe></p>
+
 ### `lapply()`
 The simplest way to quantify multiple samples via either `fps()` and `afps()` is by wrapping either of the functions in `lapply()` and supplying a list of diffractograms. The following example wraps the `fps()` function in `lapply` and applies the function to the first three items within the `rockjock_mixtures` data.
 
@@ -397,9 +394,8 @@ multi_fit <- lapply(rockjock_mixtures[1:3], fps,
 When using `lapply` in this way, the names of the items within the list or [`multiXY` object](#loading-data) supplied to the function are inherited by the output:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
-names(rockjock_mixtures[1:3])
-
-names(multi_fit)
+identical(names(rockjock_mixtures[1:3]),
+          names(multi_fit))
 ```
 
 ### Parallel processing
