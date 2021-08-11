@@ -17,7 +17,7 @@ Full pattern summation is particularly suitable for mixtures containing crystall
 
 <p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen></iframe></p>
 
-A key component of the full pattern summation functions within `powdR` is the library of reference patterns. These are stored within a `powdRlib` object created from two basic components using the `powdRlib()` constructor function. The first component, specified via the `xrd_table` argument of `powdRlib()`, is a data frame of the count intensities of the reference patterns, with their 2$\theta$ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the `minerals_xrd` data:
+A key component of the full pattern summation functions within `powdR` is the library of reference patterns. These are stored within a `powdRlib` object created from two basic components using the `powdRlib()` constructor function. The first component, specified via the `xrd_table` argument of `powdRlib()`, is a data frame of the count intensities of the reference patterns, with their 2θ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the `minerals_xrd` data:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 library(powdR)
@@ -35,7 +35,7 @@ data(minerals_phases)
 minerals_phases
 ```
 
-Crucially when building the `powdRlib` object, all phase ID's in the first column of the `phases_table` must match the column names of the `xrd_table` (excluding the name of the first column which is the 2$\theta$ axis), for example.
+Crucially when building the `powdRlib` object, all phase ID's in the first column of the `phases_table` must match the column names of the `xrd_table` (excluding the name of the first column which is the 2θ axis), for example.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 identical(names(minerals_xrd[-1]),
@@ -115,7 +115,7 @@ merged_lib <- merge(rockjock, minerals_i)
 nrow(merged_lib$phases)
 ```
 
-In simpler cases where two libraries are already on the same $2\theta$ axis and were measured using the same instrumental parameters, only the use of `merge()` would be required.
+In simpler cases where two libraries are already on the same 2θ axis and were measured using the same instrumental parameters, only the use of `merge()` would be required.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 #Load the afsis library
@@ -135,7 +135,7 @@ Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R
 `fps()` is specifically applied to `powdRlib` objects, and accepts a wide range of arguments that are detailed in the package documentation (see `?fps.powdRlib`). Here the [`rockjock` and `rockjock_mixtures` data](#rockjock) will be used to demonstrate the main features of `fps()` and the various ways in which it can be used.
 
 #### Full pattern summation **with** an internal standard
-Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the `std` and `std_conc` arguments of `fps()` can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the `rockjock_mixtures` data were prepared with 20 % corundum as the internal standard, thus this can be specified using `std = "CORUNDUM"` and `std_conc = 20` in the call to `fps()`. In addition, setting the `omit_std` argument to `TRUE` makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the `align` argument to ensure that the measured diffractogram is appropriately aligned on the $2\theta$ axis using the alignment approach outlined [above](#alignment). These principles are used in the example below, which passes the following seven arguments to `fps()`:
+Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the `std` and `std_conc` arguments of `fps()` can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the `rockjock_mixtures` data were prepared with 20 % corundum as the internal standard, thus this can be specified using `std = "CORUNDUM"` and `std_conc = 20` in the call to `fps()`. In addition, setting the `omit_std` argument to `TRUE` makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the `align` argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined [above](#alignment). These principles are used in the example below, which passes the following seven arguments to `fps()`:
 
 1. `lib` is used to define the [`powdRlib` object](#powdRlib) containing the reference patterns and their RIRs.
 2. `smpl` is used to defined the data frame or [`XY` object](#loading-data) containing the sample diffractogram.
@@ -143,7 +143,7 @@ Often samples are prepared for XRPD analysis with an internal standard of known 
 4. `std` is used to define the phase ID of the reference pattern to be used as the internal standard.
 5. `std_conc` is used to define the concentration of the internal standard in weight %.
 6. `omit_std` is used to define whether the internal standard is omitted from the output and phase concentrations recomputed accordingly.
-7. `align` is used to define the maximum positive or negative shift in $2\theta$ that is permitted during [alignment](#alignment) of the sample to the reference pattern that is specified in the `std` argument.
+7. `align` is used to define the maximum positive or negative shift in 2θ that is permitted during [alignment](#alignment) of the sample to the reference pattern that is specified in the `std` argument.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 data(rockjock_mixtures)
@@ -231,7 +231,7 @@ fit3 <- fps(lib = rockjock,
             align = 0.3)
 ```
 
-In this case the phase specified in the `std` argument is only used for $2\theta$ [alignment](#alignment), and is always included in the computed phase concentrations.
+In this case the phase specified in the `std` argument is only used for 2θ [alignment](#alignment), and is always included in the computed phase concentrations.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 fit3$phases
@@ -244,7 +244,7 @@ sum(fit3$phases$phase_percent)
 ```
 
 #### Full pattern summation with data harmonisation
-It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2$\theta$ range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), `fps()` contains a logical `harmonise` argument (default `= TRUE`). When the sample and library contain non-identical 2$\theta$ axes, `harmonise = TRUE` will convert the data onto the same axis by determining the overlapping 2$\theta$ range and interpolating to the coarsest resolution available.
+It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), `fps()` contains a logical `harmonise` argument (default `= TRUE`). When the sample and library contain non-identical 2θ axes, `harmonise = TRUE` will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 #Create a sample with a shorter 2theta axis than the library
@@ -308,7 +308,7 @@ Note that the "background" phase in the output is simply a horizontal line that 
 ### Additional `fps()` and `afps()` functionality
 
 #### Shifting of reference patterns
-Both `fps()` and `afps()` accept a `shift` argument, which when set to a value greater than zero results in optimisation of a small $2\theta$ shift for each reference pattern in order to improve the quality of the fit. The value supplied to the `shift` argument defines the maximum (either positive or negative) shift that can be applied to each reference pattern before the shift is reset to zero.
+Both `fps()` and `afps()` accept a `shift` argument, which when set to a value greater than zero results in optimisation of a small 2θ shift for each reference pattern in order to improve the quality of the fit. The value supplied to the `shift` argument defines the maximum (either positive or negative) shift that can be applied to each reference pattern before the shift is reset to zero.
 
 This shifting process is designed to correct for small linear differences in the peak positions of the standards relative to the sample, which may result from a combination of instrumental aberrations, mineralogical variation and/or uncorrected errors in the library patterns. Whilst it provides more accurate results, the process can substantially increase computation time.
 
@@ -362,7 +362,7 @@ plot(a_fit1, wavelength = "Cu",
      interactive = FALSE)
 ```
 
-or alternatively both the fit and residuals can be plotted using `mode = "both"` and the $2\theta$ axis restricted using the `xlim` argument:
+or alternatively both the fit and residuals can be plotted using `mode = "both"` and the 2θ axis restricted using the `xlim` argument:
 
 ```{r, fig.cap = "Plotting both the fit and residuals of a powdRfps or powdRafps object.", message = FALSE, warning = FALSE, fig.align='center', cache = TRUE}
 plot(a_fit1, wavelength = "Cu",

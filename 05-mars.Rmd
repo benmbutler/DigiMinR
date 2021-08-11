@@ -76,7 +76,7 @@ leaflet() %>%
 
 ```
 
-The XRPD data were collected using Cu-K$\alpha$ radiation [for details see @Butler2018] and are included within the **mars2mull** package in the `scotland_xrpd` data, which a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub.
+The XRPD data were collected using Cu-Kα radiation [for details see @Butler2018] and are included within the **mars2mull** package in the `scotland_xrpd` data, which a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub.
 
 ```{r, cache = TRUE}
 #Load the Scottish XRPD data
@@ -87,9 +87,9 @@ class(scotland_xrpd)
 ```
 
 ## Data manipulation
-The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2$theta$ axes, which can be achieved by applying the following manipulations need to the data:
+The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2θ axes, which can be achieved by applying the following manipulations need to the data:
 
-1. Transform the 2$\theta$ scale of the `scotland_xrpd` data to its Co-K$\alpha$ equivalent
-2. Calculate the overlapping 2$\theta$ range of the two datasets
-3. Interpolate the data onto a harmonised 2$\theta$ scale
+1. Transform the 2θ scale of the `scotland_xrpd` data to its Co-Kα equivalent
+2. Calculate the overlapping 2θ range of the two datasets
+3. Interpolate the data onto a harmonised 2θ scale
 4. Align each sample during pair-wise comparison

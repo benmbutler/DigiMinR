@@ -131,7 +131,7 @@ plot(as_multi_xy(xrpd[props$SSN[props$Sentinel_site == "Didy"]]),
      normalise = TRUE)
 ```
 
-Visualising the data in this way shows how the strongest peak in each diffractogram at the 'Didy' Sentinel Site occurs at approximately 26 $^\circ$2θ. Further inspection of this peak shows how there are minor adjustments in alignment that will need to be applied to the data:
+Visualising the data in this way shows how the strongest peak in each diffractogram at the 'Didy' Sentinel Site occurs at approximately 26 $^\circ$ 2θ. Further inspection of this peak shows how there are minor adjustments in alignment that will need to be applied to the data:
 
 ```{r, fig.cap = "The major quartz peak of the diffractograms associated with the Didy site, highlighting small 2theta misalignments.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 plot(as_multi_xy(xrpd[props$Sentinel_site == "Didy"]),
@@ -321,7 +321,7 @@ xlab("2theta") +
 theme_bw()
 ```
 
-Figure \@ref(fig:feature-plot) shows how the most important variables for prediction of K concentrations are found between 25 and 30 $^\circ$2θ. To further aid with interpretation of such regions, these plots can be combined with data from [full pattern summation](#quant) so that the variables selected by Cubist can be attributed to specific minerals. For example:
+Figure \@ref(fig:feature-plot) shows how the most important variables for prediction of K concentrations are found between 25 and 30 $^\circ$ 2θ. To further aid with interpretation of such regions, these plots can be combined with data from [full pattern summation](#quant) so that the variables selected by Cubist can be attributed to specific minerals. For example:
 
 ```{r, warning=FALSE, cache = TRUE}
 f1 <- fps(lib = rockjock,
@@ -338,7 +338,7 @@ f1 <- fps(lib = rockjock,
           align = 0.2)
 ```
 
-yields a reasonable fit of the data, as can be inspected using `plot(f1, wavelength = "Cu", interactive = TRUE)`. To help identify what minerals the variables between 25 and 30 $^\circ2$2θ are associated with, the results in `f1` can be combined with the results in `K_usage`:
+yields a reasonable fit of the data, as can be inspected using `plot(f1, wavelength = "Cu", interactive = TRUE)`. To help identify what minerals the variables between 25 and 30 $^\circ2$ 2θ are associated with, the results in `f1` can be combined with the results in `K_usage`:
 
 ```{r advanced-feature-plot, fig.cap = "Combining the results from full pattern summation with the features selected by Cubist for prediction of K concentrations.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Create a plot of the full pattern summation results

@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-08-10" />
+<meta name="date" content="2021-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -195,7 +195,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#plotting-xy-objects"><i class="fa fa-check"></i><b>1.3.1</b> Plotting <code>XY</code> objects</a></li>
 <li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#plotting-multixy-objects"><i class="fa fa-check"></i><b>1.3.2</b> Plotting <code>multiXY</code> objects</a></li>
-<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#modifying-plots-with-ggplot2"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <strong>ggplot2</strong></a></li>
+<li class="chapter" data-level="1.3.3" data-path="intro.html"><a href="intro.html#ggplot2-intro"><i class="fa fa-check"></i><b>1.3.3</b> Modifying plots with <strong>ggplot2</strong></a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#manipulating-data"><i class="fa fa-check"></i><b>1.4</b> Manipulating XRPD data</a>
 <ul>
@@ -228,7 +228,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3" data-path="machine-learning.html"><a href="machine-learning.html"><i class="fa fa-check"></i><b>3</b> Machine learning with soil XRPD data</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-data-1"><i class="fa fa-check"></i><b>3.1</b> Loading data</a></li>
+<li class="chapter" data-level="3.1" data-path="machine-learning.html"><a href="machine-learning.html#loading-packages-and-data"><i class="fa fa-check"></i><b>3.1</b> Loading packages and data</a></li>
 <li class="chapter" data-level="3.2" data-path="machine-learning.html"><a href="machine-learning.html#cubist-exploration"><i class="fa fa-check"></i><b>3.2</b> Data exploration</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="machine-learning.html"><a href="machine-learning.html#spatial-data"><i class="fa fa-check"></i><b>3.2.1</b> Spatial data</a></li>
@@ -247,7 +247,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="cluster-analysis.html"><a href="cluster-analysis.html"><i class="fa fa-check"></i><b>4</b> Cluster analysis of soil XRPD data</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-packages-and-data"><i class="fa fa-check"></i><b>4.1</b> Loading packages and data</a></li>
+<li class="chapter" data-level="4.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#loading-packages-and-data-1"><i class="fa fa-check"></i><b>4.1</b> Loading packages and data</a></li>
 <li class="chapter" data-level="4.2" data-path="cluster-analysis.html"><a href="cluster-analysis.html#clustering-pca"><i class="fa fa-check"></i><b>4.2</b> Principal component analysis</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="cluster-analysis.html"><a href="cluster-analysis.html#interpreting-pricipal-components"><i class="fa fa-check"></i><b>4.2.1</b> Interpreting pricipal components</a></li>
@@ -305,7 +305,7 @@ their concentrations within the mixture. This principal facilitates the quantifi
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen>
 </iframe>
 </p>
-<p>A key component of the full pattern summation functions within <code>powdR</code> is the library of reference patterns. These are stored within a <code>powdRlib</code> object created from two basic components using the <code>powdRlib()</code> constructor function. The first component, specified via the <code>xrd_table</code> argument of <code>powdRlib()</code>, is a data frame of the count intensities of the reference patterns, with their 2<span class="math inline">\(\theta\)</span> axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the <code>minerals_xrd</code> data:</p>
+<p>A key component of the full pattern summation functions within <code>powdR</code> is the library of reference patterns. These are stored within a <code>powdRlib</code> object created from two basic components using the <code>powdRlib()</code> constructor function. The first component, specified via the <code>xrd_table</code> argument of <code>powdRlib()</code>, is a data frame of the count intensities of the reference patterns, with their 2θ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the <code>minerals_xrd</code> data:</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="quant.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(powdR)</span>
 <span id="cb61-2"><a href="quant.html#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-3"><a href="quant.html#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(minerals_xrd)</span>
@@ -337,7 +337,7 @@ their concentrations within the mixture. This principal facilitates the quantifi
 ## 12    GOE.1       Goethite 0.93
 ## 13    GOE.2       Goethite 0.37
 ## 14      ORG Organic-Matter 0.07</code></pre>
-<p>Crucially when building the <code>powdRlib</code> object, all phase ID’s in the first column of the <code>phases_table</code> must match the column names of the <code>xrd_table</code> (excluding the name of the first column which is the 2<span class="math inline">\(\theta\)</span> axis), for example.</p>
+<p>Crucially when building the <code>powdRlib</code> object, all phase ID’s in the first column of the <code>phases_table</code> must match the column names of the <code>xrd_table</code> (excluding the name of the first column which is the 2θ axis), for example.</p>
 <div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="quant.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">names</span>(minerals_xrd[<span class="sc">-</span><span class="dv">1</span>]),</span>
 <span id="cb65-2"><a href="quant.html#cb65-2" aria-hidden="true" tabindex="-1"></a>          minerals_phases<span class="sc">$</span>phase_id)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -416,7 +416,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <span id="cb78-8"><a href="quant.html#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the number of reference patterns in the merged library</span></span>
 <span id="cb78-9"><a href="quant.html#cb78-9" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(merged_lib<span class="sc">$</span>phases)</span></code></pre></div>
 <pre><code>## [1] 182</code></pre>
-<p>In simpler cases where two libraries are already on the same <span class="math inline">\(2\theta\)</span> axis and were measured using the same instrumental parameters, only the use of <code>merge()</code> would be required.</p>
+<p>In simpler cases where two libraries are already on the same 2θ axis and were measured using the same instrumental parameters, only the use of <code>merge()</code> would be required.</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="quant.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the afsis library</span></span>
 <span id="cb80-2"><a href="quant.html#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(afsis)</span>
 <span id="cb80-3"><a href="quant.html#cb80-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -435,7 +435,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <p><code>fps()</code> is specifically applied to <code>powdRlib</code> objects, and accepts a wide range of arguments that are detailed in the package documentation (see <code>?fps.powdRlib</code>). Here the <a href="quant.html#rockjock"><code>rockjock</code> and <code>rockjock_mixtures</code> data</a> will be used to demonstrate the main features of <code>fps()</code> and the various ways in which it can be used.</p>
 <div id="full-pattern-summation-with-an-internal-standard" class="section level4" number="2.1.2.1">
 <h4><span class="header-section-number">2.1.2.1</span> Full pattern summation <strong>with</strong> an internal standard</h4>
-<p>Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the <code>std</code> and <code>std_conc</code> arguments of <code>fps()</code> can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the <code>rockjock_mixtures</code> data were prepared with 20 % corundum as the internal standard, thus this can be specified using <code>std = "CORUNDUM"</code> and <code>std_conc = 20</code> in the call to <code>fps()</code>. In addition, setting the <code>omit_std</code> argument to <code>TRUE</code> makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the <code>align</code> argument to ensure that the measured diffractogram is appropriately aligned on the <span class="math inline">\(2\theta\)</span> axis using the alignment approach outlined <a href="intro.html#alignment">above</a>. These principles are used in the example below, which passes the following seven arguments to <code>fps()</code>:</p>
+<p>Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the <code>std</code> and <code>std_conc</code> arguments of <code>fps()</code> can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the <code>rockjock_mixtures</code> data were prepared with 20 % corundum as the internal standard, thus this can be specified using <code>std = "CORUNDUM"</code> and <code>std_conc = 20</code> in the call to <code>fps()</code>. In addition, setting the <code>omit_std</code> argument to <code>TRUE</code> makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the <code>align</code> argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined <a href="intro.html#alignment">above</a>. These principles are used in the example below, which passes the following seven arguments to <code>fps()</code>:</p>
 <ol style="list-style-type: decimal">
 <li><code>lib</code> is used to define the <a href="quant.html#powdRlib"><code>powdRlib</code> object</a> containing the reference patterns and their RIRs.</li>
 <li><code>smpl</code> is used to defined the data frame or <a href="intro.html#loading-data"><code>XY</code> object</a> containing the sample diffractogram.</li>
@@ -443,7 +443,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <li><code>std</code> is used to define the phase ID of the reference pattern to be used as the internal standard.</li>
 <li><code>std_conc</code> is used to define the concentration of the internal standard in weight %.</li>
 <li><code>omit_std</code> is used to define whether the internal standard is omitted from the output and phase concentrations recomputed accordingly.</li>
-<li><code>align</code> is used to define the maximum positive or negative shift in <span class="math inline">\(2\theta\)</span> that is permitted during <a href="intro.html#alignment">alignment</a> of the sample to the reference pattern that is specified in the <code>std</code> argument.</li>
+<li><code>align</code> is used to define the maximum positive or negative shift in 2θ that is permitted during <a href="intro.html#alignment">alignment</a> of the sample to the reference pattern that is specified in the <code>std</code> argument.</li>
 </ol>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="quant.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock_mixtures)</span>
 <span id="cb83-2"><a href="quant.html#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -553,7 +553,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## -Computing phase concentrations
 ## -Internal standard concentration unknown. Assuming phases sum to 100 %
 ## ***Full pattern summation complete***</code></pre>
-<p>In this case the phase specified in the <code>std</code> argument is only used for <span class="math inline">\(2\theta\)</span> <a href="intro.html#alignment">alignment</a>, and is always included in the computed phase concentrations.</p>
+<p>In this case the phase specified in the <code>std</code> argument is only used for 2θ <a href="intro.html#alignment">alignment</a>, and is always included in the computed phase concentrations.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="quant.html#cb101-1" aria-hidden="true" tabindex="-1"></a>fit3<span class="sc">$</span>phases</span></code></pre></div>
 <pre><code>##               phase_id    phase_name       rir phase_percent
 ## 1             CORUNDUM      Corundum 1.0000000       19.6090
@@ -568,7 +568,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 </div>
 <div id="full-pattern-summation-with-data-harmonisation" class="section level4" number="2.1.2.3">
 <h4><span class="header-section-number">2.1.2.3</span> Full pattern summation with data harmonisation</h4>
-<p>It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2<span class="math inline">\(\theta\)</span> range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), <code>fps()</code> contains a logical <code>harmonise</code> argument (default <code>= TRUE</code>). When the sample and library contain non-identical 2<span class="math inline">\(\theta\)</span> axes, <code>harmonise = TRUE</code> will convert the data onto the same axis by determining the overlapping 2<span class="math inline">\(\theta\)</span> range and interpolating to the coarsest resolution available.</p>
+<p>It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), <code>fps()</code> contains a logical <code>harmonise</code> argument (default <code>= TRUE</code>). When the sample and library contain non-identical 2θ axes, <code>harmonise = TRUE</code> will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available.</p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="quant.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a sample with a shorter 2theta axis than the library</span></span>
 <span id="cb105-2"><a href="quant.html#cb105-2" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> <span class="fu">subset</span>(rockjock_mixtures<span class="sc">$</span>Mix1, tth <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;</span> <span class="dv">55</span>)</span>
 <span id="cb105-3"><a href="quant.html#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -660,7 +660,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <h3><span class="header-section-number">2.1.4</span> Additional <code>fps()</code> and <code>afps()</code> functionality</h3>
 <div id="shifting-of-reference-patterns" class="section level4" number="2.1.4.1">
 <h4><span class="header-section-number">2.1.4.1</span> Shifting of reference patterns</h4>
-<p>Both <code>fps()</code> and <code>afps()</code> accept a <code>shift</code> argument, which when set to a value greater than zero results in optimisation of a small <span class="math inline">\(2\theta\)</span> shift for each reference pattern in order to improve the quality of the fit. The value supplied to the <code>shift</code> argument defines the maximum (either positive or negative) shift that can be applied to each reference pattern before the shift is reset to zero.</p>
+<p>Both <code>fps()</code> and <code>afps()</code> accept a <code>shift</code> argument, which when set to a value greater than zero results in optimisation of a small 2θ shift for each reference pattern in order to improve the quality of the fit. The value supplied to the <code>shift</code> argument defines the maximum (either positive or negative) shift that can be applied to each reference pattern before the shift is reset to zero.</p>
 <p>This shifting process is designed to correct for small linear differences in the peak positions of the standards relative to the sample, which may result from a combination of instrumental aberrations, mineralogical variation and/or uncorrected errors in the library patterns. Whilst it provides more accurate results, the process can substantially increase computation time.</p>
 </div>
 <div id="regrouping-phases-in-powdrfps-and-powdrafps-objects" class="section level4" number="2.1.4.2">
@@ -740,7 +740,7 @@ Figure 2.3: Plotting a powdRfps or powdRafps object with the reference patterns 
 Figure 2.4: Plotting the residuals of a powdRfps or powdRafps object.
 </p>
 </div>
-<p>or alternatively both the fit and residuals can be plotted using <code>mode = "both"</code> and the <span class="math inline">\(2\theta\)</span> axis restricted using the <code>xlim</code> argument:</p>
+<p>or alternatively both the fit and residuals can be plotted using <code>mode = "both"</code> and the 2θ axis restricted using the <code>xlim</code> argument:</p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="quant.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb124-2"><a href="quant.html#cb124-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;both&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">30</span>),</span>
 <span id="cb124-3"><a href="quant.html#cb124-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
