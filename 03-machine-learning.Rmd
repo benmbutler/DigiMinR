@@ -58,12 +58,10 @@ Once you have loaded the packages and downloaded the data required for this chap
 #Load the soil property data
 props <- read.csv(file = "path/to/your/file/clusters_and_properties.csv")
 
-#Load the XRPD data
-
-#Get the full file paths
+#Get the full file paths of the XRPD data
 xrpd_paths <-  dir("path/to/xrd", full.names = TRUE)
 
-#Load the data
+#Load the XRPD data
 xrpd <- read_xy(files = xrpd_paths)
 
 #Make sure the data are interpolated onto the same 2theta scale
@@ -149,8 +147,8 @@ This strong peak is associated with quartz, which is omnipresent in soil dataset
 
 Prior to applying Cubist to the XRPD data, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities.
 
-### Alignment {-}
-The small 2θ misalignments identified [above](#cubist-exploration) can be corrected for using the [`align_xy()` function](#alignment) in `powdR`. Quartz is omnipresent within the dataset and therefore the samples can be aligned to a pure quartz pattern. A pure quartz pattern can be created from the `rockjock` library, and then used for sample alignment within a restricted 2θ range.
+### Alignment
+The small 2θ misalignments identified [above](#cubist-exploration) can be corrected for using the [`align_xy()` function](#alignment) in **powdR**. Quartz is omnipresent within the dataset and therefore the samples can be aligned to a pure quartz pattern. A pure quartz pattern can be created from the `rockjock` library, and then used for sample alignment within a restricted 2θ range.
 
 ```{r, fig.cap = "A pure quartz pattern extracted from the rockjock reference library.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Extract a quartz pattern from rockjock
@@ -175,7 +173,7 @@ plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
 
 Alignment of the data in this way is important because even seemingly small misalignments between peaks can hinder the comparison of XRPD data by multivariate methods, and hence reduce the effectiveness of the analysis [@Butler2019].
 
-### Subsetting {-}
+### Subsetting 
 In Figure \@ref(fig:didy-all-fig) it can be observed that below ~4 $^\circ$ 2θ there is a tall tail in count intensities. This tail can be removed by subsetting the data using the code [described above](#subsetting).
 
 ```{r, fig.cap = "Aligned diffractograms subset to remove data below 5 degrees 2theta.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
@@ -186,7 +184,7 @@ plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
      wavelength = "Cu")
 ```
 
-### Mean centering {-}
+### Mean centering
 In addition to alignment and subsetting, it can be useful to adjust the data for fluctuating count intensities that can be associated with factors such as the natural deterioration of the X-ray source over time. Such adjustment can be achieved by mean centering, which subtracts the mean from the count intensities of each sample:
 
 ```{r, fig.cap = "Aligned, subset and mean centred diffractograms.", out.width='100%', fig.asp=.75, fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
@@ -209,7 +207,7 @@ plot(as_multi_xy(xrpd_pt[props$Sentinel_site == "Didy"]),
 
 Now we are left with the dataset `xrpd` which consists of 935 diffractograms that have each been aligned, subset and mean centred. At this point we are ready to apply the Cubist algorithm to the data.
 
-### Creation of training and test datasets
+## Creation of training and test datasets
 Cubist is a supervised machine learning algorithm and therefore requires training using a dataset that accounts for much of the variation that may be observed in the dataset that Cubist predicts a given soil property from.
 
 Here, 75 % of the data will be used as a training set for Cubist to develop appropriate decisions and regression models from (hereafter the training dataset. The remaining 25 % of the data will be used to test the accuracy of the derived models on 'new' data (i.e. data that was not used to train the model; hereafter the test dataset).
@@ -278,7 +276,7 @@ abline(0,1) #Add a 1:1 line
 cor(log(props$K[-selection]), log(predict_K))^2
 ```
 
-The Cubist model for K prediction therefore results in a relatively accurate prediction of K, with an $R^2$ of ~0.9. This indicates that Cubist is able to extract appropriate variables from the XRPD data and use them to predict chemical soil properties.
+The Cubist model for K prediction therefore results in a relatively accurate prediction of K, with an $R^2$ of ~0.85. This indicates that Cubist is able to extract appropriate variables from the XRPD data and use them to predict chemical soil properties.
 
 ## Inspection of Cubist models
 

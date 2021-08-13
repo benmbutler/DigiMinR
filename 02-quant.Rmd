@@ -1,6 +1,6 @@
 # Quantitative phase analysis {#quant}
 
-This chapter describes methods for quantitative analysis implemented within the `powdR` package using a range of reproducible examples. Detailed accounts of these methods are provided in @Butler2021rc and @Butler2021powdR.
+This chapter describes methods for quantitative analysis implemented within the **powdR** package using a range of reproducible examples. Detailed accounts of these methods are provided in @Butler2021rc and @Butler2021powdR.
 
 One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) signals within a diffractogram can be related to
 their concentrations within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.
@@ -11,13 +11,13 @@ As mentioned in Chapter \@ref(intro), a given diffractogram can be modeled as th
 
 Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the "reference library" containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn't possible and the data can be harmonised accordingly. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs [see Section 2 in @Butler2021rc].
 
-## Full pattern summation with `powdR`
+## Full pattern summation with **powdR**
 
 ### The `powdRlib` object {#powdRlib}
 
 <p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen></iframe></p>
 
-A key component of the full pattern summation functions within `powdR` is the library of reference patterns. These are stored within a `powdRlib` object created from two basic components using the `powdRlib()` constructor function. The first component, specified via the `xrd_table` argument of `powdRlib()`, is a data frame of the count intensities of the reference patterns, with their 2θ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the `minerals_xrd` data:
+A key component of the full pattern summation functions within **powdR** is the library of reference patterns. These are stored within a `powdRlib` object created from two basic components using the `powdRlib()` constructor function. The first component, specified via the `xrd_table` argument of `powdRlib()`, is a data frame of the count intensities of the reference patterns, with their 2θ axis as the first column. The column for a given reference pattern must be named using a unique identifier (a phase ID). An example of such a format is provided in the `minerals_xrd` data:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 library(powdR)
@@ -55,9 +55,9 @@ plot(my_lib, wavelength = "Cu",
 
 
 #### Pre-loaded `powdRlib` objects {#rockjock}
-There are two `powdRlib` objects provided as part of the `powdR` package. The first is `minerals` [accessed via `data(minerals)`], which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is `rockjock` [accessed via `data(rockjock)`], which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The `rockjock` library in `powdR` uses data from the original RockJock program [@Eberl2003] thanks to the permission of Dennis Eberl. In `rockjock`, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All `rockjock` data were analysed using Cu K$\alpha$ radiation. The final library is `afsis` [accessed via `data(minerals)`], which contains 21 reference patterns measured on a Bruker D2 phaser as part of the XRPD data analysis undertaken for Africa Soil Information Service Sentinel Site programme.
+There are two `powdRlib` objects provided as part of the **powdR** package. The first is `minerals` [accessed via `data(minerals)`], which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is `rockjock` [accessed via `data(rockjock)`], which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The `rockjock` library in **powdR** uses data from the original RockJock program [@Eberl2003] thanks to the permission of Dennis Eberl. In `rockjock`, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All `rockjock` data were analysed using Cu K$\alpha$ radiation. The final library is `afsis` [accessed via `data(minerals)`], which contains 21 reference patterns measured on a Bruker D2 phaser as part of the XRPD data analysis undertaken for Africa Soil Information Service Sentinel Site programme.
 
-To accompany the `rockjock` reference library, a list of eight synthetic mixtures from the original RockJock program [@Eberl2003] are also included in `powdR` in the `rockjock_mixtures` data [accessed via `data(rockjock_mixtures)`], and the known compositions of these mixtures provided in the `rockjock_weights` data [accessed via `data(rockjock_weights)`].
+To accompany the `rockjock` reference library, a list of eight synthetic mixtures from the original RockJock program [@Eberl2003] are also included in **powdR** in the `rockjock_mixtures` data [accessed via `data(rockjock_mixtures)`], and the known compositions of these mixtures provided in the `rockjock_weights` data [accessed via `data(rockjock_weights)`].
 
 #### Subsetting a `powdRlib` object
 Occasionally it may be useful to subset a reference library to a smaller selection. This can be achieved using `subset()`, which for `powdRlib` objects accepts three arguments; `x`, `refs` and `mode` (see `?subset.powdRlib`). The `x` argument specifies the `powdRlib` object to be subset, `refs` specifies the ID's and/or names of phases to select, and `mode` specifies whether these phases are kept (`mode = "keep"`) or removed (`mode = "remove"`).
@@ -128,9 +128,9 @@ rockjock_afsis <- merge(rockjock, afsis)
 
 ### Full pattern summation with `fps()`
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen></iframe></p>
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/5PdRaLmJumE" frameborder="0" allowfullscreen></iframe></p>
 
-Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R](#loading-data), you have everything needed for quantitative analysis via full pattern summation.  Full pattern summation in `powdR` is provided via the `fps()` function, whilst an automated version is provided in [`afps()`](#afps). Details of the equations and routines implemented in `fps()` and `afps()` are provided in @Butler2021rc and @Butler2021powdR. 
+Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R](#loading-data), you have everything needed for quantitative analysis via full pattern summation.  Full pattern summation in **powdR** is provided via the `fps()` function, whilst an automated version is provided in [`afps()`](#afps). Details of the equations and routines implemented in `fps()` and `afps()` are provided in @Butler2021rc and @Butler2021powdR. 
 
 `fps()` is specifically applied to `powdRlib` objects, and accepts a wide range of arguments that are detailed in the package documentation (see `?fps.powdRlib`). Here the [`rockjock` and `rockjock_mixtures` data](#rockjock) will be used to demonstrate the main features of `fps()` and the various ways in which it can be used.
 
@@ -151,7 +151,7 @@ data(rockjock_mixtures)
 fit1 <- fps(lib = rockjock,
             smpl = rockjock_mixtures$Mix1,
             refs = c("ORDERED_MICROCLINE",
-                     "LABRADORITE",
+                     "Plagioclase",
                      "KAOLINITE_DRY_BRANCH",
                      "MONTMORILLONITE_WYO",
                      "ILLITE_1M_RM30",
@@ -177,16 +177,16 @@ fit1$phases
 Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 %:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
-sum(fit1$phases$phase_percent)
+sum(fit1$phases$phase_percent, na.rm = TRUE)
 ```
 
-Unlike other software where only certain phases can be used as an internal standard, any phase can be defined in `powdR`. For example, the `rockjock_mixtures$Mix5` sample contains 20 % quartz (see `data(rockjock_weights)`), thus adding `"QUARTZ"` as the `std` argument results in this reference pattern becoming the internal standard instead.
+Unlike other software where only certain phases can be used as an internal standard, any phase can be defined in **powdR**. For example, the `rockjock_mixtures$Mix5` sample contains 20 % quartz (see `data(rockjock_weights)`), thus adding `"QUARTZ"` as the `std` argument results in this reference pattern becoming the internal standard instead.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 fit2 <- fps(lib = rockjock,
             smpl = rockjock_mixtures$Mix5,
             refs = c("ORDERED_MICROCLINE",
-                     "LABRADORITE",
+                     "Plagioclase",
                      "KAOLINITE_DRY_BRANCH",
                      "MONTMORILLONITE_WYO",
                      "CORUNDUM",
@@ -198,7 +198,7 @@ fit2 <- fps(lib = rockjock,
 
 fit2$phases
 
-sum(fit2$phases$phase_percent)
+sum(fit2$phases$phase_percent, na.rm = TRUE)
 ```
 
 It's also possible to "close" the mineral composition so that the weight percentages sum to 100. This can be achieved in two ways:
@@ -211,7 +211,7 @@ For example, the phase composition in `fit2` created above can be closed using:
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 fit2c <- close_quant(fit2)
 
-sum(fit2c$phases$phase_percent)
+sum(fit2c$phases$phase_percent, na.rm = TRUE)
 ```
 
 #### Full pattern summation **without** an internal standard
@@ -221,12 +221,11 @@ In cases where an internal standard is not added to a sample, phase quantificati
 fit3 <- fps(lib = rockjock,
             smpl = rockjock_mixtures$Mix1,
             refs = c("ORDERED_MICROCLINE",
-                     "LABRADORITE",
+                     "Plagioclase",
                      "KAOLINITE_DRY_BRANCH",
                      "MONTMORILLONITE_WYO",
                      "ILLITE_1M_RM30",
                      "CORUNDUM"),
-            std_conc = NA,
             std = "CORUNDUM",
             align = 0.3)
 ```
@@ -256,7 +255,7 @@ Mix1_short <- Mix1_short[seq(1, nrow(Mix1_short), 2),]
 fit4 <- fps(lib = rockjock,
             smpl = Mix1_short,
             refs = c("ORDERED_MICROCLINE",
-                     "LABRADORITE",
+                     "Plagioclase",
                      "KAOLINITE_DRY_BRANCH",
                      "MONTMORILLONITE_WYO",
                      "ILLITE_1M_RM30",
@@ -267,7 +266,7 @@ fit4 <- fps(lib = rockjock,
 fit4$phases
 ```
 
-### Automated full pattern summation {#afps}
+### Automated full pattern summation with `afps()` {#afps}
 
 <p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/B7W5zXnlrGU" frameborder="0" allowfullscreen></iframe></p>
 
@@ -438,7 +437,7 @@ names(multi_fit) <- names(rockjock_mixtures)[1:3]
 stopCluster(cl)
 ```
 
-Note how the call to `fps` uses the notation `powdR::fps()`, which specifies the accessing of the `fps()` function from the `powdR` package.
+Note how the call to `fps` uses the notation `powdR::fps()`, which specifies the accessing of the `fps()` function from the **powdR** package.
 
 ## Summarising mineralogy
 When multiple samples are quantified it is often useful to report the phase concentrations of all of the samples in a single table. For a given list of `powdRfps` and/or `powdRafps` objects, the `summarise_mineralogy()` function yields such summary tables, for example:
@@ -459,13 +458,13 @@ summarise_mineralogy(multi_fit, type = "grouped", order = TRUE,
 For each of these parameters, lower values represent a smaller difference between the measured and fitted patterns, and hence are indicative of a better fit. For more information see Section 2.1 in @Butler2021powdR.
 
 ## The powdR Shiny app
-All above examples showcase the use of R code to carry out full pattern summation. It is also possible to run much of this functionality of `powdR` via a Shiny web application. This Shiny app can be loaded in your default web browser by running `run_powdR()`. The resulting application has six tabs:
+All above examples showcase the use of R code to carry out full pattern summation. It is also possible to run much of this functionality of **powdR** via a Shiny web application. This Shiny app can be loaded in your default web browser by running `run_powdR()`. The resulting application has six tabs:
 
 1. **Reference Library Builder:** Allows you to create and export a [`powdRlib` reference library](#powdRlib) from two '.csv' files: one for the XRPD measurements, and the other for the ID, name and reference intensity ratio of each pattern.
 2. **Reference Library Viewer:** Facilitates quick inspection of the phases within a `powdRlib` reference library.
 3. **Reference Library Editor:** Allows the user to easily subset a `powdRlib` reference library .
 4. **Full Pattern Summation:** A user friendly interface for iterative full pattern summation of single samples using `fps()` or `afps()`.
 5. **Results Viewer/Editor:** Allows for results from previously saved `powdRfps` and `powdRafps` objects to be viewed and edited via addition or removal of reference patterns.
-6. **Help** Provides a series of video tutorials (via YouTube) detailing the use of the `powdR` Shiny application.
+6. **Help** Provides a series of video tutorials (via YouTube) detailing the use of the **powdR** Shiny application.
 
 <p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/dDd6cr8kpTc" frameborder="0" allowfullscreen></iframe></p>

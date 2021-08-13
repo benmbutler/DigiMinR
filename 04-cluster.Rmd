@@ -31,7 +31,7 @@ if (knitr:::is_html_output())
 ```
 
 ## Loading packages and data
-This chapter will use a number of packages that should already be installed on your machine, but will also use the **reshape2** and **e1071**packages that may need to be installed if you have not used them before:
+This chapter will use a number of packages that should already be installed on your machine, but will also use the **reshape2** and **e1071** packages that may need to be installed if you have not used them before:
 
 ```{r, eval = FALSE}
 #install packages that haven't been used in the course before
@@ -47,7 +47,6 @@ library(powdR)
 library(ggplot2)
 library(plotly)
 library(gridExtra)
-library(leaflet)
 library(plyr)
 ```
 
@@ -57,12 +56,10 @@ Once you have loaded the packages and downloaded the data required for this chap
 #Load the soil property data
 props <- read.csv(file = "path/to/your/file/clusters_and_properties.csv")
 
-#Load the XRPD data
-
-#Get the full file paths
+#Get the full file paths of the XRPD data
 xrpd_paths <-  dir("path/to/xrd", full.names = TRUE)
 
-#Load the data
+#Load the XRPD data
 xrpd <- read_xy(files = xrpd_paths)
 
 #Make sure the data are interpolated onto the same 2theta scale
@@ -83,9 +80,9 @@ xrpd <- as_multi_xy(xrpd)
 ```
 
 ## Principal component analysis {#clustering-pca}
-The cluster analysis in this Chapter is applied to principal components of soil XRPD data derived using Principal Component Analysis (PCA; @Jolliffe1986). Prior to applying cluster analysis to the XRPD data via this approach, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities. For this example, the pre-treatment routine will be based on that defined in @Butler2020, and will involve alignment, subsetting, square root transformation and mean centering. Together these correct for common experimental aberrations so that the variation in the observed data is almost entirely sample-dependent. The pre-treatment steps used here also match those described in Section \@ref(cubist-pretreatment), excepted for the additional step of square root transforming the data, which acts to reduced the relative intensity of quartz peaks that can often dominate the overall variation in diffraction data.
+The cluster analysis in this Chapter is applied to principal components of soil XRPD data derived using Principal Component Analysis [PCA; @Jolliffe1986]. Prior to applying cluster analysis to the XRPD data via this approach, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities. For this example, the pre-treatment routine will be based on that defined in @Butler2020, and will involve alignment, subsetting, square root transformation and mean centering. Together these correct for common experimental aberrations so that the variation in the observed data is almost entirely sample-dependent. The pre-treatment steps used here also match those described in Section \@ref(cubist-pretreatment) except for the additional step of square root transforming the data, which acts to reduce the relative intensity of quartz peaks that can often dominate the overall variation in diffraction data.
 
-Alignment of the data can be carried out using the `align_xy()` function [outlined above](#cubist-pretreatment), which aligns each sample within the dataset to a pure quartz pattern:
+Alignment of the data can be carried out using the [`align_xy()` function](#alignment), which aligns each sample within the dataset to a pure reference pattern, which in this case will be quartz that is omnipresent within the soil dataset:
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE}
 #load the afsis reference library
@@ -102,22 +99,14 @@ xrpd_aligned <- align_xy(xrpd, std = quartz,
                          xshift = 0.2)
 ```
 
-Aligned data can then be subset to 2θ > 6 so that the [high background at low angles](#cubist-pretreatment) in the data can be removed.
+Aligned data can then be subset to 2θ >= 6 so that the high background at low angles (Figure \@ref(fig:didy-all-fig)) in the data can be removed.
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE}
-subset_xrpd <- function (x, xmin) {
-  
-  x <- x[x[[1]] >= xmin, ]
-  
-  return(x)
-  
-}
-
-xrpd_aligned_sub <- lapply(xrpd_aligned, subset_xrpd,
-                           xmin = 6)
+xrpd_aligned_sub <- lapply(xrpd_aligned, subset,
+                           tth >= 6)
 ```
 
-Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and PCA can be carried out in a single step using the `xrpd_pca()` function in `powdR`: 
+Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and the PCA can all be carried out in a single step using the `xrpd_pca()` function in **powdR**: 
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE}
 pca <- xrpd_pca(xrpd_aligned_sub,
@@ -129,9 +118,9 @@ pca <- xrpd_pca(xrpd_aligned_sub,
 pca$eig[1:10,]
 ```
 
-From which it can be seen that the first 5 principal components (PCs) of the data account for 93 % of variation in the XRPD data. The resulting cluster analysis will therefore be based upon these 10 components. For simplicity this example will use the first 5 PCs hereafter, which together account for 93 % of total variation.
+From which it can be seen that the first 5 principal components (PCs) of the data account for 93 % of variation in the XRPD data. For simplicity this example will use the first 5 PCs hereafter, which can be plotted against one-another using the following code:
 
-```{r fig.cap = "The first 5 PCs plotted against one-another", out.width='100%', fig.align='center', fig.asp=2.3, message=FALSE, warning=FALSE, cache = TRUE}
+```{r pc-fig, fig.cap = "The first 5 PCs plotted against one-another", out.width='100%', fig.align='center', fig.asp=2.3, message=FALSE, warning=FALSE, cache = TRUE}
 #Define the x-axis components
 x <- c(1, 1, 1, 1,
        2, 2, 2,
@@ -164,7 +153,7 @@ grid.arrange(grobs = p,
 ```
 
 ### Interpreting pricipal components
-Whilst we're able to derive that the first 10 PCs explain 96 % of variation in the XRPD data and plot the resulting variables against one-another, we are still not in a position to interpret what the scores actually mean. For example, how do increased/decreased values in Dim.1 reflect mineralogical differences in the soil samples. This interpretation can be achieved by examining the loadings of each PC dimension, for example the loading of Dim.1 can be visualised via:
+Whilst we're able to derive that the first 5 PCs explain 93 % of variation in the XRPD data and plot the resulting variables against one-another, we are still not in a position to interpret what the scores actually mean. For example, how do increased/decreased values in Dim.1 reflect mineralogical differences in the soil samples? This interpretation can be achieved by examining the loadings of each PC dimension, for example the loading of Dim.1 can be visualised via:
 
 
 ```{r fig.cap = "The loading of Dim.1.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
@@ -173,9 +162,9 @@ ggplot(data = pca$loadings) +
   geom_hline(yintercept = 0)
 ```
 
-These loadings determine the values of each PC. In this case, increased values of Dim.1 would result from increased intensity in the regions of the positive peaks of the loading, whereas decreased values of Dim.1 would result from increased intensity in regions of broad but negative peaks. In order to ascertain what these positive and negative features represent, it is possible to apply the full pattern summation principles outlined in Chapter \@ref(quant) to the data.
+These loadings represent the weights of each variable that are used when calculating the PCs. In this case, increased values of Dim.1 would result from increased intensity in the regions of the positive peaks of the loading, whereas decreased values of Dim.1 would result from increased intensity in regions of broad but negative peaks. In order to ascertain what these positive and negative features represent, it is possible to apply the full pattern summation principles outlined in Chapter \@ref(quant) to the loadings.
 
-Whilst full pattern summation for quantitative analysis deals with scaling factors that should only be positive, the loadings of each PC can be modeled in a similar manner by allowing the scaling coefficients to be *either positive or negative*. Such analysis can be achieved using the `fps_lm()` function of `powdR`. This function uses linear regression and allows you to set a p-value that can help omit unnecessary patterns from the fit. Whilst the full pattern summation outlined in Chapter \@ref(quant) results in phase quantification, `fps_lm()` is only intended to help with the identification of reference library patterns contributing to a given pattern:
+Whilst full pattern summation for quantitative analysis deals with scaling factors that should only be positive, the loadings of each PC can be modeled in a similar manner by allowing the scaling coefficients to be *either* positive *or* negative. Such analysis can be achieved using the `fps_lm()` function of **powdR**. This function uses linear regression to compute the scaling factor and allows you to set a p-value that can help omit unnecessary patterns from the fit. Whilst the full pattern summation outlined in Chapter \@ref(quant) results in phase quantification, `fps_lm()` is only intended to help with the identification of reference library patterns contributing to a given pattern and therefore does not require or use Reference Intensity Ratios. Below `fps_lm()` is used to model the loading of Dim.1:
 
 ```{r, fig.cap = "Full pattern summation applied to the loading of Dim.1.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE}
 #Load the rockjock library
@@ -185,9 +174,11 @@ data(rockjock)
 rockjock_afsis <- merge(rockjock, afsis)
 
 #All patterns in the library need to be square root transformed
-#because this transformation was already applied to the soil data.
-#In order to avoid errors with the square root transforms,any 
-#reference pattern with negative counts must be removed
+#because this transformation was already applied to the soil data
+#during pre-treatment. In order to avoid errors with the square
+#root transforms,any  reference pattern with negative counts
+#must be removed
+
 remove_index <- which(unlist(lapply(rockjock$xrd, min)) < 0)
 
 rockjock_afsis <- subset(rockjock_afsis,
@@ -196,7 +187,7 @@ rockjock_afsis <- subset(rockjock_afsis,
 
 #Square root transform the counts
 rockjock_afsis_sqrt <- rockjock_afsis
-rockjock_afsis_sqrt$xrd <- data.frame(lapply(rockjock_afsis_sqrt$xrd, sqrt))
+rockjock_afsis_sqrt$xrd <- sqrt(rockjock_afsis_sqrt$xrd)
 
 dim1_fit <- fps_lm(rockjock_afsis_sqrt,
                    smpl = data.frame(pca$loadings$tth,
@@ -259,12 +250,12 @@ plot(dim2_fit, wavelength = "Cu", group = TRUE)
 dim2_fit$phases_grouped[order(dim2_fit$phases_grouped$coefficient),]
 ```
 
-with more positive scores associated with increased plagioclase and K-feldspar peak intensities, and more negative scores associated with increased kaolinite and gibbsite peak intensities. Dim.2 can therefore be interpreted to represent an index of chemical alteration, with higher values representing a greater degree of alteration (i.e. the weathering of feldspars to kaolinite and gibbsite and associated loss of base cations). The same type of analysis can be applied for the interpretation of subsequent PCA dimensions, but can become increasingly challenging when the loading vector becomes comprised of minor or diffuse features of the XRPD data.
+with more positive scores associated with increased plagioclase and K-feldspar peak intensities, and more negative scores associated with increased kaolinite and gibbsite peak intensities. Dim.2 can therefore be interpreted to represent an index of chemical alteration, with higher values representing a greater degree of alteration (i.e. the weathering of feldspars to kaolinite and gibbsite and associated loss of base cations). The same analysis can be applied for the interpretation of subsequent PCA dimensions, but can become increasingly challenging when the loading vector becomes comprised of minor or diffuse features of the XRPD data.
 
 ## Fuzzy clustering
-Now that the XRPD data have been reduced to a discrete set of variables using PCA, cluster analysis will be applied. Here the fuzzy-c-means clustering algorithm implemented in the `e1071`  package [@e1071] will be used, which will be applied to the first 10 PCs.
+Cluster analysis will be now applied to the 5 PCs plotted in Figure \@ref(fig:pc-fig) using fuzzy-c-means clustering algorithm implemented in the **e1071**  package [@e1071].
 
-When applying cluster analysis, the selection of the most appropriate number of clusters can prove to be subjective and, in some cases difficult. There are a number of approaches that can be used to objectively define the most appropriate number of clusters [@Rossel2016; @Butler2020]. Here, for simplicity the number of clusters will be manually set to 9.
+When applying cluster analysis, the selection of the most appropriate number of clusters can prove to be subjective and, in some cases, difficult. There are a number of approaches that can be used to objectively define the most appropriate number of clusters [@Rossel2016; @Butler2020], but for simplicity the number of clusters used in this example will be manually defined as 9:
 
 ```{r cluster-fig, fig.cap = "Pre-treated XRPD data clustered into 9 groups.", out.width='100%', fig.align='center', fig.asp=2, cache = TRUE, message = FALSE, warning = FALSE}
 #Apply the fuzzy-c-means algorithm to the PCs
@@ -306,11 +297,11 @@ for (i in 1:nrow(dim1_mean)) {
 clusters$NEW_CLUSTER <- as.factor(clusters$NEW_CLUSTER)
 
 
-#Create and empty list
+#Create an empty list
 p <- list()
 
-#Populate each item in the list using the dimension defined
-#in x and y
+#Populate each item in the list using the dimension already
+#defined in x and y above
 for (i in 1:length(x)) {
    
    p[[i]] <- ggplot(data = clusters) +
@@ -330,7 +321,7 @@ grid.arrange(grobs = p,
 ```
 
 ### Cluster membership
-Use of the fuzzy-c-means clustering algorithm results in every sample having a membership coefficient for each cluster. These membership coefficients range from zero to one, with one being the highest degree of membership. These membership can be plotted to help visualise the "fuzzy" nature of the clustering:
+Use of the fuzzy-c-means clustering algorithm results in every sample having a membership coefficient for each cluster. These membership coefficients range from 0 to 1, with 1 being the highest degree of membership. Below these membership coefficients will be plotted using the first 2 PCs in order to help visualise the 'fuzzy' nature of the clustering:
 
 ```{r membership-fig, fig.cap = "Membership coefficients for the nine clusters plotted for the first two PCs. Blue symbols have low membership (~0), whilst red symbols have high membership (~1).", out.width='100%', fig.align='center', fig.asp=2, cache = TRUE, message = FALSE, warning = FALSE}
 #Extract the membership coefficients
@@ -371,7 +362,7 @@ grid.arrange(grobs = p,
 
 ```
 
-Figures \@ref(fig:cluster-fig) and \@ref(fig:membership-fig) illustrate how the soil XRPD data in this data set reflect to soil mineral continuum, and as such can be challenging to cluster into a small number of group. In particular the membership coefficients in Figure \@ref(fig:membership-fig) help highlight how soils can exist on the boundary of two or more clusters and therefore have similar membership coefficients to numerous clusters. This property is characteristic of most large soil data sets, and can make it challenging to define very distinct clusters. However, the membership coefficient data can be used so that only samples with the highest coefficients are retained, resulting in more distinct mineralogical groups that do no overlap.
+Together Figures \@ref(fig:cluster-fig) and \@ref(fig:membership-fig) illustrate how the soil XRPD data in this data set reflect to soil mineral continuum, and as such can be challenging to cluster into a discrete number of groups. In particular the membership coefficients in Figure \@ref(fig:membership-fig) help highlight how soils can exist on the boundary of two or more clusters and therefore have similar membership coefficients to numerous clusters. This property is characteristic of most large soil data sets, and can make it challenging to define very distinct clusters. However, the membership coefficients data can be used so that only samples with the highest coefficients are retained, resulting in more distinct mineralogical groups that do no overlap.
 
 ### Subsetting Clusters
 Here, more mineralogically distinct clusters will be created by only retaining samples within each cluster that have a membership coefficient exceeding the 75^th^ percentile:
@@ -426,7 +417,7 @@ grid.arrange(grobs = p,
 ```
 
 ## Exploring results
-Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored and interpreted. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised:
+Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored in order to relate the soil mineral composition to the nutrient concentrations. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised, for example:
 
 ```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 9.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 clust_sub <- join(members_sub[c("SSN", "NEW_CLUSTER")],
@@ -438,7 +429,7 @@ leaflet(clust_sub[which(clust_sub$NEW_CLUSTER == 9), ]) %>%
   addCircleMarkers(~Longitude, ~Latitude)
 ```
 
-Furthermore, the XRPD data of each cluster can be visualised, illustrating that even though samples within each cluster are dispersed across sub-Saharan Africa, their XRPD signals (and, hence mineralogies) are very similar, which can readily be plotted with a little manipulation of the data:
+returns a map of the locations of all samples within Cluster 9. Even though samples within this cluster are dispersed across sub-Saharan Africa, their XRPD signals (and, hence mineralogies) are very similar, which can readily be plotted with a little manipulation of the data:
 
 ```{r, fig.cap = "Clustered pre-treated XRPD from Cluster 9.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
 #Create a blank list to populate
@@ -453,7 +444,7 @@ names(cluster_xrpd)[i] <- paste0("Cluster.", i)
 plot(as_multi_xy(cluster_xrpd$Cluster.9), wavelength = "Cu", normalise = TRUE)
 ```
 
-Given that the soil mineral composition ultimately governs the total concentrations of nutrients and their phyto-availability, there nine mineralogically different clusters should display contrasting geochemical properties. These geochemical properties are present in the `props` data already loaded, and the cluster factor can be added to these data:
+Given that the soil mineral composition ultimately governs the total concentrations of nutrients and their phyto-availability, the nine mineralogically different clusters defined here should display contrasting geochemical properties. These geochemical properties are present in the `props` data already loaded, to which the cluster factor can be added:
 
 ```{r, cache = TRUE, message = FALSE, warning = FALSE}
 #Join clust_sub to props
@@ -472,9 +463,9 @@ total_nutrients <- subset(props_sub,
                                      Cu, Zn))
 ```
 
-After which, the relative enrichments and deficiencies of each cluster for these total nutrient concentrations can be visualised using barplots:
+After which, the relative enrichments and deficiencies of each cluster for these total nutrient concentrations can be visualised using barplots [@Montero2010; @Butler2020]:
 
-```{r, fig.cap = "Average total nutrient concentrations of each cluster expressed as deviation in log-ratio scale from the geometric mean. Values below zero represent average concentrations lower than that for the entire dataset, whilst values above zero represent the opposite.", out.width='100%', fig.align='center', fig.asp=0.75,cache = TRUE, message = FALSE, warning = FALSE}
+```{r cluster-geochem-barplot, fig.cap = "Average total nutrient concentrations of each cluster expressed as deviation in log-ratio scale from the geometric mean. Values below zero represent average concentrations lower than that for the entire dataset, whilst values above zero represent the opposite.", out.width='100%', fig.align='center', fig.asp=0.75,cache = TRUE, message = FALSE, warning = FALSE}
 #Create geometric mean function
 gmean <- function(x) {exp(mean(log(x)))}
 
@@ -595,7 +586,7 @@ quant_table <- quant_table[2:11]
 
 The resulting quantification can then be plotted:
 
-```{r, fig.cap = "Mineral compositions of the nine clusters based on the mean diffractogram", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
+```{r cluster-quant-barplot, fig.cap = "Mineral compositions of the nine clusters based on the mean diffractogram", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE, message = FALSE, warning = FALSE}
 #Rename clusters C1 to C9
 rownames(quant_table) <- paste0("C", rownames(quant_table))
 
@@ -615,3 +606,10 @@ g2 <- ggplot(quant_table_m,
 ggplotly(g2)
 ```
 
+Together the geochemical (Figure \@ref(fig:cluster-geochem-barplot)) and mineralogical (Figure \@ref(fig:cluster-quant-barplot)) barplots can be used to interpret a range of relationships between the soil mineral composition and the nutrient concentrations, for instance:
+
+1. The notable K enrichment in the soils of Cluster 6 most likely results from the relatively high concentrations of K-feldspar minerals in these soils.
+2. Soils in Clusters 8 and 9 are deficient in all nutrients due to the dominance of quartz in combination with a near absence of clay minerals and/or Fe/Ti(hydr)oxides
+3. Soils in Cluster 2 are particularly enriched in Ca due to the high concentrations of plagioclase, expandable/ML clays and calcite (not plotted but can be observed in the tabulated data) minerals.
+
+This example ultimately acts to highlight the utility of 'Digital' methods of analysis applied to soil XRPD data. Whilst this example focuses on total nutrient concentrations, the method can also be applied to the Mehlich-3 extractable element concentrations that are also included within the `props` data. For further analysis and discussion on the application of cluster analysis to this dataset, along with additional methods of compositional data analysis, see @Butler2020 and the accompanying Supplementary Material.
