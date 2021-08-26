@@ -79,7 +79,12 @@ load("data/afsis_xrpd_df.Rdata")
 xrpd <- as_multi_xy(xrpd)
 ```
 
+The resulting loaded data matches that loaded and explored in Chapter \@ref(machine-learning), with the `props` data containing a range of geochemical soil properties and the `xrpd` data containing an XY diffractogram of each sample. 
+
 ## Principal component analysis {#clustering-pca}
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/Jv1o7V1Kwj0" frameborder="0" allowfullscreen></iframe></p>
+
 The cluster analysis in this Chapter is applied to principal components of soil XRPD data derived using Principal Component Analysis [PCA; @Jolliffe1986]. Prior to applying cluster analysis to the XRPD data via this approach, it is important to apply corrections for sample-independent variation such as small 2θ misalignments and/or fluctuations in count intensities. For this example, the pre-treatment routine will be based on that defined in @Butler2020, and will involve alignment, subsetting, square root transformation and mean centering. Together these correct for common experimental aberrations so that the variation in the observed data is almost entirely sample-dependent. The pre-treatment steps used here also match those described in Section \@ref(cubist-pretreatment) except for the additional step of square root transforming the data, which acts to reduce the relative intensity of quartz peaks that can often dominate the overall variation in diffraction data.
 
 Alignment of the data can be carried out using the [`align_xy()` function](#alignment), which aligns each sample within the dataset to a pure reference pattern, which in this case will be quartz that is omnipresent within the soil dataset:
@@ -88,9 +93,9 @@ Alignment of the data can be carried out using the [`align_xy()` function](#alig
 #load the afsis reference library
 data(afsis)
 
-#Extract a quartz pattern from rockjock
-quartz <- as_xy(data.frame(afsis$tth,
-                           afsis$xrd$QUARTZ_1_AFSIS))
+#Extract a quartz pattern from it
+quartz <- data.frame(afsis$tth,
+                     afsis$xrd$QUARTZ_1_AFSIS)
 
 #Align the xrpd data to this quartz pattern
 #using a restricted 2theta range of 10 to 60
@@ -106,7 +111,7 @@ xrpd_aligned_sub <- lapply(xrpd_aligned, subset,
                            tth >= 6)
 ```
 
-Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and the PCA can all be carried out in a single step using the `xrpd_pca()` function in **powdR**: 
+Following alignment, the remaining data pre-treatment steps (square root transform and mean centering) and the PCA can all be carried out in a single step using the `xrpd_pca()` function from **powdR**: 
 
 ```{r message=FALSE, warning=FALSE, cache = TRUE}
 pca <- xrpd_pca(xrpd_aligned_sub,
@@ -114,8 +119,8 @@ pca <- xrpd_pca(xrpd_aligned_sub,
                 root_transform = 2,
                 components = 5)
 
-#View the variance explained by the first 10 PCs
-pca$eig[1:10,]
+#View the variance explained by the first 5 PCs
+pca$eig[1:5,]
 ```
 
 From which it can be seen that the first 5 principal components (PCs) of the data account for 93 % of variation in the XRPD data. For simplicity this example will use the first 5 PCs hereafter, which can be plotted against one-another using the following code:
@@ -174,10 +179,10 @@ data(rockjock)
 rockjock_afsis <- merge(rockjock, afsis)
 
 #All patterns in the library need to be square root transformed
-#because this transformation was already applied to the soil data
-#during pre-treatment. In order to avoid errors with the square
-#root transforms,any  reference pattern with negative counts
-#must be removed
+#because this transformation was applied to the soil data
+#during the use of xrpd_pca(). In order to avoid errors with the square
+#root transforms, any reference pattern with negative counts
+#must be removed from the library
 
 remove_index <- which(unlist(lapply(rockjock$xrd, min)) < 0)
 
@@ -189,6 +194,7 @@ rockjock_afsis <- subset(rockjock_afsis,
 rockjock_afsis_sqrt <- rockjock_afsis
 rockjock_afsis_sqrt$xrd <- sqrt(rockjock_afsis_sqrt$xrd)
 
+#Produce a fit using a subset of common soil minerals
 dim1_fit <- fps_lm(rockjock_afsis_sqrt,
                    smpl = data.frame(pca$loadings$tth,
                                      pca$loadings$Dim.1),
@@ -218,7 +224,7 @@ plot(dim1_fit, wavelength = "Cu", group = TRUE)
 dim1_fit$phases_grouped[order(dim1_fit$phases_grouped$coefficient),]
 ```
 
-By interpreting the plot (particularly using `interactive = TRUE`) and the coefficients it can be seen that more positive Dim.1 scores are promoted by increased intensity of quartz peaks, whereas more negative Dim.1 scores are promoted by increased intensity of Smectite (ML) peaks (mixed-layer smectite). Dim.1 can therefore be interpreted to represent the acid-basic gradient of soil parent materials. Applying the same analysis to the loading of Dim.2 yields a very different interpretation:
+By interpreting the plot (particularly using `interactive = TRUE`) and the coefficients it can be seen that more negative Dim.1 scores are promoted by increased intensity of quartz peaks, whereas more positive Dim.1 scores are promoted by increased intensity of Smectite peaks. Dim.1 can therefore be interpreted to broadly represent the acid-basic gradient of soil parent materials. Applying the same analysis to the loading of Dim.2 yields a very different interpretation:
 
 ```{r, fig.cap = "Full pattern summation applied to the loading of Dim.2.", out.width='100%', fig.align='center', fig.asp=0.75, cache = TRUE}
 dim2_fit <- fps_lm(rockjock_afsis_sqrt,
@@ -250,9 +256,12 @@ plot(dim2_fit, wavelength = "Cu", group = TRUE)
 dim2_fit$phases_grouped[order(dim2_fit$phases_grouped$coefficient),]
 ```
 
-with more positive scores associated with increased plagioclase and K-feldspar peak intensities, and more negative scores associated with increased kaolinite and gibbsite peak intensities. Dim.2 can therefore be interpreted to represent an index of chemical alteration, with higher values representing a greater degree of alteration (i.e. the weathering of feldspars to kaolinite and gibbsite and associated loss of base cations). The same analysis can be applied for the interpretation of subsequent PCA dimensions, but can become increasingly challenging when the loading vector becomes comprised of minor or diffuse features of the XRPD data.
+with more negative scores associated with increased plagioclase and K-feldspar peak intensities, and more positive scores associated with increased kaolinite and gibbsite peak intensities. Dim.2 can therefore be interpreted to represent an index of chemical alteration, with higher values representing a greater degree of alteration (i.e. the weathering of feldspars to kaolinite and gibbsite and associated loss of base cations). The same analysis can be applied for the interpretation of subsequent PCA dimensions, but can become increasingly challenging when the loading vector becomes comprised of minor or diffuse features of the XRPD data.
 
 ## Fuzzy clustering
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/dmkzs-sdIZ4" frameborder="0" allowfullscreen></iframe></p>
+
 Cluster analysis will be now applied to the 5 PCs plotted in Figure \@ref(fig:pc-fig) using fuzzy-c-means clustering algorithm implemented in the **e1071**  package [@e1071].
 
 When applying cluster analysis, the selection of the most appropriate number of clusters can prove to be subjective and, in some cases, difficult. There are a number of approaches that can be used to objectively define the most appropriate number of clusters [@Rossel2016; @Butler2020], but for simplicity the number of clusters used in this example will be manually defined as 9:
@@ -266,7 +275,7 @@ fcm <- cmeans(pca$coords[-1],
 identical(names(fcm$cluster), pca$coords$sample_id)
 
 clusters <- data.frame("SSN" = names(fcm$cluster),
-                       "CLUSTER" = unname(fcm$cluster),
+                       "CLUSTER" = paste0("C", unname(fcm$cluster)),
                        pca$coords[-1])
 
 #Reorder the clusters based on Dim.1
@@ -278,24 +287,16 @@ dim1_mean <- aggregate(Dim.1 ~ CLUSTER,
 
 #Order so that the Dim.1 mean is ascending
 dim1_mean <- dim1_mean[order(dim1_mean$Dim.1),]
-dim1_mean$NEW_CLUSTER <- 1:nrow(dim1_mean)
+dim1_mean$NEW_CLUSTER <- paste0("C", 1:nrow(dim1_mean))
 
-#Create a column that will be populated with the new
-#Cluster classification
-clusters$NEW_CLUSTER <- NA
+#Create a named vector that will be used to revalue cluster names
+#Values of the vector are the new values, and old values are the names
+rv <- setNames(dim1_mean$NEW_CLUSTER, # the vector values
+               dim1_mean$CLUSTER) #the vector names 
 
-#populate new cluster column
-for (i in 1:nrow(dim1_mean)) {
-  
-  index <- which(clusters$CLUSTER == dim1_mean$CLUSTER[i])
-  
-  clusters$NEW_CLUSTER[index] <- dim1_mean$NEW_CLUSTER[i]
-  
-}
-
-#Turn new cluster into a factor
-clusters$NEW_CLUSTER <- as.factor(clusters$NEW_CLUSTER)
-
+#use the revalue function to create a new cluster column
+clusters$NEW_CLUSTER <- revalue(clusters$CLUSTER,
+                                rv)
 
 #Create an empty list
 p <- list()
@@ -327,9 +328,14 @@ Use of the fuzzy-c-means clustering algorithm results in every sample having a m
 #Extract the membership coefficients
 members <- data.frame(fcm$membership, check.names = FALSE)
 
-#Reorder the columns based on the new cluster order defined above
-members <- members[dim1_mean$CLUSTER]
-names(members) <- paste0("Membership.", 1:ncol(members))
+#Add C to all the names to match that used above.
+names(members) <- paste0("C", names(members))
+
+#revalue the names based on the new clustering order
+names(members) <- revalue(names(members), rv)
+
+#Add membership to the name
+names(members) <- paste0("Membership_", names(members))
 
 #Join clusters and members
 members <- data.frame(clusters,
@@ -345,7 +351,7 @@ for (i in 1:9) {
    p[[i]] <- ggplot(data = members) +
              geom_point(aes_string(x = "Dim.1",
                                    y = "Dim.2",
-                                   fill = paste0("Membership.",
+                                   fill = paste0("Membership_C",
                                                  i)),
                         shape = 21,
                         size = 3,
@@ -368,14 +374,14 @@ Together Figures \@ref(fig:cluster-fig) and \@ref(fig:membership-fig) illustrate
 Here, more mineralogically distinct clusters will be created by only retaining samples within each cluster that have a membership coefficient exceeding the 75^th^ percentile:
 
 ```{r, fig.cap = "The formation of distinct clusters by retaining the samples within each cluster that have membership coefficients greater than the 75% percentile.", out.width='100%', fig.align='center', fig.asp=1.5, cache = TRUE, message = FALSE, warning = FALSE}
-#Creat a blank name to populate with the unique SSNs
+#Create a blank name to populate with the unique SSNs
 member_ssn <- list()
 
 #A loop to omit samples from each cluster with low membership coefficient
 for (i in 1:9) {
   
-  memberships <- members[which(members$NEW_CLUSTER == i), c("SSN",
-                                                            paste0("Membership.", i))]
+  memberships <- members[which(members$NEW_CLUSTER == paste0("C", i)),
+                         c("SSN", paste0("Membership_C", i))]
 
   
   #Extract the samples with top 25 % of membership coefficient for each cluster
@@ -384,7 +390,7 @@ for (i in 1:9) {
   
   member_ssn[[i]] <- memberships$SSN[memberships_75]
   
-  names(member_ssn)[i] <- paste0("Cluster.", i)
+  names(member_ssn)[i] <- paste0("C", i)
   
 }
 
@@ -417,6 +423,9 @@ grid.arrange(grobs = p,
 ```
 
 ## Exploring results
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/9zMK7wJGopU" frameborder="0" allowfullscreen></iframe></p>
+
 Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored in order to relate the soil mineral composition to the nutrient concentrations. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised, for example:
 
 ```{r, fig.cap = "Interactive map of the soil samples associated with Cluster 9.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
@@ -424,7 +433,7 @@ clust_sub <- join(members_sub[c("SSN", "NEW_CLUSTER")],
                   props, by = "SSN") 
 
 #Plot cluster 9
-leaflet(clust_sub[which(clust_sub$NEW_CLUSTER == 9), ]) %>% 
+leaflet(clust_sub[which(clust_sub$NEW_CLUSTER == "C1"), ]) %>% 
   addTiles() %>%
   addCircleMarkers(~Longitude, ~Latitude)
 ```
@@ -436,36 +445,24 @@ returns a map of the locations of all samples within Cluster 9. Even though samp
 cluster_xrpd <- list()
 
 for (i in 1:9) {
-cluster_xrpd[[i]] <- xrpd_aligned[clust_sub$SSN[clust_sub$NEW_CLUSTER == i]]
-names(cluster_xrpd)[i] <- paste0("Cluster.", i)
+cluster_xrpd[[i]] <- xrpd_aligned[clust_sub$SSN[clust_sub$NEW_CLUSTER == paste0("C",i)]]
+names(cluster_xrpd)[i] <- paste0("C", i)
 }
 
 #Plot cluster 9
-plot(as_multi_xy(cluster_xrpd$Cluster.9), wavelength = "Cu", normalise = TRUE)
+plot(as_multi_xy(cluster_xrpd$C1), wavelength = "Cu", normalise = TRUE)
 ```
 
-Given that the soil mineral composition ultimately governs the total concentrations of nutrients and their phyto-availability, the nine mineralogically different clusters defined here should display contrasting geochemical properties. These geochemical properties are present in the `props` data already loaded, to which the cluster factor can be added:
+Given that the soil mineral composition ultimately governs the total concentrations of nutrients and their phyto-availability, the nine mineralogically different clusters defined here should display contrasting geochemical properties. These geochemical properties are present in the `props` data that has already been combined with the clustering data in `clust_sub`. Here the relative enrichments and deficiencies of each cluster with respect to total nutrient concentrations will be visualised using barplots [@Montero2010; @Butler2020]:
 
-```{r, cache = TRUE, message = FALSE, warning = FALSE}
-#Join clust_sub to props
-props_sub <- join(clust_sub[c("SSN", "NEW_CLUSTER")],
-                  props,
-                  by = "SSN")
-
-#Rename the clusters to C1... C9
-props_sub$NEW_CLUSTER <- paste0("C", props_sub$NEW_CLUSTER)
-
-#Subset the data to the variables of interest
-total_nutrients <- subset(props_sub,
+```{r cluster-geochem-barplot, fig.cap = "Average total nutrient concentrations of each cluster expressed as deviation in log-ratio scale from the geometric mean. Values below zero represent average concentrations lower than that for the entire dataset, whilst values above zero represent the opposite.", out.width='100%', fig.align='center', fig.asp=0.75,cache = TRUE, message = FALSE, warning = FALSE}
+#Select the variables of interest
+total_nutrients <- subset(clust_sub,
                           select = c(NEW_CLUSTER,
                                      TOC, K, Ca,
                                      Mn, Fe, Ni,
                                      Cu, Zn))
-```
 
-After which, the relative enrichments and deficiencies of each cluster for these total nutrient concentrations can be visualised using barplots [@Montero2010; @Butler2020]:
-
-```{r cluster-geochem-barplot, fig.cap = "Average total nutrient concentrations of each cluster expressed as deviation in log-ratio scale from the geometric mean. Values below zero represent average concentrations lower than that for the entire dataset, whilst values above zero represent the opposite.", out.width='100%', fig.align='center', fig.asp=0.75,cache = TRUE, message = FALSE, warning = FALSE}
 #Create geometric mean function
 gmean <- function(x) {exp(mean(log(x)))}
 
@@ -512,12 +509,12 @@ xrpd_clusters <- list()
 for (i in 1:9) {
   
   #Extract the SSN for the cluster
-  ssns <- clust_sub$SSN[which(clust_sub$NEW_CLUSTER == i)]
+  ssns <- clust_sub$SSN[which(clust_sub$NEW_CLUSTER == paste0("C", i))]
   
   #Extract the aligned xrpd data and make sure it is a multiXY object
   xrpd_clusters[[i]] <- as_multi_xy(xrpd_aligned[ssns])
   
-  names(xrpd_clusters)[i] <- paste0("Cluster.", i)
+  names(xrpd_clusters)[i] <- paste0("C", i)
   
   #Convert to a data frame
   xrpd_clusters[[i]] <- multi_xy_to_df(xrpd_clusters[[i]],
@@ -530,7 +527,7 @@ for (i in 1:9) {
 }
 
 #Plot the mean diffractogram of Cluster 9
-plot(xrpd_clusters$Cluster.9, wavelength = "Cu")
+plot(xrpd_clusters$C1, wavelength = "Cu")
 ```
 
 Now that the mean diffractogram of each cluster has been computed. The mineralogy of each diffractogram can be quantified [using `afps()`](#afps) using the`rockjock_afsis` library created above, yielding an approximate average of the mineral composition of each cluster:
@@ -555,15 +552,15 @@ amorph <- c("ORGANIC_MATTER", "ORGANIC_AFSIS",
             "HUMIC_ACID", "FERRIHYDRITE_HUMBUG_CREEK",
             "FERRIHYDRITE")
 
-clusters_quant <- multi_fit <- lapply(xrpd_clusters, afps,
-                                      lib = rockjock_afsis,
-                                      std = "QUARTZ_1_AFSIS",
-                                      refs = usuals,
-                                      amorphous = amorph,
-                                      align = 0.2,
-                                      lod = 0.05,
-                                      amorphous_lod = 0,
-                                      force = "BACK_POS")
+clusters_quant <- lapply(xrpd_clusters, afps,
+                         lib = rockjock_afsis,
+                         std = "QUARTZ_1_AFSIS",
+                         refs = usuals,
+                         amorphous = amorph,
+                         align = 0.2,
+                         lod = 0.05,
+                         amorphous_lod = 0,
+                         force = "BACK_POS")
 
 #Load the regrouping structures for rockjock and afsis
 data(rockjock_regroup)
