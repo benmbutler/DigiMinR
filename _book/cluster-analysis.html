@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-08-26" />
+<meta name="date" content="2021-08-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -725,7 +725,6 @@ Figure 4.7: The formation of distinct clusters by retaining the samples within e
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9zMK7wJGopU" frameborder="0" allowfullscreen>
 </iframe>
 </p>
-<p>9zMK7wJGopU</p>
 <p>Now that a set of mineralogically distinct clusters have been defined from the data, there are number of ways that the data can be explored in order to relate the soil mineral composition to the nutrient concentrations. Firstly, since these data are geo-referenced, the spatial distribution of each cluster can be visualised, for example:</p>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="cluster-analysis.html#cb189-1" aria-hidden="true" tabindex="-1"></a>clust_sub <span class="ot">&lt;-</span> <span class="fu">join</span>(members_sub[<span class="fu">c</span>(<span class="st">&quot;SSN&quot;</span>, <span class="st">&quot;NEW_CLUSTER&quot;</span>)],</span>
 <span id="cb189-2"><a href="cluster-analysis.html#cb189-2" aria-hidden="true" tabindex="-1"></a>                  props, <span class="at">by =</span> <span class="st">&quot;SSN&quot;</span>) </span>
