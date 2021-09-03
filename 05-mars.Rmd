@@ -2,14 +2,14 @@
 
 This chapter will use [data](https://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid=MSL-M-CHEMIN-4-RDR-V1.0) from the Mars Science Laboratory (MSL) onboard NASA's Curiosity Rover. The MSL XRPD data were obtained from the [Geosciences Data Volume Online](https://pds-geosciences.wustl.edu/msl/msl-m-chemin-4-rdr-v1/) as ASCII '.csv' files on the 17^th^ July 2021 and loaded into R [@Vaniman2012] using `read.csv()`.
 
-The mineral compositions of the samples in the MSL dataset are described and discussed in numerous publications [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. The many clay minerals identified and quantified from the XRPD provides compelling evidence that the surface material has been altered by water.
+The mineral compositions of the samples in the MSL dataset are described and discussed in numerous publications [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. The many clay minerals identified and quantified from the XRPD data provides compelling evidence that the Martian surface material has been altered by water, which has profound implications for the potential existence of microbial life on Mars.
 
 Qualitative and quantitative analysis of clay minerals is a notoriously challenging undertaking, often requiring separation of the clay fraction onto oriented slides combined with several ethylene-glycol and heat treatments. The MSL cannot separate the clay fraction from Martian samples and is limited to bulk sample analysis, where clay minerals are analysed in a randomly oriented powder along with all other crystalline and amorphous components within the sample. This has acted to create uncertainty in the analysis of clay minerals from MSL XRPD data [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2018]. Identification of Earth based analogues for Martian soil mineralogy therefore represent an opportunity to facilitate more accurate interpretation of the clay mineralogy encoded within MSL XRPD data. Further, understanding the development of mineralogically analogous soils on Earth has potential to aid the development of hypotheses for the environmental properties of aqueous systems on ancient Mars [@Marlow2008].
 
-Here, soil XRPD data from the National Soil Inventory of Scotland [@Butler2018] will be compared to the XRPD data from Mars in the aim of identifying potential soil analogues for Martian mineralogy.
+Here, soil XRPD data from across Scotland [@Butler2018] will be compared to the MSL XRPD data in the aim of identifying potential soil analogues for Martian mineralogy.
 
-## Data
-Data for this example is stored within a **mars2mull** R package hosted on GitHub. The package can be installed using the **devtools** package
+## Required packages {#mars-package}
+Data for this chapter are stored within a **mars2mull** R package [hosted on GitHub](https://github.com/benmbutler/mars2mull/). The package can be installed using the **devtools** package
 
 ```{r, eval = FALSE}
 #Install devtools if it's not already on your machine
@@ -19,28 +19,42 @@ install.packages("devtools")
 devtools::install_github("benmbutler/mars2mull")
 ```
 
-### Mars Science Laboratory XRPD Data
-Martian XRPD data within the package have been extracted from NASA's [Geosciences Data Volume Online](https://pds-geosciences.wustl.edu/msl/msl-m-chemin-4-rdr-v1/) [@Vaniman2012] and renamed according to the various sites that were sampled. The diffractograms of 31 Martian samples are contained within the `mars_xrpd` data in [`multiXY` format](#loading-multiple). All diffractograms were collected using Co-K$\alpha$ radiation, with further details of the data collection and instrumental parameters provided elsewhere [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. Further to the XRPD data, additional information about each of the samples is provided in the `mars_id` data:
+Running the code for this chapter requires the **mars2mull** package along with a few other packages that have already been introduced and used in previous Chapters of this course:
 
-```{r, cache = TRUE}
-#load the mars2mull package
+```{r, message = FALSE, warning = FALSE}
 library(mars2mull)
-
-#load powdR so that the XRPD data can be plotted
 library(powdR)
+library(ggplot2)
+library(leaflet)
+```
 
+## Datasets
+
+### Mars Science Laboratory XRPD Data {#mars-data}
+Martian XRPD data within the package have been extracted from NASA's [Geosciences Data Volume Online](https://pds-geosciences.wustl.edu/msl/msl-m-chemin-4-rdr-v1/) [@Vaniman2012] and renamed according to the various sites that were sampled. The diffractograms of 31 Martian samples are contained within the `mars_xrpd` data in [`multiXY` format](#loading-multiple). All diffractograms were collected using Co-Kα radiation, with further details of the data collection and instrumental parameters provided elsewhere [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. Upon loading the `mars_xrpd` data here, we will subset the diffractograms to 2θ >= 4.5 degrees in order to remove the contributions from the sample holder at low angles:
+
+```{r, fig.cap = "The 31 diffractograms within the mars_xrpd data. Using interactive = TRUE in the function call will allow for easier interpretation.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
 #load the Martian XRPD data
 data(mars_xrpd)
 
+#Subset the Martian XRPD data to >4.5
+#to avoid single from sample holder
+mars_xrpd <- as_multi_xy(lapply(mars_xrpd, subset,
+                                tth >= 4.5))
+
 #plot the 31 Martian diffractograms
 plot(mars_xrpd, wavelength = "Co",
-     normalise = TRUE, interactive = TRUE)
+     normalise = TRUE, interactive = FALSE)
+```
 
+Further to the XRPD data, additional information about each of the samples is provided in the `mars_id` data, and more help can be accessed via `?mars_id`:
+
+```{r, cache = TRUE}
 #load the extra information about the samples interactively
 data(mars_id)
 
-#View the first four columns of the mars_id data
-mars_id[1:4]
+#View the first 6 rows of the mars_id data
+head(mars_id)
 ```
 
 The locations of the 31 samples can be explored using the `SOL_START` and `SOL_END` columns in the `mars_id` data in combination with [NASA's online map for Curiosity's location](https://mars.nasa.gov/maps/location/?mission=Curiosity).
@@ -49,8 +63,8 @@ The locations of the 31 samples can be explored using the `SOL_START` and `SOL_E
 <a href="https://mars.nasa.gov/maps/location/?mission=Curiosity"><img src="figures/curiosity-screenshot_small.png" /></p></a>
 </center>
 
-### Scottish Soil XRPD data
-The Scottish soil diffractograms relate to 773 samples collected by horizon from 207 sites across Scotland. Samples were collected primarily as part of the second National Soil Inventory of Scotland [NSIS, @Butler2018] and are supplemented by additional samples of rare Scottish soils.
+### Scottish Soil XRPD data {#mars-scotland-data}
+The Scottish soil diffractograms relate to 773 samples collected by horizon from 207 sites across Scotland. Samples were collected primarily as part of the second National Soil Inventory of Scotland [NSIS, @Butler2018] and are supplemented by additional samples of rare Scottish soils. Information about the samples is provided in the `scotland_locations` data:
 
 ```{r, fig.cap = "Interactive map of the sampling locations for the Scottish soils. Blue symbols represent samples associated with the NSIS dataset. Yellow symbols represent samples associated with the Rare Soils dataset.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Load the scotland_locations data
@@ -58,9 +72,6 @@ data(scotland_locations)
 
 #Show the first 6 rows of the data
 head(scotland_locations)
-
-#load the leaflet package
-library(leaflet)
 
 #Plot the data of "NSIS" and "Rare" samples in different colours
 leaflet() %>% 
@@ -76,7 +87,7 @@ leaflet() %>%
 
 ```
 
-The XRPD data were collected using Cu-Kα radiation [for details see @Butler2018] and are included within the **mars2mull** package in the `scotland_xrpd` data, which a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub.
+The XRPD data of the 774 Scottish soils were collected using Cu-Kα radiation [for details see @Butler2018] and are included within the `scotland_xrpd` data, which is a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub. The `scotland_xrpd` data frame contains the 2θ axis as the first column, with the subsequent 774 columns representing the count intensities of the diffractograms and column names relating to the `SAMPLE_ID` column in the `scotland_locations` data.
 
 ```{r, cache = TRUE}
 #Load the Scottish XRPD data
@@ -84,12 +95,281 @@ data(scotland_xrpd)
 
 #Check the class of the data
 class(scotland_xrpd)
+
+#Summarise the first 5 columns
+summary(scotland_xrpd[1:5])
+
+#Check that the column names match the SAMPLE_ID 
+#column in scotland_locations
+identical(names(scotland_xrpd[-1]),
+          scotland_locations$SAMPLE_ID)
 ```
 
-## Data manipulation
-The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2θ axes, which can be achieved by applying the following manipulations need to the data:
+As outlined [here](#to-data-frame), data frames in this form (i.e. where the first column is 2θ and subsequent columns are count intensities of each sample) can readily be converted to `multiXY` objects using `as_multi_xy()`:
 
-1. Transform the 2θ scale of the `scotland_xrpd` data to its Co-Kα equivalent
-2. Calculate the overlapping 2θ range of the two datasets
-3. Interpolate the data onto a harmonised 2θ scale
-4. Align each sample during pair-wise comparison
+```{r fig.cap = "The first 10 samples in the scotland_xrpd data.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+#Convert scotland_xrpd to a multiXY object
+scotland_xrpd <- as_multi_xy(scotland_xrpd)
+
+#Plot the first 10 diffractograms
+plot(as_multi_xy(scotland_xrpd[1:10]),
+     wavelength = "Cu",
+     normalise = TRUE,
+     interactie = FALSE)
+```
+
+## Data manipulation {#mars-manipulation}
+The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2θ axes, which can be achieved by applying the following manipulations to the data:
+
+1. [Transform the 2θ scale](#two-theta-transform) of the `scotland_xrpd` data to its Co-Kα equivalent
+2. Interpolate the data onto a harmonised 2θ scale within the overlapping 2θ range
+
+### 2θ transformation
+As outlined [here](#two-theta-transform), `tth_transform()` can be used to transform the 2θ axis of a sample to one that is representative of data recorded using a different wavelength. Here the `scotland_xrpd` data, which were collected using Cu-Kα radiation, will be transformed to be representative of the Co-Kα radiation that was used on the MSL diffractometer:
+
+
+```{r fig.cap = "The first 10 samples in the scotland_xrpd data after 2theta transformation.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+#Convert Scotland_xrpd back to a dataframe for easy alteration of 2theta
+scotland_xrpd <- multi_xy_to_df(scotland_xrpd, tth = TRUE)
+
+#Change the 2theta axis
+scotland_xrpd$tth <- tth_transform(scotland_xrpd$tth,
+                                   from = 1.54056, #Cu-K-alpha wavelength
+                                   to = 1.78897) #Co-K-alpha wavelength
+
+#Convert back to multiXY
+scotland_xrpd <- as_multi_xy(scotland_xrpd)
+
+#Plot some of the transformed Scotland data
+plot(as_multi_xy(scotland_xrpd[1:10]),
+     wavelength = "Co",
+     normalise = TRUE,
+     interactive = FALSE)
+```
+
+### 2θ interpolation
+Now that the 2θ axis of the `scotland_xrpd` data is transformed to its Co-Kα equivalent, the overlapping 2θ range of the `scotland_xrpd` and `mars_xrpd` data can be computed and used to interpolate all data onto a harmonised 2θ axis:
+
+```{r, eval = FALSE}
+#Extract the minimum and maximum to use in the harmonised 2theta scale
+tth_min <- max(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) min(x$tth))))
+tth_max <- min(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) max(x$tth))))
+
+#Create a new 2theta axis to interpolate all data onto
+#using the 0.05 resolution of the MSL data
+new_tth <- seq(round(tth_min, 2), round(tth_max, 2), 0.05)
+
+#Interpolate the data
+mars_xrpd <- interpolate(mars_xrpd, new_tth)
+scotland_xrpd <- interpolate(scotland_xrpd, new_tth)
+
+#Plot some of the transformed and interpolated data
+plot(as_multi_xy(scotland_xrpd[1:10]),
+     wavelength = "Co",
+     normalise = TRUE,
+     interactive = FALSE)
+```
+
+```{r fig.cap = "The first 10 samples in the scotland_xrpd data following 2theta transformation and interpolation.", out.width='100%', fig.align='center', fig.asp=0.75, echo = FALSE, message=FALSE, warning=FALSE, cache = TRUE}
+#Get extract the minimum and maximum to use in the haromised 2theta scale
+tth_min <- max(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) min(x$tth))))
+tth_max <- min(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) max(x$tth))))
+
+#Create a new 2theta axis to interpolate all data onto
+#using the 0.05 resolution of the MSL data
+new_tth <- seq(round(tth_min, 2), round(tth_max, 2), 0.05)
+
+#Interpolate the data
+mars_xrpd <- powdR::interpolate(mars_xrpd, new_tth)
+scotland_xrpd <- powdR::interpolate(scotland_xrpd, new_tth)
+
+#Plot some of the Scotland data again
+plot(as_multi_xy(scotland_xrpd[1:10]),
+     wavelength = "Co",
+     normalise = TRUE)
+```
+
+## Comparison of XRPD data
+Now that the data are harmonised and therefore comparable, the final step is to correlate each MSL diffractogram to every Scottish diffractogram and derive the Pearson correlation coefficients. This comparison should therefore yield 31 vectors each consisting of 774 correlation coefficients (thus 23,994 comparisons in total). In order to further enhance the derived correlation coefficients where similarities are detectable, each pairwise comparison will involve alignment of the 2 samples to one-another in order to correct for [common experimental aberrations](#alignment) that can affect peak positions on the 2θ axis. To facilitate this a function will be created that accept the following 3 arguments
+
+1. `mars` will be an [`XY` object](#loading-data) of an MSL diffractogram.
+2. `scotland` will be an `XY` object of a Scottish soil diffractogram.
+3. `align` will define the maximum 2θ shift (either positive or negative) that can be applied.
+
+The function will firstly align the two diffractograms to one-another before deriving the Pearson correlation coefficient:
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+compare_xrpd <- function(mars, scotland, align) {
+  
+  #Align the two samples to one another using the multiXY method
+  #of the align_xy function
+  x <- align_xy(as_multi_xy(list("mars" = mars,
+                                 "scotland" = scotland)),
+                std = mars,
+                xshift = align,
+                xmin = min(mars[[1]]),
+                xmax = max(mars[[1]]))
+  
+  #Correlate the count intensities to one-another
+  pearson <- cor(x$mars[[2]], x$scotland[[2]])
+  
+  #return the pearson correlation coefficient
+  return(pearson)
+  
+}
+```
+
+Now that we have created the `compare_xrpd()` function it will be applied across each of the diffractograms in `scotland_xrpd` using `sapply()`. For example, if we wanted to compare every diffractogram in `scotland_xrpd` to `mars_xrpd$Cumberland` we could use:
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+cumberland_to_scotland <- sapply(scotland_xrpd,
+                                 compare_xrpd,
+                                 mars = mars_xrpd$Cumberland,
+                                 align = 0.3
+                                 )
+```
+
+Which yields a named vector of 774 correlation coefficients comparing `mars_xrpd$Cumberland` to every sample within the `scotland_xrpd` data, with each item within the vector being named according to the sample ID from `scotland_xrpd`. 
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+#Show the first six values of the names vector
+head(cumberland_to_scotland)
+```
+
+To derive the correlation coefficients for *all 31 samples* within the `mars_xrpd` data instead of just `mars$Cumberland`, a `for` loop will be used:
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+#Create a blank list to populate
+mars_to_scotland <- list()
+
+for (i in 1:length(mars_xrpd)) {
+  
+  #Use sapply again to derive the named vector of coefficients
+  mars_to_scotland[[i]] <- sapply(scotland_xrpd,
+                                  compare_xrpd,
+                                  mars = mars_xrpd[[i]],
+                                  align = 0.3
+                                  )
+  
+  #name the list item
+  names(mars_to_scotland)[i] <- names(mars_xrpd)[i]
+  
+}
+```
+
+Which yields a list of 31 named vectors that each take the same form of `cumberland_to_scotland`. Each item within the list is named according to the MSL site name and consists of 774 numeric correlation coefficients:
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+summary(mars_to_scotland)
+```
+
+By unlisting the `mars_to_scotland` data using `unlist()`, we end up with a very long vector consisting of 23,994 correlation coefficients, with each coefficient having a unique name that takes the form `MarsSite.ScotlandID`.
+
+```{r, message=FALSE, warning=FALSE, cache = TRUE}
+#Create a vector from the mars_to_scotland list
+mars_to_scotland_v <- unlist(mars_to_scotland)
+
+#Check the first correlation coefficient
+mars_to_scotland_v[1]
+```
+
+with the name `{r names(mars_to_scotland_v[1])}` detailing that the `mars_xrpd$Rocknest_4` and `scotland_xrpd$S1018719` samples were used to derive this correlation coefficient. It's possible to plot the aligned data associated with these samples using:
+
+```{r fig.cap = "Sample Rocknest_4 and S1018719 aligned and plotted against one-another.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+comparison <- align_xy(as_multi_xy(list("Mars_Rocknest_4" = mars_xrpd$Rocknest_4,
+                                        "Scotland_S1018719" = scotland_xrpd$S1018719)),
+                       std = mars_xrpd$Rocknest_4,
+                       xshift = 0.3,
+                       xmin = 4.52,
+                       xmax = 51.92)
+
+#Plot the data
+plot(comparison,
+     wavelength = "Co",
+     normalise = TRUE,
+     interactive = TRUE)
+```
+
+From this comparison it's clear to see that these diffractograms are highly dissimilar, which is reflected in their relatively low correlation coefficient of 0.17. However, this is just the first correlation coefficient of ~24,000 that need to be explored, and now that all of the correlation coefficients are in a vector they can easily be summarised and visualised:
+
+```{r fig.cap = "Histogram of all 23,994 correlation coefficients", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+#Summarise the correlation coefficients
+summary(mars_to_scotland_v)
+
+#Produce a histogram of the correlation coefficients
+ggplot(data = data.frame("pearson" = mars_to_scotland_v),
+       aes(x = pearson)) +
+  geom_histogram(bins = 100, colour = "black", fill = "white") +
+  xlab("Pearson correlation coefficient") +
+  ylab("Count")
+```
+
+The summary of the data outlines how the correlation coefficients range from -0.2 to 0.8, with an average of ~0.2. The histogram displays an approximately normal distribution of correlation coefficients, but shows a small tail of values >0.75, that can be further explored:
+
+```{r cache = TRUE}
+high_cors <- mars_to_scotland_v[mars_to_scotland_v >= 0.75]
+
+#Check the results
+high_cors
+
+#Extract the Mars site names from the high_cors vector
+high_cors_mars <- sub("\\..*", "", names(high_cors))
+
+#Show the sites
+unique(high_cors_mars)
+
+#Extract the Scotland sample IDs from the high cors vector
+high_cors_scotland <- sub('.*\\.', '', names(high_cors))
+
+#Show the samples
+unique(high_cors_scotland)
+```
+
+It's also possible to plot the samples for each of the sites where high correlations are found. Here we'll plot the site that displays the highest correlation to samples within the `scotland_xrpd` dataset:
+
+```{r fig.cap = "Diffractogram from the Cumberland site plotted against 3 diffractograms from Scotland identified as having relatively high correlation to the Martian data.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+#Extract the name of the site with the highest correlation coefficients
+highest_cor <- sub("\\..*", "", names(high_cors)[which.max(high_cors)])
+
+#print it
+highest_cor
+
+#Extract the IDs of samples that correlate strongly with Cumberland
+scotland_ids <- sub('.*\\.', '', names(high_cors)[grep(highest_cor, names(high_cors))])
+
+#print them
+scotland_ids
+
+mars_highest_cor <- as_multi_xy(c(mars_xrpd[highest_cor],
+                                  scotland_xrpd[scotland_ids]))
+
+#align data
+mars_highest_cor <- align_xy(mars_highest_cor,
+                             std = mars_highest_cor[[1]],
+                             xshift = 0.3,
+                             xmin = 4.52,
+                             xmax = 51.92)
+
+plot(mars_highest_cor,
+     wavelength = "Co",
+     normalise = TRUE,
+     interactive = FALSE)
+```
+
+From this plot (which is best plotted using `interactive = TRUE` in the function call) we can see how three samples from the `scotland_xrpd` data show notable similarity to the data from the Cumberland site in the MSL data. Of particular note is the very similar basal plane d-spacing of the predominant clay mineral within the samples, suggesting that perhaps similar clay minerals are observed in the samples from Mars and Scotland.
+
+Further exploration of Scottish samples identified as having similar diffraction patterns to the Cumberland MSL sample can be achieved by exploring the data spatially and by understanding more about the parent material that Scottish soils developed from:
+
+```{r, fig.cap = "Interactive map of the locations of the Scottish soils that display the highest correlation to samples from the Cumberland MSL site.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
+leaflet() %>% 
+  addTiles() %>%
+  addCircleMarkers(data = scotland_locations[scotland_locations$SAMPLE_ID %in% scotland_ids,],
+                   ~PROFILE_LONGITUDE, ~PROFILE_LATITUDE,
+                   color = "blue",
+                   opacity = 1)
+
+```
+
+Plotting the data spatially reveals that the samples are from two sites that are both located on the West Coast of Scotland. More specifically the sites are on the Isle of Ulva, near the Isle of Mull, and the Trotternish Peninsula on the Isle of Skye. Both of these locations display soils developed from a basaltic parent material in combination with a relatively wet climate that has resulted in the weathering of this material to various clay minerals, which may be useful analogues for Martian clay mineralogy.
+
+In summary, manipulation of XRPD data and data-driven comparisons allows for inter-planetary comparisons of soil samples collected on Earth and Mars. Application of such approaches may serve as a useful way of identifying sites that can be further studies as geological or mineralogy analogues for Mars in order to undertake more detailed analyses that are beyond the capabilities of rover missions.

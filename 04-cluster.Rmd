@@ -157,7 +157,7 @@ grid.arrange(grobs = p,
              ncol = 2)
 ```
 
-### Interpreting pricipal components
+### Interpreting principal components
 Whilst we're able to derive that the first 5 PCs explain 93 % of variation in the XRPD data and plot the resulting variables against one-another, we are still not in a position to interpret what the scores actually mean. For example, how do increased/decreased values in Dim.1 reflect mineralogical differences in the soil samples? This interpretation can be achieved by examining the loadings of each PC dimension, for example the loading of Dim.1 can be visualised via:
 
 
@@ -610,3 +610,4 @@ Together the geochemical (Figure \@ref(fig:cluster-geochem-barplot)) and mineral
 3. Soils in Cluster 2 are particularly enriched in Ca due to the high concentrations of plagioclase, expandable/ML clays and calcite (not plotted but can be observed in the tabulated data) minerals.
 
 This example ultimately acts to highlight the utility of 'Digital' methods of analysis applied to soil XRPD data. Whilst this example focuses on total nutrient concentrations, the method can also be applied to the Mehlich-3 extractable element concentrations that are also included within the `props` data. For further analysis and discussion on the application of cluster analysis to this dataset, along with additional methods of compositional data analysis, see @Butler2020 and the accompanying Supplementary Material.
+
