@@ -38,10 +38,25 @@ This chapter will use a number of packages that should already be installed on y
 install.packages(c("reshape2", "e1071"))
 ```
 
-```{r, message = FALSE, warning = FALSE}
+```{r, eval = FALSE}
 #load the relevant packages
 library(reshape2)
 library(e1071)
+library(leaflet)
+library(powdR)
+library(ggplot2)
+library(plotly)
+library(gridExtra)
+library(plyr)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#This code isn't shown because I DONT want to load
+#the e1071 package as this can create problems with powdR
+#as they both share an interpolate function
+
+#load the relevant packages
+library(reshape2)
 library(leaflet)
 library(powdR)
 library(ggplot2)
@@ -266,14 +281,26 @@ Cluster analysis will be now applied to the 5 PCs plotted in Figure \@ref(fig:pc
 
 When applying cluster analysis, the selection of the most appropriate number of clusters can prove to be subjective and, in some cases, difficult. There are a number of approaches that can be used to objectively define the most appropriate number of clusters [@Rossel2016; @Butler2020], but for simplicity the number of clusters used in this example will be manually defined as 9:
 
-```{r cluster-fig, fig.cap = "Pre-treated XRPD data clustered into 9 groups.", out.width='100%', fig.align='center', fig.asp=2, cache = TRUE, message = FALSE, warning = FALSE}
+```{r, eval = FALSE}
 #Apply the fuzzy-c-means algorithm to the PCs
 fcm <- cmeans(pca$coords[-1],
               center = 9)
 
 #check the data are in the same order
 identical(names(fcm$cluster), pca$coords$sample_id)
+```
 
+```{r echo = FALSE, cache = TRUE, message = FALSE, warning = FALSE}
+#Apply the fuzzy-c-means algorithm to the PCs
+fcm <- e1071::cmeans(pca$coords[-1],
+                     center = 9)
+
+#check the data are in the same order
+identical(names(fcm$cluster), pca$coords$sample_id)
+```
+
+```{r cluster-fig, fig.cap = "Pre-treated XRPD data clustered into 9 groups.", out.width='100%', fig.align='center', fig.asp=2, cache = TRUE, message = FALSE, warning = FALSE}
+#Join the data together
 clusters <- data.frame("SSN" = names(fcm$cluster),
                        "CLUSTER" = paste0("C", unname(fcm$cluster)),
                        pca$coords[-1])

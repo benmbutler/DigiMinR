@@ -412,8 +412,8 @@ Figure 4.1: The first 5 PCs plotted against one-another
 <div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="cluster-analysis.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca<span class="sc">$</span>loadings) <span class="sc">+</span></span>
 <span id="cb174-2"><a href="cluster-analysis.html#cb174-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> tth, <span class="at">y =</span> Dim<span class="fl">.1</span>)) <span class="sc">+</span></span>
 <span id="cb174-3"><a href="cluster-analysis.html#cb174-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-101"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-101-1.png" alt="The loading of Dim.1." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-102"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-102-1.png" alt="The loading of Dim.1." width="100%" />
 <p class="caption">
 Figure 4.2: The loading of Dim.1.
 </p>
@@ -474,8 +474,8 @@ Figure 4.2: The loading of Dim.1.
 ## -Removing coefficients with p-value greater than 0.01
 ## ***Full pattern summation complete***</code></pre>
 <div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="cluster-analysis.html#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dim1_fit, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">group =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-102"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-102-1.png" alt="Full pattern summation applied to the loading of Dim.1." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-103"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-103-1.png" alt="Full pattern summation applied to the loading of Dim.1." width="100%" />
 <p class="caption">
 Figure 4.3: Full pattern summation applied to the loading of Dim.1.
 </p>
@@ -526,8 +526,8 @@ Figure 4.3: Full pattern summation applied to the loading of Dim.1.
 ## -Removing coefficients with p-value greater than 0.01
 ## ***Full pattern summation complete***</code></pre>
 <div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="cluster-analysis.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dim2_fit, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">group =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-103"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-103-1.png" alt="Full pattern summation applied to the loading of Dim.2." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-104"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-104-1.png" alt="Full pattern summation applied to the loading of Dim.2." width="100%" />
 <p class="caption">
 Figure 4.4: Full pattern summation applied to the loading of Dim.2.
 </p>
@@ -567,50 +567,51 @@ Figure 4.4: Full pattern summation applied to the loading of Dim.2.
 <span id="cb185-5"><a href="cluster-analysis.html#cb185-5" aria-hidden="true" tabindex="-1"></a><span class="co">#check the data are in the same order</span></span>
 <span id="cb185-6"><a href="cluster-analysis.html#cb185-6" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">names</span>(fcm<span class="sc">$</span>cluster), pca<span class="sc">$</span>coords<span class="sc">$</span>sample_id)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="cluster-analysis.html#cb187-1" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;SSN&quot;</span> <span class="ot">=</span> <span class="fu">names</span>(fcm<span class="sc">$</span>cluster),</span>
-<span id="cb187-2"><a href="cluster-analysis.html#cb187-2" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;CLUSTER&quot;</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;C&quot;</span>, <span class="fu">unname</span>(fcm<span class="sc">$</span>cluster)),</span>
-<span id="cb187-3"><a href="cluster-analysis.html#cb187-3" aria-hidden="true" tabindex="-1"></a>                       pca<span class="sc">$</span>coords[<span class="sc">-</span><span class="dv">1</span>])</span>
-<span id="cb187-4"><a href="cluster-analysis.html#cb187-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-5"><a href="cluster-analysis.html#cb187-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Reorder the clusters based on Dim.1</span></span>
-<span id="cb187-6"><a href="cluster-analysis.html#cb187-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Lowest mean Dim.1 will be Cluster 1</span></span>
-<span id="cb187-7"><a href="cluster-analysis.html#cb187-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Highest mean Dim.1 will be Cluster 9</span></span>
-<span id="cb187-8"><a href="cluster-analysis.html#cb187-8" aria-hidden="true" tabindex="-1"></a>dim1_mean <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Dim<span class="fl">.1</span> <span class="sc">~</span> CLUSTER,</span>
-<span id="cb187-9"><a href="cluster-analysis.html#cb187-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> clusters,</span>
-<span id="cb187-10"><a href="cluster-analysis.html#cb187-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">FUN =</span> mean)</span>
-<span id="cb187-11"><a href="cluster-analysis.html#cb187-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-12"><a href="cluster-analysis.html#cb187-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Order so that the Dim.1 mean is ascending</span></span>
-<span id="cb187-13"><a href="cluster-analysis.html#cb187-13" aria-hidden="true" tabindex="-1"></a>dim1_mean <span class="ot">&lt;-</span> dim1_mean[<span class="fu">order</span>(dim1_mean<span class="sc">$</span>Dim<span class="fl">.1</span>),]</span>
-<span id="cb187-14"><a href="cluster-analysis.html#cb187-14" aria-hidden="true" tabindex="-1"></a>dim1_mean<span class="sc">$</span>NEW_CLUSTER <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dim1_mean))</span>
-<span id="cb187-15"><a href="cluster-analysis.html#cb187-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-16"><a href="cluster-analysis.html#cb187-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a named vector that will be used to revalue cluster names</span></span>
-<span id="cb187-17"><a href="cluster-analysis.html#cb187-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Values of the vector are the new values, and old values are the names</span></span>
-<span id="cb187-18"><a href="cluster-analysis.html#cb187-18" aria-hidden="true" tabindex="-1"></a>rv <span class="ot">&lt;-</span> <span class="fu">setNames</span>(dim1_mean<span class="sc">$</span>NEW_CLUSTER, <span class="co"># the vector values</span></span>
-<span id="cb187-19"><a href="cluster-analysis.html#cb187-19" aria-hidden="true" tabindex="-1"></a>               dim1_mean<span class="sc">$</span>CLUSTER) <span class="co">#the vector names </span></span>
-<span id="cb187-20"><a href="cluster-analysis.html#cb187-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-21"><a href="cluster-analysis.html#cb187-21" aria-hidden="true" tabindex="-1"></a><span class="co">#use the revalue function to create a new cluster column</span></span>
-<span id="cb187-22"><a href="cluster-analysis.html#cb187-22" aria-hidden="true" tabindex="-1"></a>clusters<span class="sc">$</span>NEW_CLUSTER <span class="ot">&lt;-</span> <span class="fu">revalue</span>(clusters<span class="sc">$</span>CLUSTER,</span>
-<span id="cb187-23"><a href="cluster-analysis.html#cb187-23" aria-hidden="true" tabindex="-1"></a>                                rv)</span>
-<span id="cb187-24"><a href="cluster-analysis.html#cb187-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-25"><a href="cluster-analysis.html#cb187-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Create an empty list</span></span>
-<span id="cb187-26"><a href="cluster-analysis.html#cb187-26" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb187-27"><a href="cluster-analysis.html#cb187-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-28"><a href="cluster-analysis.html#cb187-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Populate each item in the list using the dimension already</span></span>
-<span id="cb187-29"><a href="cluster-analysis.html#cb187-29" aria-hidden="true" tabindex="-1"></a><span class="co">#defined in x and y above</span></span>
-<span id="cb187-30"><a href="cluster-analysis.html#cb187-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)) {</span>
-<span id="cb187-31"><a href="cluster-analysis.html#cb187-31" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb187-32"><a href="cluster-analysis.html#cb187-32" aria-hidden="true" tabindex="-1"></a>   p[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> clusters) <span class="sc">+</span></span>
-<span id="cb187-33"><a href="cluster-analysis.html#cb187-33" aria-hidden="true" tabindex="-1"></a>             <span class="fu">geom_point</span>(<span class="fu">aes_string</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, x[i]),</span>
-<span id="cb187-34"><a href="cluster-analysis.html#cb187-34" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, y[i]),</span>
-<span id="cb187-35"><a href="cluster-analysis.html#cb187-35" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">fill =</span> <span class="st">&quot;NEW_CLUSTER&quot;</span>),</span>
-<span id="cb187-36"><a href="cluster-analysis.html#cb187-36" aria-hidden="true" tabindex="-1"></a>                        <span class="at">shape =</span> <span class="dv">21</span>,</span>
-<span id="cb187-37"><a href="cluster-analysis.html#cb187-37" aria-hidden="true" tabindex="-1"></a>                        <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb187-38"><a href="cluster-analysis.html#cb187-38" aria-hidden="true" tabindex="-1"></a>                        <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb187-39"><a href="cluster-analysis.html#cb187-39" aria-hidden="true" tabindex="-1"></a>             <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">&quot;Cluster&quot;</span>))</span>
-<span id="cb187-40"><a href="cluster-analysis.html#cb187-40" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb187-41"><a href="cluster-analysis.html#cb187-41" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb187-42"><a href="cluster-analysis.html#cb187-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb187-43"><a href="cluster-analysis.html#cb187-43" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> p,</span>
-<span id="cb187-44"><a href="cluster-analysis.html#cb187-44" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="cluster-analysis.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Join the data together</span></span>
+<span id="cb187-2"><a href="cluster-analysis.html#cb187-2" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;SSN&quot;</span> <span class="ot">=</span> <span class="fu">names</span>(fcm<span class="sc">$</span>cluster),</span>
+<span id="cb187-3"><a href="cluster-analysis.html#cb187-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">&quot;CLUSTER&quot;</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">&quot;C&quot;</span>, <span class="fu">unname</span>(fcm<span class="sc">$</span>cluster)),</span>
+<span id="cb187-4"><a href="cluster-analysis.html#cb187-4" aria-hidden="true" tabindex="-1"></a>                       pca<span class="sc">$</span>coords[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb187-5"><a href="cluster-analysis.html#cb187-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-6"><a href="cluster-analysis.html#cb187-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Reorder the clusters based on Dim.1</span></span>
+<span id="cb187-7"><a href="cluster-analysis.html#cb187-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Lowest mean Dim.1 will be Cluster 1</span></span>
+<span id="cb187-8"><a href="cluster-analysis.html#cb187-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Highest mean Dim.1 will be Cluster 9</span></span>
+<span id="cb187-9"><a href="cluster-analysis.html#cb187-9" aria-hidden="true" tabindex="-1"></a>dim1_mean <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Dim<span class="fl">.1</span> <span class="sc">~</span> CLUSTER,</span>
+<span id="cb187-10"><a href="cluster-analysis.html#cb187-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">data =</span> clusters,</span>
+<span id="cb187-11"><a href="cluster-analysis.html#cb187-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">FUN =</span> mean)</span>
+<span id="cb187-12"><a href="cluster-analysis.html#cb187-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-13"><a href="cluster-analysis.html#cb187-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Order so that the Dim.1 mean is ascending</span></span>
+<span id="cb187-14"><a href="cluster-analysis.html#cb187-14" aria-hidden="true" tabindex="-1"></a>dim1_mean <span class="ot">&lt;-</span> dim1_mean[<span class="fu">order</span>(dim1_mean<span class="sc">$</span>Dim<span class="fl">.1</span>),]</span>
+<span id="cb187-15"><a href="cluster-analysis.html#cb187-15" aria-hidden="true" tabindex="-1"></a>dim1_mean<span class="sc">$</span>NEW_CLUSTER <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;C&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(dim1_mean))</span>
+<span id="cb187-16"><a href="cluster-analysis.html#cb187-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-17"><a href="cluster-analysis.html#cb187-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a named vector that will be used to revalue cluster names</span></span>
+<span id="cb187-18"><a href="cluster-analysis.html#cb187-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Values of the vector are the new values, and old values are the names</span></span>
+<span id="cb187-19"><a href="cluster-analysis.html#cb187-19" aria-hidden="true" tabindex="-1"></a>rv <span class="ot">&lt;-</span> <span class="fu">setNames</span>(dim1_mean<span class="sc">$</span>NEW_CLUSTER, <span class="co"># the vector values</span></span>
+<span id="cb187-20"><a href="cluster-analysis.html#cb187-20" aria-hidden="true" tabindex="-1"></a>               dim1_mean<span class="sc">$</span>CLUSTER) <span class="co">#the vector names </span></span>
+<span id="cb187-21"><a href="cluster-analysis.html#cb187-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-22"><a href="cluster-analysis.html#cb187-22" aria-hidden="true" tabindex="-1"></a><span class="co">#use the revalue function to create a new cluster column</span></span>
+<span id="cb187-23"><a href="cluster-analysis.html#cb187-23" aria-hidden="true" tabindex="-1"></a>clusters<span class="sc">$</span>NEW_CLUSTER <span class="ot">&lt;-</span> <span class="fu">revalue</span>(clusters<span class="sc">$</span>CLUSTER,</span>
+<span id="cb187-24"><a href="cluster-analysis.html#cb187-24" aria-hidden="true" tabindex="-1"></a>                                rv)</span>
+<span id="cb187-25"><a href="cluster-analysis.html#cb187-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-26"><a href="cluster-analysis.html#cb187-26" aria-hidden="true" tabindex="-1"></a><span class="co">#Create an empty list</span></span>
+<span id="cb187-27"><a href="cluster-analysis.html#cb187-27" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb187-28"><a href="cluster-analysis.html#cb187-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-29"><a href="cluster-analysis.html#cb187-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Populate each item in the list using the dimension already</span></span>
+<span id="cb187-30"><a href="cluster-analysis.html#cb187-30" aria-hidden="true" tabindex="-1"></a><span class="co">#defined in x and y above</span></span>
+<span id="cb187-31"><a href="cluster-analysis.html#cb187-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)) {</span>
+<span id="cb187-32"><a href="cluster-analysis.html#cb187-32" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb187-33"><a href="cluster-analysis.html#cb187-33" aria-hidden="true" tabindex="-1"></a>   p[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> clusters) <span class="sc">+</span></span>
+<span id="cb187-34"><a href="cluster-analysis.html#cb187-34" aria-hidden="true" tabindex="-1"></a>             <span class="fu">geom_point</span>(<span class="fu">aes_string</span>(<span class="at">x =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, x[i]),</span>
+<span id="cb187-35"><a href="cluster-analysis.html#cb187-35" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">y =</span> <span class="fu">paste0</span>(<span class="st">&quot;Dim.&quot;</span>, y[i]),</span>
+<span id="cb187-36"><a href="cluster-analysis.html#cb187-36" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">fill =</span> <span class="st">&quot;NEW_CLUSTER&quot;</span>),</span>
+<span id="cb187-37"><a href="cluster-analysis.html#cb187-37" aria-hidden="true" tabindex="-1"></a>                        <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb187-38"><a href="cluster-analysis.html#cb187-38" aria-hidden="true" tabindex="-1"></a>                        <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb187-39"><a href="cluster-analysis.html#cb187-39" aria-hidden="true" tabindex="-1"></a>                        <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb187-40"><a href="cluster-analysis.html#cb187-40" aria-hidden="true" tabindex="-1"></a>             <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">title=</span><span class="st">&quot;Cluster&quot;</span>))</span>
+<span id="cb187-41"><a href="cluster-analysis.html#cb187-41" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb187-42"><a href="cluster-analysis.html#cb187-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb187-43"><a href="cluster-analysis.html#cb187-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb187-44"><a href="cluster-analysis.html#cb187-44" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> p,</span>
+<span id="cb187-45"><a href="cluster-analysis.html#cb187-45" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:cluster-fig"></span>
 <img src="DigiMinR_files/figure-html/cluster-fig-1.png" alt="Pre-treated XRPD data clustered into 9 groups." width="100%" />
 <p class="caption">
@@ -717,8 +718,8 @@ Figure 4.6: Membership coefficients for the nine clusters plotted for the first 
 <span id="cb189-44"><a href="cluster-analysis.html#cb189-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb189-45"><a href="cluster-analysis.html#cb189-45" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(<span class="at">grobs =</span> p,</span>
 <span id="cb189-46"><a href="cluster-analysis.html#cb189-46" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-104"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-104-1.png" alt="The formation of distinct clusters by retaining the samples within each cluster that have membership coefficients greater than the 75% percentile." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-107"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-107-1.png" alt="The formation of distinct clusters by retaining the samples within each cluster that have membership coefficients greater than the 75% percentile." width="100%" />
 <p class="caption">
 Figure 4.7: The formation of distinct clusters by retaining the samples within each cluster that have membership coefficients greater than the 75% percentile.
 </p>
@@ -739,9 +740,9 @@ Figure 4.7: The formation of distinct clusters by retaining the samples within e
 <span id="cb190-5"><a href="cluster-analysis.html#cb190-5" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(clust_sub[<span class="fu">which</span>(clust_sub<span class="sc">$</span>NEW_CLUSTER <span class="sc">==</span> <span class="st">&quot;C1&quot;</span>), ]) <span class="sc">%&gt;%</span> </span>
 <span id="cb190-6"><a href="cluster-analysis.html#cb190-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb190-7"><a href="cluster-analysis.html#cb190-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="sc">~</span>Longitude, <span class="sc">~</span>Latitude)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-105"></span>
-<div id="htmlwidget-284dbf51363f4a55f22d" style="width:80%;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-284dbf51363f4a55f22d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[-6.04692984,-6.11749,-6.07987,-5.30757999,-3.06374502,-3.0296979,-3.00909805,-3.06098199,-8.07075501,-22.80366,-24.24041833,-24.21673333,-24.19569833,-24.16965333,-24.24200667,14.809575,14.83139,14.83103333,14.858365,14.869855,14.80238833,14.83648167,14.853915,9.217246667,-7.337718333,-7.31389,-16.221305,-21.7232,-15.897394,-15.867407,-15.85138333],[36.4438591,36.4577,36.5067,37.47093964,33.01008606,33.01520157,33.01538086,33.03066254,37.33062744,35.31284167,34.33520333,34.37512,34.37663333,34.38194667,34.39977333,-7.843511667,-7.843868333,-7.823068333,-7.82084,-7.819491667,-7.802876667,-7.809873333,-7.781675,5.73423,15.73058833,15.76066667,14.94596167,26.4957,26.093142,26.098539,26.095875],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-24.24200667,14.869855],"lng":[-7.843868333,37.47093964]}},"evals":[],"jsHooks":[]}</script>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-108"></span>
+<div id="htmlwidget-e68247c13f8408c30ded" style="width:80%;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e68247c13f8408c30ded">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[-6.04692984,-6.11749,-6.07987,-5.30757999,-3.06374502,-3.0296979,-3.00909805,-3.06098199,-8.07075501,-22.80366,-24.24041833,-24.21673333,-24.19569833,-24.16965333,-24.24200667,14.809575,14.83139,14.83103333,14.858365,14.869855,14.80238833,14.83648167,14.853915,9.217246667,-7.337718333,-7.31389,-16.221305,-21.7232,-15.897394,-15.867407,-15.85138333],[36.4438591,36.4577,36.5067,37.47093964,33.01008606,33.01520157,33.01538086,33.03066254,37.33062744,35.31284167,34.33520333,34.37512,34.37663333,34.38194667,34.39977333,-7.843511667,-7.843868333,-7.823068333,-7.82084,-7.819491667,-7.802876667,-7.809873333,-7.781675,5.73423,15.73058833,15.76066667,14.94596167,26.4957,26.093142,26.098539,26.095875],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-24.24200667,14.869855],"lng":[-7.843868333,37.47093964]}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 Figure 4.8: Interactive map of the soil samples associated with Cluster 9.
 </p>
@@ -757,8 +758,8 @@ Figure 4.8: Interactive map of the soil samples associated with Cluster 9.
 <span id="cb191-8"><a href="cluster-analysis.html#cb191-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb191-9"><a href="cluster-analysis.html#cb191-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot cluster 9</span></span>
 <span id="cb191-10"><a href="cluster-analysis.html#cb191-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(cluster_xrpd<span class="sc">$</span>C1), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-106"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-106-1.png" alt="Clustered pre-treated XRPD from Cluster 9." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-109"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-109-1.png" alt="Clustered pre-treated XRPD from Cluster 9." width="100%" />
 <p class="caption">
 Figure 4.9: Clustered pre-treated XRPD from Cluster 9.
 </p>
@@ -839,8 +840,8 @@ Figure 4.10: Average total nutrient concentrations of each cluster expressed as 
 <span id="cb193-24"><a href="cluster-analysis.html#cb193-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb193-25"><a href="cluster-analysis.html#cb193-25" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the mean diffractogram of Cluster 9</span></span>
 <span id="cb193-26"><a href="cluster-analysis.html#cb193-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xrpd_clusters<span class="sc">$</span>C1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-107"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-107-1.png" alt="The mean diffractogram of Cluster 9." width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-110"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-110-1.png" alt="The mean diffractogram of Cluster 9." width="100%" />
 <p class="caption">
 Figure 4.11: The mean diffractogram of Cluster 9.
 </p>

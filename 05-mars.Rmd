@@ -115,14 +115,14 @@ scotland_xrpd <- as_multi_xy(scotland_xrpd)
 plot(as_multi_xy(scotland_xrpd[1:10]),
      wavelength = "Cu",
      normalise = TRUE,
-     interactie = FALSE)
+     interactive = FALSE)
 ```
 
 ## Data manipulation {#mars-manipulation}
 The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2θ axes, which can be achieved by applying the following manipulations to the data:
 
 1. [Transform the 2θ scale](#two-theta-transform) of the `scotland_xrpd` data to its Co-Kα equivalent
-2. Interpolate the data onto a harmonised 2θ scale within the overlapping 2θ range
+2. [Interpolate](#interpolation) the data onto a harmonised 2θ scale within the overlapping 2θ range
 
 ### 2θ transformation
 As outlined [here](#two-theta-transform), `tth_transform()` can be used to transform the 2θ axis of a sample to one that is representative of data recorded using a different wavelength. Here the `scotland_xrpd` data, which were collected using Cu-Kα radiation, will be transformed to be representative of the Co-Kα radiation that was used on the MSL diffractometer:
@@ -171,7 +171,7 @@ plot(as_multi_xy(scotland_xrpd[1:10]),
 ```
 
 ```{r fig.cap = "The first 10 samples in the scotland_xrpd data following 2theta transformation and interpolation.", out.width='100%', fig.align='center', fig.asp=0.75, echo = FALSE, message=FALSE, warning=FALSE, cache = TRUE}
-#Get extract the minimum and maximum to use in the haromised 2theta scale
+#Extract the minimum and maximum to use in the harmonised 2theta scale
 tth_min <- max(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) min(x$tth))))
 tth_max <- min(unlist(lapply(c(mars_xrpd, scotland_xrpd), function(x) max(x$tth))))
 
