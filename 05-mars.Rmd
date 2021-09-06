@@ -30,6 +30,8 @@ library(leaflet)
 
 ## Datasets
 
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/fNLmy-yROeo" frameborder="0" allowfullscreen></iframe></p>
+
 ### Mars Science Laboratory XRPD Data {#mars-data}
 Martian XRPD data within the package have been extracted from NASA's [Geosciences Data Volume Online](https://pds-geosciences.wustl.edu/msl/msl-m-chemin-4-rdr-v1/) [@Vaniman2012] and renamed according to the various sites that were sampled. The diffractograms of 31 Martian samples are contained within the `mars_xrpd` data in [`multiXY` format](#loading-multiple). All diffractograms were collected using Co-Kα radiation, with further details of the data collection and instrumental parameters provided elsewhere [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. Upon loading the `mars_xrpd` data here, we will subset the diffractograms to 2θ >= 4.5 degrees in order to remove the contributions from the sample holder at low angles:
 
@@ -64,30 +66,26 @@ The locations of the 31 samples can be explored using the `SOL_START` and `SOL_E
 </center>
 
 ### Scottish Soil XRPD data {#mars-scotland-data}
-The Scottish soil diffractograms relate to 773 samples collected by horizon from 207 sites across Scotland. Samples were collected primarily as part of the second National Soil Inventory of Scotland [NSIS, @Butler2018] and are supplemented by additional samples of rare Scottish soils. Information about the samples is provided in the `scotland_locations` data:
+The Scottish soil diffractograms relate to 703 samples collected by horizon from 186 sites across Scotland. Samples were collected primarily as part of the second National Soil Inventory of Scotland [NSIS, @Butler2018] and are supplemented by additional samples of rare Scottish soils. Information about the samples is provided in the `scotland_locations` data:
 
-```{r, fig.cap = "Interactive map of the sampling locations for the Scottish soils. Blue symbols represent samples associated with the NSIS dataset. Yellow symbols represent samples associated with the Rare Soils dataset.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
+```{r, fig.cap = "Interactive map of the sampling locations for the Scottish soils.", out.width='80%', fig.align='center', message=FALSE, warning=FALSE, cache = TRUE}
 #Load the scotland_locations data
 data(scotland_locations)
 
 #Show the first 6 rows of the data
 head(scotland_locations)
 
-#Plot the data of "NSIS" and "Rare" samples in different colours
+#Plot the data spatially
 leaflet() %>% 
   addTiles() %>%
-  addCircleMarkers(data = scotland_locations[scotland_locations$DATASET == "NSIS",],
+  addCircleMarkers(data = scotland_locations,
                    ~PROFILE_LONGITUDE, ~PROFILE_LATITUDE,
                    color = "blue",
-                   opacity = 1) %>% 
-  addCircleMarkers(data = scotland_locations[scotland_locations$DATASET == "Rare",],
-                   ~PROFILE_LONGITUDE, ~PROFILE_LATITUDE,
-                   color = "yellow",
                    opacity = 1)
 
 ```
 
-The XRPD data of the 774 Scottish soils were collected using Cu-Kα radiation [for details see @Butler2018] and are included within the `scotland_xrpd` data, which is a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub. The `scotland_xrpd` data frame contains the 2θ axis as the first column, with the subsequent 774 columns representing the count intensities of the diffractograms and column names relating to the `SAMPLE_ID` column in the `scotland_locations` data.
+The XRPD data of the 703 Scottish soils were collected using Cu-Kα radiation [for details see @Butler2018] and are included within the `scotland_xrpd` data, which is a data frame rather than a `multiXY` object in order to save on file size when transferring to/from GitHub. The `scotland_xrpd` data frame contains the 2θ axis as the first column, with the subsequent 703 columns representing the count intensities of the diffractograms and column names relating to the `SAMPLE_ID` column in the `scotland_locations` data.
 
 ```{r, cache = TRUE}
 #Load the Scottish XRPD data
@@ -119,6 +117,9 @@ plot(as_multi_xy(scotland_xrpd[1:10]),
 ```
 
 ## Data manipulation {#mars-manipulation}
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/TzYaRqeNdV8" frameborder="0" allowfullscreen></iframe></p>
+
 The aim of this analysis is to compare all Martian diffractograms from the MSL to all Scottish soil diffractograms and hence identify those with the greatest similarity. In this case, similarity will be assessed using the Pearson correlation coefficient. Such comparison requires the data to be on identical 2θ axes, which can be achieved by applying the following manipulations to the data:
 
 1. [Transform the 2θ scale](#two-theta-transform) of the `scotland_xrpd` data to its Co-Kα equivalent
@@ -186,11 +187,15 @@ scotland_xrpd <- powdR::interpolate(scotland_xrpd, new_tth)
 #Plot some of the Scotland data again
 plot(as_multi_xy(scotland_xrpd[1:10]),
      wavelength = "Co",
-     normalise = TRUE)
+     normalise = TRUE,
+     interactive = FALSE)
 ```
 
 ## Comparison of XRPD data
-Now that the data are harmonised and therefore comparable, the final step is to correlate each MSL diffractogram to every Scottish diffractogram and derive the Pearson correlation coefficients. This comparison should therefore yield 31 vectors each consisting of 774 correlation coefficients (thus 23,994 comparisons in total). In order to further enhance the derived correlation coefficients where similarities are detectable, each pairwise comparison will involve alignment of the 2 samples to one-another in order to correct for [common experimental aberrations](#alignment) that can affect peak positions on the 2θ axis. To facilitate this a function will be created that accept the following 3 arguments
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/XrFaQA71z8Y" frameborder="0" allowfullscreen></iframe></p>
+
+Now that the data are harmonised and therefore comparable, the final step is to correlate each MSL diffractogram to every Scottish diffractogram and derive the Pearson correlation coefficients. This comparison should therefore yield 31 vectors each consisting of 703 correlation coefficients (thus 21,793 comparisons in total). In order to further enhance the derived correlation coefficients where similarities are detectable, each pairwise comparison will involve alignment of the 2 samples to one-another in order to correct for [common experimental aberrations](#alignment) that can affect peak positions on the 2θ axis. To facilitate this a function will be created that accept the following 3 arguments
 
 1. `mars` will be an [`XY` object](#loading-data) of an MSL diffractogram.
 2. `scotland` will be an `XY` object of a Scottish soil diffractogram.
@@ -229,7 +234,7 @@ cumberland_to_scotland <- sapply(scotland_xrpd,
                                  )
 ```
 
-Which yields a named vector of 774 correlation coefficients comparing `mars_xrpd$Cumberland` to every sample within the `scotland_xrpd` data, with each item within the vector being named according to the sample ID from `scotland_xrpd`. 
+Which yields a named vector of 703 correlation coefficients comparing `mars_xrpd$Cumberland` to every sample within the `scotland_xrpd` data, with each item within the vector being named according to the sample ID from `scotland_xrpd`. 
 
 ```{r, message=FALSE, warning=FALSE, cache = TRUE}
 #Show the first six values of the names vector
@@ -257,13 +262,13 @@ for (i in 1:length(mars_xrpd)) {
 }
 ```
 
-Which yields a list of 31 named vectors that each take the same form of `cumberland_to_scotland`. Each item within the list is named according to the MSL site name and consists of 774 numeric correlation coefficients:
+Which yields a list of 31 named vectors that each take the same form of `cumberland_to_scotland`. Each item within the list is named according to the MSL site name and consists of 703 numeric correlation coefficients:
 
 ```{r, message=FALSE, warning=FALSE, cache = TRUE}
 summary(mars_to_scotland)
 ```
 
-By unlisting the `mars_to_scotland` data using `unlist()`, we end up with a very long vector consisting of 23,994 correlation coefficients, with each coefficient having a unique name that takes the form `MarsSite.ScotlandID`.
+By unlisting the `mars_to_scotland` data using `unlist()`, we end up with a very long vector consisting of 21,793 correlation coefficients, with each coefficient having a unique name that takes the form `MarsSite.ScotlandID`.
 
 ```{r, message=FALSE, warning=FALSE, cache = TRUE}
 #Create a vector from the mars_to_scotland list
@@ -273,11 +278,11 @@ mars_to_scotland_v <- unlist(mars_to_scotland)
 mars_to_scotland_v[1]
 ```
 
-with the name `{r names(mars_to_scotland_v[1])}` detailing that the `mars_xrpd$Rocknest_4` and `scotland_xrpd$S1018719` samples were used to derive this correlation coefficient. It's possible to plot the aligned data associated with these samples using:
+with the name `{r names(mars_to_scotland_v[1])}` detailing that the `mars_xrpd$Rocknest_4` and `scotland_xrpd$S891338` samples were used to derive this correlation coefficient. It's possible to plot the aligned data associated with these samples using:
 
-```{r fig.cap = "Sample Rocknest_4 and S1018719 aligned and plotted against one-another.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+```{r fig.cap = "Sample Rocknest_4 and S891338 aligned and plotted against one-another.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
 comparison <- align_xy(as_multi_xy(list("Mars_Rocknest_4" = mars_xrpd$Rocknest_4,
-                                        "Scotland_S1018719" = scotland_xrpd$S1018719)),
+                                        "Scotland_S891338" = scotland_xrpd$S891338)),
                        std = mars_xrpd$Rocknest_4,
                        xshift = 0.3,
                        xmin = 4.52,
@@ -287,12 +292,12 @@ comparison <- align_xy(as_multi_xy(list("Mars_Rocknest_4" = mars_xrpd$Rocknest_4
 plot(comparison,
      wavelength = "Co",
      normalise = TRUE,
-     interactive = TRUE)
+     interactive = FALSE)
 ```
 
-From this comparison it's clear to see that these diffractograms are highly dissimilar, which is reflected in their relatively low correlation coefficient of 0.17. However, this is just the first correlation coefficient of ~24,000 that need to be explored, and now that all of the correlation coefficients are in a vector they can easily be summarised and visualised:
+From this comparison it's clear to see that these diffractograms are highly dissimilar, which is reflected in their relatively low correlation coefficient of 0.12. However, this is just the first correlation coefficient of ~22,000 that need to be explored, and now that all of the correlation coefficients are in a vector they can easily be summarised and visualised:
 
-```{r fig.cap = "Histogram of all 23,994 correlation coefficients", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
+```{r fig.cap = "Histogram of all 21,793 correlation coefficients", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
 #Summarise the correlation coefficients
 summary(mars_to_scotland_v)
 
