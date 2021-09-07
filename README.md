@@ -1,6 +1,8 @@
 Build instructions for the Digital Soil Mineralogy with R course
 ================
 
+All of the documentation from the Digital Soil Mineralogy with R course that's hosted online can be built from the source files hosted on GitHub. This `README` file will detail how to go about doing this build.
+
 # Pre-requisites
 
 It is assumed that you have both R and RStudio already installed on your
@@ -32,7 +34,7 @@ install.packages(c("bookdown",
 
 # Step 3: Install the **mars2mull** package from GitHub
 
-Now that **devtools** in installed it will be used to download the
+Now that **devtools** is installed it will be used to download the
 **mars2mull** package from GitHub, which contains data required for
 Chapter 5 of the Digital Soil Mineralogy with R course
 
@@ -58,9 +60,9 @@ bookdown::gitbook()
 The first time you run the build it will take some time (&gt; 1 hour) to
 run all of the code required to create the html files that are stored in
 `/_book`. Upon building these files you will notice the creation of a
-`_bookdown_files` repository that stores the cache for all data derived
-within the course content, therefore subsequent builds can be a lot
-faster
+`/_bookdown_files` repository that stores the cache for all data derived
+within the course content, allowing subsequent builds can be a lot
+faster.
 
 # Step 6: Edit the `.Rmd` files and re-build
 
@@ -84,6 +86,6 @@ The `.Rmd` files used to create the course content are:
 
 Editing any of the plain text within the `.Rmd` files should result in a
 fast re-build of the documentation using `bookdown::gitbook()`. However,
-if you were to edit any of code within the R chunks, then rebuilds make
+if you were to edit any of code within the R chunks, then rebuilds may
 take longer because various bits of analysis will have to be recomputed
 and cached.
