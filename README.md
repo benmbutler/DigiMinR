@@ -30,9 +30,20 @@ install.packages(c("bookdown",
                    "gridExtra",
                    "plyr",
                    "devtools"))
+``` 
+
+# Step 3: Install an archived version of **baseline**
+
+Unfortunately the current version of the **baseline** package frequently crashes when fitting backgrounds to XRPD data. The current solution is to install the archived version 1.2.1 from CRAN:
+
+``` r
+install.packages("http://cran.r-project.org/src/contrib/Archive/baseline/baseline_1.2-1.tar.gz",
+                 repos = NULL,
+                 type = "source")
 ```
 
-# Step 3: Install the **mars2mull** package from GitHub
+
+# Step 4: Install the **mars2mull** package from GitHub
 
 Now that **devtools** is installed it will be used to download the
 **mars2mull** package from GitHub, which contains data required for
@@ -42,13 +53,13 @@ Chapter 5 of the Digital Soil Mineralogy with R course
 devtools::install_github("benmbutler/mars2mull")
 ```
 
-# Step 4: Open the DigiMinR R project
+# Step 5: Open the DigiMinR R project
 
 In the cloned or downloaded DigiMinR folder you will find a file called
 `DigiMinR.Rproj`. Opening this file should result in the DigiMinR
 project being opened in RStudio.
 
-# Step 5: Initial build
+# Step 6: Initial build
 
 Once the project is loaded into RStudio you can build the course
 documentation by running:
@@ -64,7 +75,7 @@ run all of the code required to create the html files that are stored in
 within the course content, allowing subsequent builds can be a lot
 faster.
 
-# Step 6: Edit the `.Rmd` files and re-build
+# Step 7: Edit the `.Rmd` files and re-build
 
 The `.Rmd` files used to create the course content are:
 
