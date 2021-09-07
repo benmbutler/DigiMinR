@@ -59,7 +59,7 @@ data(mars_id)
 head(mars_id)
 ```
 
-The locations of the 31 samples can be explored using the `SOL_START` and `SOL_END` columns in the `mars_id` data in combination with [NASA's online map for Curiosity's location](https://mars.nasa.gov/maps/location/?mission=Curiosity).
+The locations of the 31 samples can be explored using the `SOL_START` and `SOL_END` columns in the `mars_id` data in combination with [NASA's online map for Curiosity's location](https://mars.nasa.gov/maps/location/?mission=Curiosity) (screenshot below).
 
 <center>
 <a href="https://mars.nasa.gov/maps/location/?mission=Curiosity"><img src="figures/curiosity-screenshot_small.png" /></p></a>

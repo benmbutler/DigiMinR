@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-09-06" />
+<meta name="date" content="2021-09-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -524,12 +524,10 @@ Figure 3.9: Aligned, subset and mean centred diffractograms.
 <span id="cb156-6"><a href="machine-learning.html#cb156-6" aria-hidden="true" tabindex="-1"></a>cubist_xrpd <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(xrpd_df[<span class="sc">-</span><span class="dv">1</span>]))</span></code></pre></div>
 <p>There are a couple of parameters that can be adjusted when training Cubist models: committees and neighbours (see <span class="citation"><a href="#ref-Butler2018" role="doc-biblioref">Butler, O’Rourke, and Hillier</a> (<a href="#ref-Butler2018" role="doc-biblioref">2018</a>)</span>). Various routines exist for tuning these parameters in order to produce the most accurate models. For further reading on this tuning process, see the <code>caret</code> <span class="citation">(<a href="#ref-R-caret" role="doc-biblioref">Kuhn 2021</a>)</span> and <code>Cubist</code> <span class="citation">(<a href="#ref-R-Cubist" role="doc-biblioref">Kuhn and Quinlan 2021</a>)</span> package documentation .</p>
 <p>For simplicity, the adjustable Cubist parameters used in this example will be set to <code>committees = 10</code> when training the models, and <code>neighbours = 9</code> when using the derived models to predict total K concentrations from new data. The Cubist models can be trained using the training dataset using:</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="machine-learning.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Cubist)</span>
-<span id="cb157-2"><a href="machine-learning.html#cb157-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb157-3"><a href="machine-learning.html#cb157-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a Cubist model for K</span></span>
-<span id="cb157-4"><a href="machine-learning.html#cb157-4" aria-hidden="true" tabindex="-1"></a>cubist_K <span class="ot">&lt;-</span> <span class="fu">cubist</span>(<span class="at">x =</span> cubist_xrpd[selection,],</span>
-<span id="cb157-5"><a href="machine-learning.html#cb157-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> props<span class="sc">$</span>K[selection],</span>
-<span id="cb157-6"><a href="machine-learning.html#cb157-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">committees =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="machine-learning.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a Cubist model for K</span></span>
+<span id="cb157-2"><a href="machine-learning.html#cb157-2" aria-hidden="true" tabindex="-1"></a>cubist_K <span class="ot">&lt;-</span> <span class="fu">cubist</span>(<span class="at">x =</span> cubist_xrpd[selection,],</span>
+<span id="cb157-3"><a href="machine-learning.html#cb157-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y =</span> props<span class="sc">$</span>K[selection],</span>
+<span id="cb157-4"><a href="machine-learning.html#cb157-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">committees =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p>following which, the derived models can be used to predict the total K concentrations from XRPD data in the test dataset:</p>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="machine-learning.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Predict K</span></span>
 <span id="cb158-2"><a href="machine-learning.html#cb158-2" aria-hidden="true" tabindex="-1"></a>predict_K <span class="ot">&lt;-</span> <span class="fu">predict</span>(cubist_K,</span>
@@ -649,9 +647,7 @@ Figure 3.11: Combining the results from full pattern summation with the features
 </p>
 </div>
 <p>To make the data in Figure <a href="machine-learning.html#fig:advanced-feature-plot">3.11</a> interactive, it’s possible to use the <code>ggplotly()</code> function of the <code>plotly</code> package via:</p>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="machine-learning.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb165-2"><a href="machine-learning.html#cb165-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb165-3"><a href="machine-learning.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="machine-learning.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code></pre></div>
 <p>From these plots (in particular the interactive version), it is possible to infer that the variables selected by Cubist in this region are specifically related to K-feldspar contributions to the diffraction data. K-feldspar minerals represent the major K-reserves in most soils and this selection by Cubist is therefore completely appropriate. Further mineral sources of other nutrients and micronutrients within this or other datasets can be inferred in a similar manner.</p>
 
 </div>
