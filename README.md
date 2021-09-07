@@ -20,6 +20,7 @@ The following packages are required to build this **bookdown** project:
 
 ``` r
 install.packages(c("bookdown",
+                   "knitr",
                    "powdR",
                    "ggplot2",
                    "plotly",
@@ -34,7 +35,7 @@ install.packages(c("bookdown",
 
 # Step 3: Install an archived version of **baseline**
 
-Unfortunately the current version of the **baseline** package frequently crashes when fitting backgrounds to XRPD data. The current solution is to install the archived version 1.2.1 from CRAN:
+Unfortunately the current version of the **baseline** package (which is used by **powdR**) frequently crashes when fitting backgrounds to XRPD data. The current solution is to install the archived version 1.2.1 from CRAN:
 
 ``` r
 install.packages("http://cran.r-project.org/src/contrib/Archive/baseline/baseline_1.2-1.tar.gz",
