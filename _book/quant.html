@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Quantitative phase analysis | Digital Soil Mineralogy with R</title>
   <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Quantitative phase analysis | Digital Soil Mineralogy with R" />
   <meta property="og:type" content="book" />
@@ -34,7 +34,8 @@
 <link rel="prev" href="intro.html"/>
 <link rel="next" href="machine-learning.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -354,7 +354,7 @@ their concentrations within the mixture. This principal facilitates the quantifi
 <span id="cb70-4"><a href="quant.html#cb70-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">refs =</span> <span class="fu">c</span>(<span class="st">&quot;ALB&quot;</span>, <span class="st">&quot;DOL.1&quot;</span>,</span>
 <span id="cb70-5"><a href="quant.html#cb70-5" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;QUA.1&quot;</span>, <span class="st">&quot;GOE.2&quot;</span>),</span>
 <span id="cb70-6"><a href="quant.html#cb70-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-44"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-44"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-44-1.png" alt="Plotting selected reference patterns from a powdRlib object." width="80%" />
 <p class="caption">
 Figure 2.1: Plotting selected reference patterns from a powdRlib object.
@@ -735,7 +735,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 </p>
 <p>Plotting results <code>powdRfps</code> and <code>powdRafps</code> objects, derived from <code>fps()</code> and <code>afps()</code>, respectively, is achieved using <code>plot()</code> (see <code>?plot.powdRfps</code> and <code>?plot.powdRafps</code>).</p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="quant.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-62"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-62"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-62-1.png" alt="Example output from plotting a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.2: Example output from plotting a powdRfps or powdRafps object.
@@ -746,7 +746,7 @@ Figure 2.2: Example output from plotting a powdRfps or powdRafps object.
 <div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="quant.html#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb125-2"><a href="quant.html#cb125-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">group =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb125-3"><a href="quant.html#cb125-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-63"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-63"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-63-1.png" alt="Plotting a powdRfps or powdRafps object with the reference patterns grouped." width="672" />
 <p class="caption">
 Figure 2.3: Plotting a powdRfps or powdRafps object with the reference patterns grouped.
@@ -756,7 +756,7 @@ Figure 2.3: Plotting a powdRfps or powdRafps object with the reference patterns 
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="quant.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb126-2"><a href="quant.html#cb126-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;residuals&quot;</span>,</span>
 <span id="cb126-3"><a href="quant.html#cb126-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-64"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-64"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-64-1.png" alt="Plotting the residuals of a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.4: Plotting the residuals of a powdRfps or powdRafps object.
@@ -766,7 +766,7 @@ Figure 2.4: Plotting the residuals of a powdRfps or powdRafps object.
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="quant.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a_fit1, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb127-2"><a href="quant.html#cb127-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">mode =</span> <span class="st">&quot;both&quot;</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">30</span>),</span>
 <span id="cb127-3"><a href="quant.html#cb127-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-65"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-65"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-65-1.png" alt="Plotting both the fit and residuals of a powdRfps or powdRafps object." width="672" />
 <p class="caption">
 Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps object.
@@ -926,7 +926,6 @@ Eberl, D. D. 2003. <span>“<span class="nocase">User’s guide to ROCKJOCK - A 
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -966,6 +965,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }

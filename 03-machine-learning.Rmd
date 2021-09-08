@@ -246,7 +246,7 @@ xrpd_df <- multi_xy_to_df(as_multi_xy(xrpd_pt),
 cubist_xrpd <- data.frame(t(xrpd_df[-1]))
 ```
 
-There are a couple of parameters that can be adjusted when training Cubist models: committees and neighbours (see @Butler2018). Various routines exist for tuning these parameters in order to produce the most accurate models. For further reading on this tuning process, see the `caret` [@R-caret] and `Cubist` [@R-Cubist] package documentation .
+There are a couple of parameters that can be adjusted when training Cubist models: committees and neighbours (see @Butler2018). Various routines exist for tuning these parameters in order to produce the most accurate models. For further reading on this tuning process, see the documentation for the **caret**  and **Cubist** packages.
 
 For simplicity, the adjustable Cubist parameters used in this example will be set to `committees = 10` when training the models, and `neighbours = 9` when using the derived models to predict total K concentrations from new data. The Cubist models can be trained using the training dataset using:
 

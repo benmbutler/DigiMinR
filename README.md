@@ -66,6 +66,7 @@ documentation by running:
 ``` r
 bookdown::render_book()
 ```
+Or by using the 'Build Book' button in the 'Build' tab of RStudio.
 
 The first time you run the build it will take some time (&gt; 1 hour) to
 run all of the code required to create the html files that are stored in
@@ -73,6 +74,10 @@ run all of the code required to create the html files that are stored in
 `/_bookdown_files` repository that stores the cache for all data derived
 within the course content, allowing subsequent builds can be a lot
 faster.
+
+Opening `/_book/index.html` in your web browser will load the built
+documentation.
+
 
 # Step 7: Edit the `.Rmd` files and re-build
 
@@ -95,7 +100,7 @@ The `.Rmd` files used to create the course content are:
 7.  `999-references.Rmd`: References (no need to edit)
 
 Editing any of the plain text within the `.Rmd` files should result in a
-fast re-build of the documentation using `bookdown::render_book()`. However,
+fast re-build of the documentation. However,
 if you were to edit any of code within the R chunks, then rebuilds may
 take longer because various bits of analysis will have to be recomputed
 and cached.

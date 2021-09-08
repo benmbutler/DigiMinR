@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Working with XRPD data in R | Digital Soil Mineralogy with R</title>
   <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Working with XRPD data in R | Digital Soil Mineralogy with R" />
   <meta property="og:type" content="book" />
@@ -34,7 +34,8 @@
 <link rel="prev" href="index.html"/>
 <link rel="next" href="quant.html"/>
 <script src="libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -42,7 +43,6 @@
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
 
 
 
@@ -309,21 +309,21 @@ div.csl-indent {
 <h2><span class="header-section-number">1.1</span> The basic form of XRPD data</h2>
 <p>In its most basic form, XRPD data (a diffractogram) is simply comprised of an x-axis (2θ and y-axis (counts). The following figure shows a diffratogram for a soil from north east Scotland.</p>
 <pre><code>## Warning: package &#39;powdR&#39; was built under R version 4.1.1</code></pre>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-7-1.png" alt="A diffractogram of a soil developed from Granite in north east Scotland" width="80%" />
 <p class="caption">
 Figure 1.1: A diffractogram of a soil developed from Granite in north east Scotland
 </p>
 </div>
 <p>Each mineral contributing to the observed diffractogram contributes peaks at specific locations along the x-axis, each with characteristic relative intensities to one-another that are defined by the crystal structure and chemistry. Each mineral can therefore be considered to have a unique signature. For quartz, an omnipresent mineral in the world’s soils, this signature is relatively simple:</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-8"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-8-1.png" alt="A diffractogram of quartz" width="80%" />
 <p class="caption">
 Figure 1.2: A diffractogram of quartz
 </p>
 </div>
 <p>whereas other soil minerals such as K-feldspar have very different peak positions and relative intensities that again are governed by the mineral’s crystal structure and chemistry:</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-9"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-9-1.png" alt="A diffractogram of K-feldspar (orthoclase)" width="80%" />
 <p class="caption">
 Figure 1.3: A diffractogram of K-feldspar (orthoclase)
@@ -482,7 +482,7 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 <h3><span class="header-section-number">1.3.1</span> Plotting <code>XY</code> objects</h3>
 <p>An <code>XY</code> object can be plotted by:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-19"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-19-1.png" alt="An example figure created using the plot method for an XY object." width="80%" />
 <p class="caption">
 Figure 1.4: An example figure created using the plot method for an XY object.
@@ -494,7 +494,7 @@ Figure 1.4: An example figure created using the plot method for an XY object.
 <h3><span class="header-section-number">1.3.2</span> Plotting <code>multiXY</code> objects</h3>
 <p>Often it’s useful to plot more than one pattern at the same time, which can be achieved by plotting a <code>multiXY</code> object:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-20"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-20-1.png" alt="An example figure created using the plot method for a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.5: An example figure created using the plot method for a multiXY object.
@@ -503,7 +503,7 @@ Figure 1.5: An example figure created using the plot method for a multiXY object
 <p>As above, using <code>interactive = TRUE</code> in the function call will instead produce an interactive plot. In addition, the plotting of <code>XY</code> and <code>multiXY</code> objects also allows you to alter the x-axis limits and normalise the count intensities for easier comparison of specific peaks:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>,</span>
 <span id="cb36-2"><a href="intro.html#cb36-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">32</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-21"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-21-1.png" alt="An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis." width="80%" />
 <p class="caption">
 Figure 1.6: An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis.
@@ -532,7 +532,7 @@ Figure 1.6: An example figure created using the plot method for an XY object wit
 <span id="cb37-17"><a href="intro.html#cb37-17" aria-hidden="true" tabindex="-1"></a>           <span class="fu">theme_bw</span>()</span>
 <span id="cb37-18"><a href="intro.html#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-19"><a href="intro.html#cb37-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-22"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-22-1.png" alt="A quartz diffractogram with the locations and relative intensities of the quartz peaks identified." width="80%" />
 <p class="caption">
 Figure 1.7: A quartz diffractogram with the locations and relative intensities of the quartz peaks identified.
@@ -658,7 +658,7 @@ Figure 1.7: A quartz diffractogram with the locations and relative intensities o
 <span id="cb47-13"><a href="intro.html#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-14"><a href="intro.html#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the transformed data</span></span>
 <span id="cb47-15"><a href="intro.html#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(xy_list1_log), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-28"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-28"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-28-1.png" alt="Log transformed XRPD data." width="80%" />
 <p class="caption">
 Figure 1.8: Log transformed XRPD data.
@@ -674,7 +674,7 @@ Figure 1.8: Log transformed XRPD data.
 <span id="cb48-2"><a href="intro.html#cb48-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&quot;b&quot;</span> <span class="ot">=</span> rockjock_mixtures<span class="sc">$</span>Mix2))</span>
 <span id="cb48-3"><a href="intro.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-4"><a href="intro.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-29"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-29-1.png" alt="Diffractograms from two different instruments." width="80%" />
 <p class="caption">
 Figure 1.9: Diffractograms from two different instruments.
@@ -686,7 +686,7 @@ Figure 1.9: Diffractograms from two different instruments.
 <span id="cb49-3"><a href="intro.html#cb49-3" aria-hidden="true" tabindex="-1"></a>two_instruments_int <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(two_instruments, new_tth)</span>
 <span id="cb49-4"><a href="intro.html#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb49-5"><a href="intro.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments_int, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-30"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-30-1.png" alt="Interpolated diffractograms from two different instruments." width="80%" />
 <p class="caption">
 Figure 1.10: Interpolated diffractograms from two different instruments.
@@ -709,7 +709,7 @@ Figure 1.10: Interpolated diffractograms from two different instruments.
 <span id="cb50-10"><a href="intro.html#cb50-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb50-11"><a href="intro.html#cb50-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb50-12"><a href="intro.html#cb50-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-31"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-31"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-31-1.png" alt="Unaligned diffractograms." width="80%" />
 <p class="caption">
 Figure 1.11: Unaligned diffractograms.
@@ -726,7 +726,7 @@ Figure 1.11: Unaligned diffractograms.
 <span id="cb51-8"><a href="intro.html#cb51-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb51-9"><a href="intro.html#cb51-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb51-10"><a href="intro.html#cb51-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-32"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-32-1.png" alt="Aligned diffractograms." width="80%" />
 <p class="caption">
 Figure 1.12: Aligned diffractograms.
@@ -736,7 +736,7 @@ Figure 1.12: Aligned diffractograms.
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the unaligned soils data to show misalignments</span></span>
 <span id="cb52-2"><a href="intro.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils, <span class="at">wav =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb52-3"><a href="intro.html#cb52-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-33"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-33-1.png" alt="Unaligned diffractograms in a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.13: Unaligned diffractograms in a multiXY object.
@@ -751,7 +751,7 @@ Figure 1.13: Unaligned diffractograms in a multiXY object.
 <span id="cb53-7"><a href="intro.html#cb53-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb53-8"><a href="intro.html#cb53-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb53-9"><a href="intro.html#cb53-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-34"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-34-1.png" alt="Aligned diffractograms in a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.14: Aligned diffractograms in a multiXY object.
@@ -773,7 +773,7 @@ Figure 1.14: Aligned diffractograms in a multiXY object.
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the data and add a square root transform to aid interpretation</span></span>
 <span id="cb56-2"><a href="intro.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(granite_bkg) <span class="sc">+</span></span>
 <span id="cb56-3"><a href="intro.html#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-35"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-35-1.png" alt="Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation." width="80%" />
 <p class="caption">
 Figure 1.15: Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation.
@@ -786,7 +786,7 @@ Figure 1.15: Fitting a background to a soil diffractogram. The y-axis is square 
 <span id="cb57-4"><a href="intro.html#cb57-4" aria-hidden="true" tabindex="-1"></a>                                                 granite_bkg<span class="sc">$</span>background))</span>
 <span id="cb57-5"><a href="intro.html#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb57-6"><a href="intro.html#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sandstone_bkg_sub, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-36"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-36-1.png" alt="Background subtracted diffractogram." width="80%" />
 <p class="caption">
 Figure 1.16: Background subtracted diffractogram.
@@ -837,7 +837,7 @@ n\lambda = 2d\sin\theta
 <span id="cb62-7"><a href="intro.html#cb62-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb62-8"><a href="intro.html#cb62-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb62-9"><a href="intro.html#cb62-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-39"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-39"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-39-1.png" alt="Data obtained from Co and Cu X-ray tubes prior to 2theta transformation." width="80%" />
 <p class="caption">
 Figure 1.17: Data obtained from Co and Cu X-ray tubes prior to 2theta transformation.
@@ -853,7 +853,7 @@ Figure 1.17: Data obtained from Co and Cu X-ray tubes prior to 2theta transforma
 <span id="cb63-8"><a href="intro.html#cb63-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
 <span id="cb63-9"><a href="intro.html#cb63-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb63-10"><a href="intro.html#cb63-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-40"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-40"></span>
 <img src="DigiMinR_files/figure-html/unnamed-chunk-40-1.png" alt="Data obtained from Co and Cu X-ray tubes after 2theta transformation." width="80%" />
 <p class="caption">
 Figure 1.18: Data obtained from Co and Cu X-ray tubes after 2theta transformation.
@@ -886,7 +886,6 @@ Liland, Kristian Hovde, Trygve Almøy, and Bjørn-Helge Mevik. 2010. <span>“Op
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -926,6 +925,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
