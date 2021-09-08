@@ -20,17 +20,14 @@ The following packages are required to build this **bookdown** project:
 
 ``` r
 install.packages(c("bookdown",
-                   "knitr",
                    "powdR",
-                   "ggplot2",
-                   "plotly",
                    "leaflet",
                    "Cubist",
                    "reshape2",
                    "e1071",
                    "gridExtra",
-                   "plyr",
-                   "devtools"))
+                   "devtools",
+                   "downloadthis"))
 ``` 
 
 # Step 3: Install an archived version of **baseline**
@@ -58,7 +55,8 @@ devtools::install_github("benmbutler/mars2mull")
 
 In the cloned or downloaded DigiMinR folder you will find a file called
 `DigiMinR.Rproj`. Opening this file should result in the DigiMinR
-project being opened in RStudio.
+project being opened in RStudio, which sets your working directory to
+that of all of `DigiMinR.Rproj`.
 
 # Step 6: Initial build
 
@@ -66,7 +64,7 @@ Once the project is loaded into RStudio you can build the course
 documentation by running:
 
 ``` r
-bookdown::gitbook()
+bookdown::render_book()
 ```
 
 The first time you run the build it will take some time (&gt; 1 hour) to
@@ -97,7 +95,7 @@ The `.Rmd` files used to create the course content are:
 7.  `999-references.Rmd`: References (no need to edit)
 
 Editing any of the plain text within the `.Rmd` files should result in a
-fast re-build of the documentation using `bookdown::gitbook()`. However,
+fast re-build of the documentation using `bookdown::render_book()`. However,
 if you were to edit any of code within the R chunks, then rebuilds may
 take longer because various bits of analysis will have to be recomputed
 and cached.
