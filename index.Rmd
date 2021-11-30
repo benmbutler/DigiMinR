@@ -71,12 +71,19 @@ Each chapter contains reproducible R code along with written explanations. For t
 * [**Steve Hillier**](https://www.hutton.ac.uk/staff/steve-hillier) is a Soil Mineralogist at the James Hutton Institute, Aberdeen, UK...
 
 ## Acknowledgments {-}
-The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. The support of the Scottish Government. The support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS) is also gratefully acknowledged.
+The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. Additional support from the International Union of Soil Sciences (IUSS) is gratefully acknowledged, as is the support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS).
 
 ```{r, echo=FALSE, out.width = '100%', fig.align="center", cache = TRUE}
 if (knitr:::is_html_output())
 {
   knitr::include_graphics("figures/acknowledgements_small.png")
+}
+```
+
+```{r, echo=FALSE, out.width = '33%', fig.align="center", cache = TRUE}
+if (knitr:::is_html_output())
+{
+  knitr::include_graphics("figures/IUSS.png")
 }
 ```
 

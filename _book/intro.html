@@ -24,7 +24,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-09-08" />
+<meta name="date" content="2021-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -308,23 +308,22 @@ div.csl-indent {
 <div id="basic-form" class="section level2" number="1.1">
 <h2><span class="header-section-number">1.1</span> The basic form of XRPD data</h2>
 <p>In its most basic form, XRPD data (a diffractogram) is simply comprised of an x-axis (2θ and y-axis (counts). The following figure shows a diffratogram for a soil from north east Scotland.</p>
-<pre><code>## Warning: package &#39;powdR&#39; was built under R version 4.1.1</code></pre>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-7-1.png" alt="A diffractogram of a soil developed from Granite in north east Scotland" width="80%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-8-1.png" alt="A diffractogram of a soil developed from Granite in north east Scotland" width="80%" />
 <p class="caption">
 Figure 1.1: A diffractogram of a soil developed from Granite in north east Scotland
 </p>
 </div>
 <p>Each mineral contributing to the observed diffractogram contributes peaks at specific locations along the x-axis, each with characteristic relative intensities to one-another that are defined by the crystal structure and chemistry. Each mineral can therefore be considered to have a unique signature. For quartz, an omnipresent mineral in the world’s soils, this signature is relatively simple:</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-8"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-8-1.png" alt="A diffractogram of quartz" width="80%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-9-1.png" alt="A diffractogram of quartz" width="80%" />
 <p class="caption">
 Figure 1.2: A diffractogram of quartz
 </p>
 </div>
 <p>whereas other soil minerals such as K-feldspar have very different peak positions and relative intensities that again are governed by the mineral’s crystal structure and chemistry:</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-9-1.png" alt="A diffractogram of K-feldspar (orthoclase)" width="80%" />
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-10-1.png" alt="A diffractogram of K-feldspar (orthoclase)" width="80%" />
 <p class="caption">
 Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 </p>
@@ -346,16 +345,16 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 </iframe>
 </p>
 <p>Once you have your ‘.xy’ files, they can be loaded into R using the <code>read_xy()</code> function from the <strong>powdR</strong> package. The following reproducible example uses files that are stored within <strong>powdR</strong> and were recorded on a Siemens D5000 using Co-K<span class="math inline">\(\alpha\)</span> radiation.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the powdR package</span></span>
-<span id="cb7-2"><a href="intro.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(powdR)</span>
-<span id="cb7-3"><a href="intro.html#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="intro.html#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
-<span id="cb7-5"><a href="intro.html#cb7-5" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy/D5000_1.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
-<span id="cb7-6"><a href="intro.html#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="intro.html#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy1</span></span>
-<span id="cb7-8"><a href="intro.html#cb7-8" aria-hidden="true" tabindex="-1"></a>xy1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(file)</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="intro.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Explore the xy data</span></span>
-<span id="cb8-2"><a href="intro.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="intro.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the powdR package</span></span>
+<span id="cb6-2"><a href="intro.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(powdR)</span>
+<span id="cb6-3"><a href="intro.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="intro.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
+<span id="cb6-5"><a href="intro.html#cb6-5" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy/D5000_1.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb6-6"><a href="intro.html#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="intro.html#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy1</span></span>
+<span id="cb6-8"><a href="intro.html#cb6-8" aria-hidden="true" tabindex="-1"></a>xy1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(file)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="intro.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Explore the xy data</span></span>
+<span id="cb7-2"><a href="intro.html#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
 <pre><code>##       tth            counts      
 ##  Min.   : 2.00   Min.   :  70.0  
 ##  1st Qu.:20.25   1st Qu.: 145.0  
@@ -363,11 +362,11 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 ##  Mean   :38.50   Mean   : 292.9  
 ##  3rd Qu.:56.75   3rd Qu.: 342.0  
 ##  Max.   :75.00   Max.   :6532.0</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="intro.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check the class of xy data</span></span>
-<span id="cb10-2"><a href="intro.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy1)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="intro.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check the class of xy data</span></span>
+<span id="cb9-2"><a href="intro.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy1)</span></code></pre></div>
 <pre><code>## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
 <p>Notice how the class of <code>xy1</code> is both <code>XY</code> and <code>data.frame</code>. This means that various additional methods for each of these types of object classes can be used to explore and analyse the data. These methods can be viewed using:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="intro.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;XY&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="intro.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;XY&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] align_xy    interpolate plot       
 ## see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>which shows how functions <a href="intro.html#alignment"><code>align_xy()</code></a>, <a href="intro.html#interpolation"><code>interpolate()</code></a> and <a href="intro.html#plotting-data"><code>plot()</code></a> all have methods for <code>XY</code> class objects. Help on each of these can be sourced using <code>?align_xy.XY</code>, <code>?interpolate.XY</code> and <code>?plot.XY</code>, respectively. When calling these functions it is not necessary to specify the <code>.XY</code> suffix because R will recognise the class and call the relevant method.</p>
@@ -375,15 +374,15 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 <div id="loading-directly" class="section level3" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> Option 2: Loading directly into R</h3>
 <p>Alternatively to PowDLL, the <code>extract_xy()</code> function in the <strong>powdR</strong> package can extract the XY data from a wide range of proprietary XRPD file formats straight into R via the xylib C++ library implemented behind the scenes in the <strong>rxylib</strong> package <span class="citation">(<a href="#ref-rxylib2020" role="doc-biblioref">Kreutzer and Johannes Friedrich 2020</a>)</span>.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="intro.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
-<span id="cb14-2"><a href="intro.html#cb14-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW/D5000_1.RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
-<span id="cb14-3"><a href="intro.html#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="intro.html#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy2</span></span>
-<span id="cb14-5"><a href="intro.html#cb14-5" aria-hidden="true" tabindex="-1"></a>xy2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(file)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="intro.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the path of the file from the powdR package</span></span>
+<span id="cb13-2"><a href="intro.html#cb13-2" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW/D5000_1.RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb13-3"><a href="intro.html#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="intro.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the file as an object called xy2</span></span>
+<span id="cb13-5"><a href="intro.html#cb13-5" aria-hidden="true" tabindex="-1"></a>xy2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(file)</span></code></pre></div>
 <pre><code>## 
 ## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="intro.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the xy data</span></span>
-<span id="cb16-2"><a href="intro.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy2)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="intro.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the xy data</span></span>
+<span id="cb15-2"><a href="intro.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy2)</span></code></pre></div>
 <pre><code>##       tth            counts      
 ##  Min.   : 2.00   Min.   :  70.0  
 ##  1st Qu.:20.25   1st Qu.: 145.0  
@@ -391,8 +390,8 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 ##  Mean   :38.50   Mean   : 292.9  
 ##  3rd Qu.:56.75   3rd Qu.: 342.0  
 ##  Max.   :75.00   Max.   :6532.0</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="intro.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy2</span></span>
-<span id="cb18-2"><a href="intro.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy2)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="intro.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy2</span></span>
+<span id="cb17-2"><a href="intro.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy2)</span></code></pre></div>
 <pre><code>## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
 <p>A <strong>word of warning</strong> with <code>extract_xy()</code> is that it does not work with all proprietary file types. In particular you may experience problems with Bruker ‘.raw’ files, in which case the use of PowDLL outlined <a href="intro.html#powDLL">above</a> is recommended instead.</p>
 </div>
@@ -402,18 +401,18 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 <div id="read_xy" class="section level4" number="1.2.3.1">
 <h4><span class="header-section-number">1.2.3.1</span> <code>read_xy()</code></h4>
 <p>There are five ‘.xy’ files stored within a directory of the <strong>powdR</strong> package that can be loaded into a <code>multiXY</code> object via:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="intro.html#cb20-1" aria-hidden="true" tabindex="-1"></a>paths1 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
-<span id="cb20-2"><a href="intro.html#cb20-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb20-3"><a href="intro.html#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="intro.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
-<span id="cb20-5"><a href="intro.html#cb20-5" aria-hidden="true" tabindex="-1"></a>xy_list1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(paths1)</span>
-<span id="cb20-6"><a href="intro.html#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="intro.html#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy_list1</span></span>
-<span id="cb20-8"><a href="intro.html#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list1)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="intro.html#cb19-1" aria-hidden="true" tabindex="-1"></a>paths1 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
+<span id="cb19-2"><a href="intro.html#cb19-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-3"><a href="intro.html#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="intro.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
+<span id="cb19-5"><a href="intro.html#cb19-5" aria-hidden="true" tabindex="-1"></a>xy_list1 <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(paths1)</span>
+<span id="cb19-6"><a href="intro.html#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="intro.html#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of xy_list1</span></span>
+<span id="cb19-8"><a href="intro.html#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list1)</span></code></pre></div>
 <pre><code>## [1] &quot;multiXY&quot; &quot;list&quot;</code></pre>
 <p>The resulting <code>multiXY</code> object is a list of <code>XY</code> objects, with each <code>XY</code> object being a data frame comprised of the 2θ and count intensities of the XRPD data.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="intro.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of each item within the multiXY object</span></span>
-<span id="cb22-2"><a href="intro.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1, class)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="intro.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of each item within the multiXY object</span></span>
+<span id="cb21-2"><a href="intro.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1, class)</span></code></pre></div>
 <pre><code>## $D5000_1
 ## [1] &quot;XY&quot;         &quot;data.frame&quot;
 ## 
@@ -429,8 +428,8 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 ## $D5000_5
 ## [1] &quot;XY&quot;         &quot;data.frame&quot;</code></pre>
 <p>Each sample within the list can be accessed using the <code>$</code> symbol. For example:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="intro.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the data within the first sample:</span></span>
-<span id="cb24-2"><a href="intro.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy_list1<span class="sc">$</span>D5000_1)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="intro.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise the data within the first sample:</span></span>
+<span id="cb23-2"><a href="intro.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy_list1<span class="sc">$</span>D5000_1)</span></code></pre></div>
 <pre><code>##       tth            counts      
 ##  Min.   : 2.00   Min.   :  70.0  
 ##  1st Qu.:20.25   1st Qu.: 145.0  
@@ -439,7 +438,7 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 ##  3rd Qu.:56.75   3rd Qu.: 342.0  
 ##  Max.   :75.00   Max.   :6532.0</code></pre>
 <p>Alternatively, the same item within <code>xy_list1</code> could be accessed using <code>xy_list1[[1]]</code>. In the same way the <code>XY</code> class objects have methods associated with them, there are a number of different methods for <code>multiXY</code> objects:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="intro.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;multiXY&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="intro.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class =</span> <span class="st">&quot;multiXY&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] align_xy       interpolate    multi_xy_to_df plot          
 ## see &#39;?methods&#39; for accessing help and source code</code></pre>
 <p>which include <a href="intro.html#alignment"><code>align_xy()</code></a>, <a href="intro.html#interpolation"><code>interpolate()</code></a>, <a href="intro.html#to-data-frame"><code>multi_xy_to_df()</code></a> and <a href="#plotting"><code>plot</code></a> that are all detailed in subsequent sections.</p>
@@ -447,11 +446,11 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 <div id="extract_xy" class="section level4" number="1.2.3.2">
 <h4><span class="header-section-number">1.2.3.2</span> <code>extract_xy()</code></h4>
 <p>In addition to the five ‘.xy’ files loaded above, there are also five ‘.RAW’ files stored within a separate directory of <strong>powdR</strong>, which can be loaded in a similar fashion using <code>extract_xy()</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="intro.html#cb28-1" aria-hidden="true" tabindex="-1"></a>paths2 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
-<span id="cb28-2"><a href="intro.html#cb28-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-3"><a href="intro.html#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="intro.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
-<span id="cb28-5"><a href="intro.html#cb28-5" aria-hidden="true" tabindex="-1"></a>xy_list2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(paths2)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="intro.html#cb27-1" aria-hidden="true" tabindex="-1"></a>paths2 <span class="ot">&lt;-</span> <span class="fu">dir</span>(<span class="fu">system.file</span>(<span class="st">&quot;extdata/D5000/RAW&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>),</span>
+<span id="cb27-2"><a href="intro.html#cb27-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-3"><a href="intro.html#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="intro.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Now read all files in the directory</span></span>
+<span id="cb27-5"><a href="intro.html#cb27-5" aria-hidden="true" tabindex="-1"></a>xy_list2 <span class="ot">&lt;-</span> <span class="fu">extract_xy</span>(paths2)</span></code></pre></div>
 <pre><code>## 
 ## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
 ## 
@@ -462,11 +461,11 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 ## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected
 ## 
 ## [read_xyData()] &gt;&gt; File of type Siemens/Bruker RAW detected</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="intro.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find out what the xy_list2 is</span></span>
-<span id="cb30-2"><a href="intro.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list2)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="intro.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find out what the xy_list2 is</span></span>
+<span id="cb29-2"><a href="intro.html#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(xy_list2)</span></code></pre></div>
 <pre><code>## [1] &quot;multiXY&quot; &quot;list&quot;</code></pre>
 <p>which yields <code>xy_list2</code> that is identical to <code>xy_list1</code>:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="intro.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(xy_list1, xy_list2)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="intro.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(xy_list1, xy_list2)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 </div>
@@ -481,9 +480,9 @@ Figure 1.3: A diffractogram of K-feldspar (orthoclase)
 <div id="plotting-xy-objects" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> Plotting <code>XY</code> objects</h3>
 <p>An <code>XY</code> object can be plotted by:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-19"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-19-1.png" alt="An example figure created using the plot method for an XY object." width="80%" />
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="intro.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-20-1.png" alt="An example figure created using the plot method for an XY object." width="80%" />
 <p class="caption">
 Figure 1.4: An example figure created using the plot method for an XY object.
 </p>
@@ -493,18 +492,18 @@ Figure 1.4: An example figure created using the plot method for an XY object.
 <div id="plotting-multixy-objects" class="section level3" number="1.3.2">
 <h3><span class="header-section-number">1.3.2</span> Plotting <code>multiXY</code> objects</h3>
 <p>Often it’s useful to plot more than one pattern at the same time, which can be achieved by plotting a <code>multiXY</code> object:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-20"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-20-1.png" alt="An example figure created using the plot method for a multiXY object." width="80%" />
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="intro.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-21-1.png" alt="An example figure created using the plot method for a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.5: An example figure created using the plot method for a multiXY object.
 </p>
 </div>
 <p>As above, using <code>interactive = TRUE</code> in the function call will instead produce an interactive plot. In addition, the plotting of <code>XY</code> and <code>multiXY</code> objects also allows you to alter the x-axis limits and normalise the count intensities for easier comparison of specific peaks:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>,</span>
-<span id="cb36-2"><a href="intro.html#cb36-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">32</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-21-1.png" alt="An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis." width="80%" />
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="intro.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(xy_list1, <span class="at">wavelength =</span> <span class="st">&quot;Co&quot;</span>,</span>
+<span id="cb35-2"><a href="intro.html#cb35-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">32</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-22-1.png" alt="An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis." width="80%" />
 <p class="caption">
 Figure 1.6: An example figure created using the plot method for an XY object with normalised count intensities and a restrict x-axis.
 </p>
@@ -513,36 +512,36 @@ Figure 1.6: An example figure created using the plot method for an XY object wit
 <div id="ggplot2-intro" class="section level3" number="1.3.3">
 <h3><span class="header-section-number">1.3.3</span> Modifying plots with <strong>ggplot2</strong></h3>
 <p>All plots shown so far are produced behind the scenes using the <a href="https://ggplot2.tidyverse.org/"><strong>ggplot2</strong></a> package, which will already be present on your machine if you have installed <strong>powdR</strong>. This means that it is possible to modify the plots in different ways by adding subsequent <strong>ggplot2</strong> layers, each separated by <code>+</code>. For example, it’s possible to add points of the quartz peak intensities extracted from a <a href="http://rruff.geo.arizona.edu/AMS/amcsd.php">crystal structure database</a> using <code>geom_point()</code>, and then add a title using <code>ggtitle()</code>, followed by changing the theme using <code>theme_bw()</code>.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="intro.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Define the relative intensities of quartz peaks</span></span>
-<span id="cb37-2"><a href="intro.html#cb37-2" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">24.22</span>, <span class="fl">30.99</span>, <span class="fl">42.61</span>, <span class="fl">46.12</span>,</span>
-<span id="cb37-3"><a href="intro.html#cb37-3" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">47.06</span>, <span class="fl">49.62</span>, <span class="fl">53.62</span>, <span class="fl">58.86</span>,</span>
-<span id="cb37-4"><a href="intro.html#cb37-4" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">64.60</span>, <span class="fl">65.18</span>, <span class="fl">70.79</span>, <span class="fl">73.68</span>),</span>
-<span id="cb37-5"><a href="intro.html#cb37-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;intensity&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.20</span>, <span class="fl">1.00</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span>,</span>
-<span id="cb37-6"><a href="intro.html#cb37-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.05</span>, <span class="fl">0.03</span>, <span class="fl">0.11</span>,</span>
-<span id="cb37-7"><a href="intro.html#cb37-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.01</span>, <span class="fl">0.07</span>, <span class="fl">0.03</span>))</span>
-<span id="cb37-8"><a href="intro.html#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="intro.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the ggplot2 package</span></span>
-<span id="cb37-10"><a href="intro.html#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb37-11"><a href="intro.html#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="intro.html#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a plot called p1</span></span>
-<span id="cb37-13"><a href="intro.html#cb37-13" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(xy1, <span class="at">wav =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb37-14"><a href="intro.html#cb37-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_point</span>(<span class="at">data =</span> quartz, <span class="fu">aes</span>(<span class="at">x =</span> tth, <span class="at">y =</span> intensity), <span class="at">size =</span> <span class="dv">5</span>,</span>
-<span id="cb37-15"><a href="intro.html#cb37-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb37-16"><a href="intro.html#cb37-16" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ggtitle</span>(<span class="st">&quot;A soil with quartz peaks identified&quot;</span>) <span class="sc">+</span></span>
-<span id="cb37-17"><a href="intro.html#cb37-17" aria-hidden="true" tabindex="-1"></a>           <span class="fu">theme_bw</span>()</span>
-<span id="cb37-18"><a href="intro.html#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-19"><a href="intro.html#cb37-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-22-1.png" alt="A quartz diffractogram with the locations and relative intensities of the quartz peaks identified." width="80%" />
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="intro.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Define the relative intensities of quartz peaks</span></span>
+<span id="cb36-2"><a href="intro.html#cb36-2" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">24.22</span>, <span class="fl">30.99</span>, <span class="fl">42.61</span>, <span class="fl">46.12</span>,</span>
+<span id="cb36-3"><a href="intro.html#cb36-3" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">47.06</span>, <span class="fl">49.62</span>, <span class="fl">53.62</span>, <span class="fl">58.86</span>,</span>
+<span id="cb36-4"><a href="intro.html#cb36-4" aria-hidden="true" tabindex="-1"></a>                               <span class="fl">64.60</span>, <span class="fl">65.18</span>, <span class="fl">70.79</span>, <span class="fl">73.68</span>),</span>
+<span id="cb36-5"><a href="intro.html#cb36-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;intensity&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.20</span>, <span class="fl">1.00</span>, <span class="fl">0.06</span>, <span class="fl">0.06</span>,</span>
+<span id="cb36-6"><a href="intro.html#cb36-6" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.05</span>, <span class="fl">0.03</span>, <span class="fl">0.11</span>,</span>
+<span id="cb36-7"><a href="intro.html#cb36-7" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.03</span>, <span class="fl">0.01</span>, <span class="fl">0.07</span>, <span class="fl">0.03</span>))</span>
+<span id="cb36-8"><a href="intro.html#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="intro.html#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the ggplot2 package</span></span>
+<span id="cb36-10"><a href="intro.html#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb36-11"><a href="intro.html#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="intro.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a plot called p1</span></span>
+<span id="cb36-13"><a href="intro.html#cb36-13" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot</span>(xy1, <span class="at">wav =</span> <span class="st">&quot;Co&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb36-14"><a href="intro.html#cb36-14" aria-hidden="true" tabindex="-1"></a>           <span class="fu">geom_point</span>(<span class="at">data =</span> quartz, <span class="fu">aes</span>(<span class="at">x =</span> tth, <span class="at">y =</span> intensity), <span class="at">size =</span> <span class="dv">5</span>,</span>
+<span id="cb36-15"><a href="intro.html#cb36-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-16"><a href="intro.html#cb36-16" aria-hidden="true" tabindex="-1"></a>           <span class="fu">ggtitle</span>(<span class="st">&quot;A soil with quartz peaks identified&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-17"><a href="intro.html#cb36-17" aria-hidden="true" tabindex="-1"></a>           <span class="fu">theme_bw</span>()</span>
+<span id="cb36-18"><a href="intro.html#cb36-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-19"><a href="intro.html#cb36-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-23-1.png" alt="A quartz diffractogram with the locations and relative intensities of the quartz peaks identified." width="80%" />
 <p class="caption">
 Figure 1.7: A quartz diffractogram with the locations and relative intensities of the quartz peaks identified.
 </p>
 </div>
 <p>Further help on using the <strong>ggplot2</strong> package to build up plots in layers is provided in <a href="https://r4ds.had.co.nz/data-visualisation.html">Hadley Wickham’s excellent documentation</a> on data visualization.</p>
 <p>Plots produced using <strong>ggplot2</strong> are static by default and can be exported as high quality images or pdfs. In some cases it is also useful to produce an interactive plot, which in the case of XRPD data allows for easy inspection of minor features. For most plots creating using <strong>ggplot2</strong>, the <code>ggplotly()</code> function from the <strong>plotly</strong> package can be used to convert them into interactive HTML plots that will load either in RStudio or your web browser:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb38-2"><a href="intro.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="intro.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="intro.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb37-2"><a href="intro.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="intro.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p1)</span></code></pre></div>
 </div>
 </div>
 <div id="manipulating-data" class="section level2" number="1.4">
@@ -565,7 +564,7 @@ Figure 1.7: A quartz diffractogram with the locations and relative intensities o
 <h3><span class="header-section-number">1.4.1</span> Subsetting XRPD data</h3>
 <p>Quite often the analysis of XRPD data may be applied to a reduced 2θ range compared to that measured on the diffractometer. This can readily be achieved in R for any number of samples.</p>
 <p>By summarising <a href="intro.html#loading-directly"><code>xy1</code></a> we can see that the 2θ column has a minimum of 2 and a maximum of 75 degrees.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="intro.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="intro.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1)</span></code></pre></div>
 <pre><code>##       tth            counts      
 ##  Min.   : 2.00   Min.   :  70.0  
 ##  1st Qu.:20.25   1st Qu.: 145.0  
@@ -574,9 +573,9 @@ Figure 1.7: A quartz diffractogram with the locations and relative intensities o
 ##  3rd Qu.:56.75   3rd Qu.: 342.0  
 ##  Max.   :75.00   Max.   :6532.0</code></pre>
 <p>If we wanted to reduce this to the range of 10–60 <span class="math inline">\(^\circ\)</span> 2θ then we have a couple of options. First we could extract the relevant data directly using the <code>[,]</code> notation for a data frame, where values before the comma represent rows and values after the comma represent columns:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="intro.html#cb41-1" aria-hidden="true" tabindex="-1"></a>xy1_sub <span class="ot">&lt;-</span> xy1[xy1<span class="sc">$</span>tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> xy1<span class="sc">$</span>tth <span class="sc">&lt;=</span> <span class="dv">60</span>, ]</span>
-<span id="cb41-2"><a href="intro.html#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="intro.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1_sub)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="intro.html#cb40-1" aria-hidden="true" tabindex="-1"></a>xy1_sub <span class="ot">&lt;-</span> xy1[xy1<span class="sc">$</span>tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> xy1<span class="sc">$</span>tth <span class="sc">&lt;=</span> <span class="dv">60</span>, ]</span>
+<span id="cb40-2"><a href="intro.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="intro.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(xy1_sub)</span></code></pre></div>
 <pre><code>##       tth           counts      
 ##  Min.   :10.0   Min.   :  93.0  
 ##  1st Qu.:22.5   1st Qu.: 174.0  
@@ -585,16 +584,16 @@ Figure 1.7: A quartz diffractogram with the locations and relative intensities o
 ##  3rd Qu.:47.5   3rd Qu.: 345.0  
 ##  Max.   :60.0   Max.   :6532.0</code></pre>
 <p>This first option is quite simple, but if we wanted to apply it to a list of patterns then using the <code>subset()</code> function would be a far better option.:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="intro.html#cb43-1" aria-hidden="true" tabindex="-1"></a>xy1_sub2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(xy1, tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;=</span> <span class="dv">60</span>)</span>
-<span id="cb43-2"><a href="intro.html#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="intro.html#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(xy1_sub, xy1_sub2)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="intro.html#cb42-1" aria-hidden="true" tabindex="-1"></a>xy1_sub2 <span class="ot">&lt;-</span> <span class="fu">subset</span>(xy1, tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;=</span> <span class="dv">60</span>)</span>
+<span id="cb42-2"><a href="intro.html#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="intro.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(xy1_sub, xy1_sub2)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>When using a function like <code>subset()</code>, it is very easy to apply it to any number of patterns in a <code>multiXY</code> object or <code>list</code> using <code>lapply()</code>:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="intro.html#cb45-1" aria-hidden="true" tabindex="-1"></a>xy_list1_sub <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1, subset,</span>
-<span id="cb45-2"><a href="intro.html#cb45-2" aria-hidden="true" tabindex="-1"></a>                       tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;=</span> <span class="dv">60</span>)</span>
-<span id="cb45-3"><a href="intro.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="intro.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Similarly we can summarise the data in the list again</span></span>
-<span id="cb45-5"><a href="intro.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1_sub, summary)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="intro.html#cb44-1" aria-hidden="true" tabindex="-1"></a>xy_list1_sub <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1, subset,</span>
+<span id="cb44-2"><a href="intro.html#cb44-2" aria-hidden="true" tabindex="-1"></a>                       tth <span class="sc">&gt;=</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;=</span> <span class="dv">60</span>)</span>
+<span id="cb44-3"><a href="intro.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="intro.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Similarly we can summarise the data in the list again</span></span>
+<span id="cb44-5"><a href="intro.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(xy_list1_sub, summary)</span></code></pre></div>
 <pre><code>## $D5000_1
 ##       tth           counts      
 ##  Min.   :10.0   Min.   :  93.0  
@@ -643,23 +642,23 @@ Figure 1.7: A quartz diffractogram with the locations and relative intensities o
 <div id="transformations" class="section level3" number="1.4.2">
 <h3><span class="header-section-number">1.4.2</span> Transformations of count intensities</h3>
 <p>As will be introduced in subsequent chapters, log and root transforms of the count intensities of XRPD data can be useful when applying data mining or machine learning methods. By writing a function these transformations can be applied to any number of patterns in just a few lines of code:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a function for log-transforming counts</span></span>
-<span id="cb47-2"><a href="intro.html#cb47-2" aria-hidden="true" tabindex="-1"></a>log_xrpd <span class="ot">&lt;-</span> <span class="cf">function</span> (x) {</span>
-<span id="cb47-3"><a href="intro.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-4"><a href="intro.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  x[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">log10</span>(x[[<span class="dv">2</span>]])</span>
-<span id="cb47-5"><a href="intro.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-6"><a href="intro.html#cb47-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb47-7"><a href="intro.html#cb47-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb47-8"><a href="intro.html#cb47-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb47-9"><a href="intro.html#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-10"><a href="intro.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co">#apply the function to a list of XRPD data</span></span>
-<span id="cb47-11"><a href="intro.html#cb47-11" aria-hidden="true" tabindex="-1"></a>xy_list1_log <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1,</span>
-<span id="cb47-12"><a href="intro.html#cb47-12" aria-hidden="true" tabindex="-1"></a>                       log_xrpd)</span>
-<span id="cb47-13"><a href="intro.html#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-14"><a href="intro.html#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the transformed data</span></span>
-<span id="cb47-15"><a href="intro.html#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(xy_list1_log), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-28"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-28-1.png" alt="Log transformed XRPD data." width="80%" />
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="intro.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a function for log-transforming counts</span></span>
+<span id="cb46-2"><a href="intro.html#cb46-2" aria-hidden="true" tabindex="-1"></a>log_xrpd <span class="ot">&lt;-</span> <span class="cf">function</span> (x) {</span>
+<span id="cb46-3"><a href="intro.html#cb46-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-4"><a href="intro.html#cb46-4" aria-hidden="true" tabindex="-1"></a>  x[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">log10</span>(x[[<span class="dv">2</span>]])</span>
+<span id="cb46-5"><a href="intro.html#cb46-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-6"><a href="intro.html#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb46-7"><a href="intro.html#cb46-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-8"><a href="intro.html#cb46-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb46-9"><a href="intro.html#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="intro.html#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co">#apply the function to a list of XRPD data</span></span>
+<span id="cb46-11"><a href="intro.html#cb46-11" aria-hidden="true" tabindex="-1"></a>xy_list1_log <span class="ot">&lt;-</span> <span class="fu">lapply</span>(xy_list1,</span>
+<span id="cb46-12"><a href="intro.html#cb46-12" aria-hidden="true" tabindex="-1"></a>                       log_xrpd)</span>
+<span id="cb46-13"><a href="intro.html#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-14"><a href="intro.html#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the transformed data</span></span>
+<span id="cb46-15"><a href="intro.html#cb46-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(xy_list1_log), <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-29-1.png" alt="Log transformed XRPD data." width="80%" />
 <p class="caption">
 Figure 1.8: Log transformed XRPD data.
 </p>
@@ -670,24 +669,24 @@ Figure 1.8: Log transformed XRPD data.
 <h3><span class="header-section-number">1.4.3</span> Interpolation</h3>
 <p>Sometimes XRPD patterns within a given data set may contain a number of different 2θ axes due to the measurements being carried out on different instruments or on the same instrument but with a different set-up. Direct comparison of such data requires that they are interpolated onto the same 2θ axis.</p>
 <p>Here a data set containing 2 samples with different 2θ axes will be created using the <code>soils</code> and <code>rockjock_mixtures</code> data that are pre-loaded within the <strong>powdR</strong> package:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" aria-hidden="true" tabindex="-1"></a>two_instruments <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;a&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>granite,</span>
-<span id="cb48-2"><a href="intro.html#cb48-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&quot;b&quot;</span> <span class="ot">=</span> rockjock_mixtures<span class="sc">$</span>Mix2))</span>
-<span id="cb48-3"><a href="intro.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-4"><a href="intro.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-29"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-29-1.png" alt="Diffractograms from two different instruments." width="80%" />
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="intro.html#cb47-1" aria-hidden="true" tabindex="-1"></a>two_instruments <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;a&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>granite,</span>
+<span id="cb47-2"><a href="intro.html#cb47-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">&quot;b&quot;</span> <span class="ot">=</span> rockjock_mixtures<span class="sc">$</span>Mix2))</span>
+<span id="cb47-3"><a href="intro.html#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="intro.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-30-1.png" alt="Diffractograms from two different instruments." width="80%" />
 <p class="caption">
 Figure 1.9: Diffractograms from two different instruments.
 </p>
 </div>
 <p>In this example, the data within the <code>two_instruments</code> list will be interpolated onto an artificial 2θ axis called <code>new_tth</code>, which ranges from 10 to 60 <span class="math inline">\(^\circ\)</span> 2θ with a resolution of 0.02:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" aria-hidden="true" tabindex="-1"></a>new_tth <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">60</span>, <span class="fl">0.02</span>)</span>
-<span id="cb49-2"><a href="intro.html#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="intro.html#cb49-3" aria-hidden="true" tabindex="-1"></a>two_instruments_int <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(two_instruments, new_tth)</span>
-<span id="cb49-4"><a href="intro.html#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="intro.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments_int, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-30"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-30-1.png" alt="Interpolated diffractograms from two different instruments." width="80%" />
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="intro.html#cb48-1" aria-hidden="true" tabindex="-1"></a>new_tth <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">60</span>, <span class="fl">0.02</span>)</span>
+<span id="cb48-2"><a href="intro.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="intro.html#cb48-3" aria-hidden="true" tabindex="-1"></a>two_instruments_int <span class="ot">&lt;-</span> <span class="fu">interpolate</span>(two_instruments, new_tth)</span>
+<span id="cb48-4"><a href="intro.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="intro.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(two_instruments_int, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>, <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-31"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-31-1.png" alt="Interpolated diffractograms from two different instruments." width="80%" />
 <p class="caption">
 Figure 1.10: Interpolated diffractograms from two different instruments.
 </p>
@@ -697,62 +696,62 @@ Figure 1.10: Interpolated diffractograms from two different instruments.
 <h3><span class="header-section-number">1.4.4</span> Alignment</h3>
 <p>Peak positions in XRPD data commonly shift in response to small variations in specimen height in the instrument. Even seemingly small misalignments between peaks can hinder the analysis of XRPD data <span class="citation">(<a href="#ref-Butler2019" role="doc-biblioref">Butler et al. 2019</a>)</span>. One approach to deal with such peak shifts is to use a mineral with essentially invariant peak positions as an internal standard (e.g. the common mineral quartz), resulting in well aligned data by adding or subtracting a fixed value to the 2θ axis.</p>
 <p>The <strong>powdR</strong> package contains functionality for aligning single or multiple patterns using the <code>align_xy()</code> function. In the following examples, samples will be aligned to a pure quartz pattern that will be loaded from the <strong>powdR</strong> package using <code>read_xy()</code></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="intro.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the location of the quartz xy file</span></span>
-<span id="cb50-2"><a href="intro.html#cb50-2" aria-hidden="true" tabindex="-1"></a>quartz_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/minerals/quartz.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
-<span id="cb50-3"><a href="intro.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="intro.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load the file</span></span>
-<span id="cb50-5"><a href="intro.html#cb50-5" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(quartz_file)</span>
-<span id="cb50-6"><a href="intro.html#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-7"><a href="intro.html#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
-<span id="cb50-8"><a href="intro.html#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
-<span id="cb50-9"><a href="intro.html#cb50-9" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone)),</span>
-<span id="cb50-10"><a href="intro.html#cb50-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb50-11"><a href="intro.html#cb50-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb50-12"><a href="intro.html#cb50-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-31"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-31-1.png" alt="Unaligned diffractograms." width="80%" />
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="intro.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract the location of the quartz xy file</span></span>
+<span id="cb49-2"><a href="intro.html#cb49-2" aria-hidden="true" tabindex="-1"></a>quartz_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata/minerals/quartz.xy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;powdR&quot;</span>)</span>
+<span id="cb49-3"><a href="intro.html#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="intro.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load the file</span></span>
+<span id="cb49-5"><a href="intro.html#cb49-5" aria-hidden="true" tabindex="-1"></a>quartz <span class="ot">&lt;-</span> <span class="fu">read_xy</span>(quartz_file)</span>
+<span id="cb49-6"><a href="intro.html#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="intro.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
+<span id="cb49-8"><a href="intro.html#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
+<span id="cb49-9"><a href="intro.html#cb49-9" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone)),</span>
+<span id="cb49-10"><a href="intro.html#cb49-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb49-11"><a href="intro.html#cb49-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb49-12"><a href="intro.html#cb49-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-32-1.png" alt="Unaligned diffractograms." width="80%" />
 <p class="caption">
 Figure 1.11: Unaligned diffractograms.
 </p>
 </div>
 <p>As shown in the figure above, the main quartz peaks of these two diffraction patterns do not align. This can be corrected using <code>align_xy()</code>:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the sandstone soil to the quartz pattern</span></span>
-<span id="cb51-2"><a href="intro.html#cb51-2" aria-hidden="true" tabindex="-1"></a>sandstone_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils<span class="sc">$</span>sandstone, <span class="at">std =</span> quartz,</span>
-<span id="cb51-3"><a href="intro.html#cb51-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
-<span id="cb51-4"><a href="intro.html#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="intro.html#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
-<span id="cb51-6"><a href="intro.html#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
-<span id="cb51-7"><a href="intro.html#cb51-7" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone aligned&quot;</span> <span class="ot">=</span> sandstone_aligned)),</span>
-<span id="cb51-8"><a href="intro.html#cb51-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb51-9"><a href="intro.html#cb51-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb51-10"><a href="intro.html#cb51-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-32"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-32-1.png" alt="Aligned diffractograms." width="80%" />
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="intro.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the sandstone soil to the quartz pattern</span></span>
+<span id="cb50-2"><a href="intro.html#cb50-2" aria-hidden="true" tabindex="-1"></a>sandstone_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils<span class="sc">$</span>sandstone, <span class="at">std =</span> quartz,</span>
+<span id="cb50-3"><a href="intro.html#cb50-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
+<span id="cb50-4"><a href="intro.html#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="intro.html#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the main quartz peak for pure quartz and a sandstone-derived soil</span></span>
+<span id="cb50-6"><a href="intro.html#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;quartz&quot;</span> <span class="ot">=</span> quartz,</span>
+<span id="cb50-7"><a href="intro.html#cb50-7" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;sandstone aligned&quot;</span> <span class="ot">=</span> sandstone_aligned)),</span>
+<span id="cb50-8"><a href="intro.html#cb50-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb50-9"><a href="intro.html#cb50-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb50-10"><a href="intro.html#cb50-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-33-1.png" alt="Aligned diffractograms." width="80%" />
 <p class="caption">
 Figure 1.12: Aligned diffractograms.
 </p>
 </div>
 <p>In cases where multiple patterns require alignment to a given standard, <code>align_xy()</code> can also be applied to <code>multiXY</code> objects:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the unaligned soils data to show misalignments</span></span>
-<span id="cb52-2"><a href="intro.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils, <span class="at">wav =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb52-3"><a href="intro.html#cb52-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-33"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-33-1.png" alt="Unaligned diffractograms in a multiXY object." width="80%" />
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="intro.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the unaligned soils data to show misalignments</span></span>
+<span id="cb51-2"><a href="intro.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils, <span class="at">wav =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb51-3"><a href="intro.html#cb51-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>), <span class="at">normalise =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-34-1.png" alt="Unaligned diffractograms in a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.13: Unaligned diffractograms in a multiXY object.
 </p>
 </div>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the soils data to the quartz pattern</span></span>
-<span id="cb53-2"><a href="intro.html#cb53-2" aria-hidden="true" tabindex="-1"></a>soils_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils, <span class="at">std =</span> quartz,</span>
-<span id="cb53-3"><a href="intro.html#cb53-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
-<span id="cb53-4"><a href="intro.html#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="intro.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the aligned data</span></span>
-<span id="cb53-6"><a href="intro.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils_aligned,</span>
-<span id="cb53-7"><a href="intro.html#cb53-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb53-8"><a href="intro.html#cb53-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb53-9"><a href="intro.html#cb53-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-34"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-34-1.png" alt="Aligned diffractograms in a multiXY object." width="80%" />
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="intro.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Align the soils data to the quartz pattern</span></span>
+<span id="cb52-2"><a href="intro.html#cb52-2" aria-hidden="true" tabindex="-1"></a>soils_aligned <span class="ot">&lt;-</span> <span class="fu">align_xy</span>(soils, <span class="at">std =</span> quartz,</span>
+<span id="cb52-3"><a href="intro.html#cb52-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">xmin =</span> <span class="dv">10</span>, <span class="at">xmax =</span> <span class="dv">60</span>, <span class="at">xshift =</span> <span class="fl">0.2</span>)</span>
+<span id="cb52-4"><a href="intro.html#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="intro.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the aligned data</span></span>
+<span id="cb52-6"><a href="intro.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(soils_aligned,</span>
+<span id="cb52-7"><a href="intro.html#cb52-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb52-8"><a href="intro.html#cb52-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb52-9"><a href="intro.html#cb52-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">26</span>, <span class="dv">27</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-35-1.png" alt="Aligned diffractograms in a multiXY object." width="80%" />
 <p class="caption">
 Figure 1.14: Aligned diffractograms in a multiXY object.
 </p>
@@ -761,33 +760,33 @@ Figure 1.14: Aligned diffractograms in a multiXY object.
 <div id="background" class="section level3" number="1.4.5">
 <h3><span class="header-section-number">1.4.5</span> Background fitting</h3>
 <p>Sometimes it is beneficial to fit and subtract the background from XRPD data. To achieve this, the <strong>powdR</strong> package includes the <code>bkg()</code> function which uses the peak filling method implemented in the <strong>baseline</strong> package <span class="citation">(<a href="#ref-baseline2010" role="doc-biblioref">Liland, Almøy, and Mevik 2010</a>)</span>. The fitting provided by the <code>bkg()</code> function uses four adjustable parameters that each have pre-loaded defaults (see <code>?bkg</code>):</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="intro.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit a background to the sandstone-derived soil</span></span>
-<span id="cb54-2"><a href="intro.html#cb54-2" aria-hidden="true" tabindex="-1"></a>granite_bkg <span class="ot">&lt;-</span> <span class="fu">bkg</span>(soils<span class="sc">$</span>granite)</span>
-<span id="cb54-3"><a href="intro.html#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-4"><a href="intro.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="co">#summarise the resulting data</span></span>
-<span id="cb54-5"><a href="intro.html#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(granite_bkg)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="intro.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit a background to the sandstone-derived soil</span></span>
+<span id="cb53-2"><a href="intro.html#cb53-2" aria-hidden="true" tabindex="-1"></a>granite_bkg <span class="ot">&lt;-</span> <span class="fu">bkg</span>(soils<span class="sc">$</span>granite)</span>
+<span id="cb53-3"><a href="intro.html#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="intro.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">#summarise the resulting data</span></span>
+<span id="cb53-5"><a href="intro.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(granite_bkg)</span></code></pre></div>
 <pre><code>##            Length Class  Mode   
 ## tth        1693   -none- numeric
 ## counts     1693   -none- numeric
 ## background 1693   -none- numeric</code></pre>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the data and add a square root transform to aid interpretation</span></span>
-<span id="cb56-2"><a href="intro.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(granite_bkg) <span class="sc">+</span></span>
-<span id="cb56-3"><a href="intro.html#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-35"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-35-1.png" alt="Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation." width="80%" />
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="intro.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the data and add a square root transform to aid interpretation</span></span>
+<span id="cb55-2"><a href="intro.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(granite_bkg) <span class="sc">+</span></span>
+<span id="cb55-3"><a href="intro.html#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-36-1.png" alt="Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation." width="80%" />
 <p class="caption">
 Figure 1.15: Fitting a background to a soil diffractogram. The y-axis is square root transformed to aid interpretation.
 </p>
 </div>
 <p>It is then simple to derive a background-subtracted <code>XY</code> object:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate background subtracted count intensities</span></span>
-<span id="cb57-2"><a href="intro.html#cb57-2" aria-hidden="true" tabindex="-1"></a>sandstone_bkg_sub <span class="ot">&lt;-</span> <span class="fu">as_xy</span>(<span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>tth,</span>
-<span id="cb57-3"><a href="intro.html#cb57-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">&quot;counts&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>counts <span class="sc">-</span> </span>
-<span id="cb57-4"><a href="intro.html#cb57-4" aria-hidden="true" tabindex="-1"></a>                                                 granite_bkg<span class="sc">$</span>background))</span>
-<span id="cb57-5"><a href="intro.html#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-6"><a href="intro.html#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sandstone_bkg_sub, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-36"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-36-1.png" alt="Background subtracted diffractogram." width="80%" />
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="intro.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate background subtracted count intensities</span></span>
+<span id="cb56-2"><a href="intro.html#cb56-2" aria-hidden="true" tabindex="-1"></a>sandstone_bkg_sub <span class="ot">&lt;-</span> <span class="fu">as_xy</span>(<span class="fu">data.frame</span>(<span class="st">&quot;tth&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>tth,</span>
+<span id="cb56-3"><a href="intro.html#cb56-3" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">&quot;counts&quot;</span> <span class="ot">=</span> granite_bkg<span class="sc">$</span>counts <span class="sc">-</span> </span>
+<span id="cb56-4"><a href="intro.html#cb56-4" aria-hidden="true" tabindex="-1"></a>                                                 granite_bkg<span class="sc">$</span>background))</span>
+<span id="cb56-5"><a href="intro.html#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="intro.html#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sandstone_bkg_sub, <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-37"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-37-1.png" alt="Background subtracted diffractogram." width="80%" />
 <p class="caption">
 Figure 1.16: Background subtracted diffractogram.
 </p>
@@ -797,11 +796,11 @@ Figure 1.16: Background subtracted diffractogram.
 <div id="to-data-frame" class="section level3" number="1.4.6">
 <h3><span class="header-section-number">1.4.6</span> Converting to and from data frames</h3>
 <p><code>multiXY</code> objects can be converted to data frames using the <code>multi_xy_to_df()</code> function. When using this function, all samples within the <code>multiXY</code> object must be on the same 2θ axis, which can be ensured using the <code>interpolate()</code> function <a href="intro.html#interpolation">outlined above</a>.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="intro.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert xy_list1 to a dataframe</span></span>
-<span id="cb58-2"><a href="intro.html#cb58-2" aria-hidden="true" tabindex="-1"></a>xy_df1 <span class="ot">&lt;-</span> <span class="fu">multi_xy_to_df</span>(xy_list1, <span class="at">tth =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb58-3"><a href="intro.html#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-4"><a href="intro.html#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Show the first 6 rows of the derived data frame</span></span>
-<span id="cb58-5"><a href="intro.html#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(xy_df1)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="intro.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert xy_list1 to a dataframe</span></span>
+<span id="cb57-2"><a href="intro.html#cb57-2" aria-hidden="true" tabindex="-1"></a>xy_df1 <span class="ot">&lt;-</span> <span class="fu">multi_xy_to_df</span>(xy_list1, <span class="at">tth =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb57-3"><a href="intro.html#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="intro.html#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Show the first 6 rows of the derived data frame</span></span>
+<span id="cb57-5"><a href="intro.html#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(xy_df1)</span></code></pre></div>
 <pre><code>##    tth D5000_1 D5000_2 D5000_3 D5000_4 D5000_5
 ## 1 2.00    2230    2334    2381    2323    2169
 ## 2 2.02    2012    2222    2297    2128    2021
@@ -811,11 +810,11 @@ Figure 1.16: Background subtracted diffractogram.
 ## 6 2.10    1603    1701    1868    1799    1673</code></pre>
 <p>In cases where the 2θ column is not required, the use of <code>tth = FALSE</code> in the function call will result in only the count intensities being included in the output.</p>
 <p>Data frames that take the form of <code>xy_df1</code> (i.e. that include the 2θ axis) can easily be converted back to a <code>multiXY</code> object using <code>as_multi_xy()</code>:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="intro.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert xy_df1 back to a multiXY list</span></span>
-<span id="cb60-2"><a href="intro.html#cb60-2" aria-hidden="true" tabindex="-1"></a>back_to_list <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(xy_df1)</span>
-<span id="cb60-3"><a href="intro.html#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-4"><a href="intro.html#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of the converted data</span></span>
-<span id="cb60-5"><a href="intro.html#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(back_to_list)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="intro.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert xy_df1 back to a multiXY list</span></span>
+<span id="cb59-2"><a href="intro.html#cb59-2" aria-hidden="true" tabindex="-1"></a>back_to_list <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(xy_df1)</span>
+<span id="cb59-3"><a href="intro.html#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="intro.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Check the class of the converted data</span></span>
+<span id="cb59-5"><a href="intro.html#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(back_to_list)</span></code></pre></div>
 <pre><code>## [1] &quot;multiXY&quot; &quot;list&quot;</code></pre>
 </div>
 <div id="two-theta-transform" class="section level3" number="1.4.7">
@@ -828,33 +827,33 @@ n\lambda = 2d\sin\theta
 \]</span></p>
 <p>where <span class="math inline">\(n\)</span> is an integer describing the diffraction order, <span class="math inline">\(\lambda\)</span> is the wavelength (Angstroms) and <span class="math inline">\(d\)</span> is the atomic spacing (Angstroms).</p>
 <p>In some instances it can be useful to transform the 2θ axis of a given sample so that the 2θ peak positions are representative of a measurement made using a different X-ray source. This can be achieved using the <code>tth_transform()</code> function:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="intro.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a multiXY object for this transform example</span></span>
-<span id="cb62-2"><a href="intro.html#cb62-2" aria-hidden="true" tabindex="-1"></a>transform_eg <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;Co&quot;</span> <span class="ot">=</span> xy_list1<span class="sc">$</span>D5000_1,</span>
-<span id="cb62-3"><a href="intro.html#cb62-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">&quot;Cu&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone))</span>
-<span id="cb62-4"><a href="intro.html#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-5"><a href="intro.html#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot two patterns recorded using different wavelengths</span></span>
-<span id="cb62-6"><a href="intro.html#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
-<span id="cb62-7"><a href="intro.html#cb62-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb62-8"><a href="intro.html#cb62-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb62-9"><a href="intro.html#cb62-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-39"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-39-1.png" alt="Data obtained from Co and Cu X-ray tubes prior to 2theta transformation." width="80%" />
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="intro.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a multiXY object for this transform example</span></span>
+<span id="cb61-2"><a href="intro.html#cb61-2" aria-hidden="true" tabindex="-1"></a>transform_eg <span class="ot">&lt;-</span> <span class="fu">as_multi_xy</span>(<span class="fu">list</span>(<span class="st">&quot;Co&quot;</span> <span class="ot">=</span> xy_list1<span class="sc">$</span>D5000_1,</span>
+<span id="cb61-3"><a href="intro.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">&quot;Cu&quot;</span> <span class="ot">=</span> soils<span class="sc">$</span>sandstone))</span>
+<span id="cb61-4"><a href="intro.html#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="intro.html#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot two patterns recorded using different wavelengths</span></span>
+<span id="cb61-6"><a href="intro.html#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
+<span id="cb61-7"><a href="intro.html#cb61-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb61-8"><a href="intro.html#cb61-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb61-9"><a href="intro.html#cb61-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-40"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-40-1.png" alt="Data obtained from Co and Cu X-ray tubes prior to 2theta transformation." width="80%" />
 <p class="caption">
 Figure 1.17: Data obtained from Co and Cu X-ray tubes prior to 2theta transformation.
 </p>
 </div>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="intro.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#transform the 2theta of the &quot;Co&quot; sample to &quot;Cu&quot;</span></span>
-<span id="cb63-2"><a href="intro.html#cb63-2" aria-hidden="true" tabindex="-1"></a>transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth <span class="ot">&lt;-</span> <span class="fu">tth_transform</span>(transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth,</span>
-<span id="cb63-3"><a href="intro.html#cb63-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">from =</span> <span class="fl">1.78897</span>,</span>
-<span id="cb63-4"><a href="intro.html#cb63-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">to =</span> <span class="fl">1.54056</span>)</span>
-<span id="cb63-5"><a href="intro.html#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-6"><a href="intro.html#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Replot data after transformation</span></span>
-<span id="cb63-7"><a href="intro.html#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
-<span id="cb63-8"><a href="intro.html#cb63-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
-<span id="cb63-9"><a href="intro.html#cb63-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb63-10"><a href="intro.html#cb63-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-40"></span>
-<img src="DigiMinR_files/figure-html/unnamed-chunk-40-1.png" alt="Data obtained from Co and Cu X-ray tubes after 2theta transformation." width="80%" />
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="intro.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#transform the 2theta of the &quot;Co&quot; sample to &quot;Cu&quot;</span></span>
+<span id="cb62-2"><a href="intro.html#cb62-2" aria-hidden="true" tabindex="-1"></a>transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth <span class="ot">&lt;-</span> <span class="fu">tth_transform</span>(transform_eg<span class="sc">$</span>Co<span class="sc">$</span>tth,</span>
+<span id="cb62-3"><a href="intro.html#cb62-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">from =</span> <span class="fl">1.78897</span>,</span>
+<span id="cb62-4"><a href="intro.html#cb62-4" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">to =</span> <span class="fl">1.54056</span>)</span>
+<span id="cb62-5"><a href="intro.html#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-6"><a href="intro.html#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Replot data after transformation</span></span>
+<span id="cb62-7"><a href="intro.html#cb62-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(transform_eg,</span>
+<span id="cb62-8"><a href="intro.html#cb62-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">wavelength =</span> <span class="st">&quot;Cu&quot;</span>,</span>
+<span id="cb62-9"><a href="intro.html#cb62-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">normalise =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb62-10"><a href="intro.html#cb62-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">interactive =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-41"></span>
+<img src="DigiMinR_files/figure-html/unnamed-chunk-41-1.png" alt="Data obtained from Co and Cu X-ray tubes after 2theta transformation." width="80%" />
 <p class="caption">
 Figure 1.18: Data obtained from Co and Cu X-ray tubes after 2theta transformation.
 </p>
