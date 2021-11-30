@@ -80,10 +80,10 @@ if (knitr:::is_html_output())
 }
 ```
 
-```{r, echo=FALSE, out.width = '33%', fig.align="center", cache = TRUE}
+```{r, echo=FALSE, out.width = '90%', fig.align="center", cache = TRUE}
 if (knitr:::is_html_output())
 {
-  knitr::include_graphics("figures/IUSS.png")
+  knitr::include_graphics("figures/IUSS_edit2.png")
 }
 ```
 
