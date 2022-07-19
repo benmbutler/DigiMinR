@@ -11,7 +11,7 @@ This chapter will work through:
 
 ## The basic form of XRPD data {#basic-form}
 
-In its most basic form, XRPD data (a diffractogram) is simply comprised of an x-axis (2θ and y-axis (counts). The following figure shows a diffratogram for a soil from north east Scotland.
+In its most basic form, XRPD (X-ray powder diffraction) data (often referred to as a diffractogram) is simply comprised of an x-axis (in units of 2θ) and y-axis (counts at the 2θ positions). The following figure shows a diffratogram for a soil from north east Scotland.
 
 ```{r, fig.cap = "A diffractogram of a soil developed from Granite in north east Scotland", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE, message = FALSE, cache = TRUE}
 library(powdR)
@@ -35,7 +35,7 @@ plot(as_xy(data.frame(minerals$tth,
      wav = "Cu")
 ```
 
-In any given diffractogram there can be multiple minerals contributing their unique signature to the observed pattern, which ends up simply being the sum of these signatures each scaled by different amounts (scaling factors). These scaling factors are inherently related to a given minerals concentration within the mixture based on the defined diffracting power of each mineral, known as Reference Intensity Ratios (see Chapter \@ref(quant)). Together these principles make XRPD the most widely used analytical technique for qualitative and quantitative soil mineralogy. 
+In any given diffractogram of a material like a soil there can be multiple minerals contributing their unique signature to the observed pattern, which ends up simply being the weighted sum of these signatures. The proportion of each minerals pattern in the mixture is inherently related to a given minerals concentration within the mixture but to extract that we also need to know some scaling factors based on the defined 'diffracting power' of each mineral, known as Reference Intensity Ratios (see Chapter \@ref(quant)). Together these principles make XRPD the most widely used analytical technique for qualitative (what minerals are present?) and quantitative (how much of each mineral?) soil mineralogy. 
 
 ## Loading XRPD data {#loading-data}
 
@@ -313,7 +313,7 @@ plot(two_instruments_int, wavelength = "Cu", normalise = TRUE)
 ```
 
 ### Alignment {#alignment}
-Peak positions in XRPD data commonly shift in response to small variations in specimen height in the instrument. Even seemingly small misalignments between peaks can hinder the analysis of XRPD data [@Butler2019]. One approach to deal with such peak shifts is to use a mineral with essentially invariant peak positions as an internal standard (e.g. the common mineral quartz), resulting in well aligned data by adding or subtracting a fixed value to the 2θ axis.
+Peak positions in XRPD data commonly shift in response to small variations in specimen height in the instrument, the so called 'specimen displacement error'. Even seemingly small misalignments between peaks in different diffractograms can hinder the analysis of XRPD data [@Butler2019]. One approach to deal with such peak shifts is to use a mineral with essentially invariant peak positions as an internal standard (e.g. the common mineral quartz), resulting in well aligned data by adding or subtracting a fixed value to the 2θ axis. (Note that the 'specimen displacement error is non linear in 2θ, but a simply linear correction is often satisfactory for most purposes over the typical 2θ range recorded for soil samples)
 
 The **powdR** package contains functionality for aligning single or multiple patterns using the `align_xy()` function. In the following examples, samples will be aligned to a pure quartz pattern that will be loaded from the **powdR** package using `read_xy()`
 
@@ -418,7 +418,7 @@ class(back_to_list)
 ```
 
 ### 2θ transformation {#two-theta-transform}
-Laboratory XRPD data are usually collected using either Cu or Co X-ray tubes, which each have characteristic Kα wavelengths (e.g. Cu-Kα = 1.54056 Angstroms whereas Co-Kα = 1.78897 Angstroms). These wavelengths determine the 2θ at which the conditions for diffraction are met via Bragg's Law:
+Laboratory XRPD data are usually collected using either Cu or Co X-ray tubes, and the main component of the emission profile from these is the characteristic Kα wavelengths (e.g. Cu-Kα = 1.54056 Angstroms whereas Co-Kα = 1.78897 Angstroms). These wavelengths determine the 2θ at which the conditions for diffraction are met via Bragg's Law:
 
 $$
 \begin{aligned}
@@ -426,7 +426,7 @@ n\lambda = 2d\sin\theta
 \end{aligned}
 $$
 
-where $n$ is an integer describing the diffraction order, $\lambda$ is the wavelength (Angstroms) and $d$ is the atomic spacing (Angstroms).
+where $n$ is an integer describing the diffraction order, $\lambda$ is the wavelength (Angstroms) and $d$ is the atomic spacing (Angstroms) between repeating planes of atoms in a crystal (mineral).
 
 In some instances it can be useful to transform the 2θ axis of a given sample so that the 2θ peak positions are representative of a measurement made using a different X-ray source. This can be achieved using the `tth_transform()` function:
 

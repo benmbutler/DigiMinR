@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Digital Soil Mineralogy with R</title>
   <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Digital Soil Mineralogy with R" />
   <meta property="og:type" content="book" />
-  
   <meta property="og:image" content="/figures/dsm_graphic.png" />
   <meta property="og:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-11-30" />
+<meta name="date" content="2022-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 
 <link rel="next" href="intro.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,17 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/font-awesome-5.13.0/js/script.js"></script>
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/plotly-binding-4.9.4.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
@@ -298,21 +297,21 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Digital Soil Mineralogy with R</h1>
 <p class="author"><em>Benjamin Butler and Steve Hillier</em></p>
-<p class="date"><em>2021-11-30</em></p>
+<p class="date"><em>2022-07-19</em></p>
 </div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
+<div id="preface" class="section level1 unnumbered hasAnchor">
+<h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><img src="figures/dsm_small.png" width="50%" style="display: block; margin: auto;" /></p>
-<p>Digital Soil Mineralogy relates to the data-driven analysis of soil X-ray powder diffraction (XRPD) data. Such data are considered to be precise digital signatures of a given soil’s mineralogy, within which is all of the information required to identify and quantify the various mineral components within these complex mixtures.</p>
-<p>In recent years various methods for Digital Soil Mineralogy have been developed and published in peer-reviewed literature. These methods include the use of supervised and unsupervised machine learning to predict and interpret soil properties from XRPD data, the application of novel multivariate statistical methods, and automated approaches for mineral quantification. Each chapter in this documentation will detail one such method, providing code and data for reproducible examples that can be adapted by readers for their own projects/research.</p>
+<p>Digital Soil Mineralogy relates to the data-driven analysis of soil X-ray powder diffraction (XRPD) data. Such data are considered to be precise digital signatures of a given soil’s mineralogy, within which all of the information required to identify and quantify the various mineral components within these complex mixtures is encoded.</p>
+<p>In recent years various methods for Digital Soil Mineralogy have been developed and published in peer-reviewed literature. These methods include the use of supervised and unsupervised machine learning to predict and interpret soil properties from XRPD data, the application of novel multivariate statistical methods, and automated approaches for mineral quantification. Each chapter in this course will detail one such method, providing code and data for reproducible examples that can be adapted by readers for their own projects/research.</p>
 <p>Whilst all data and methods presented herein relate to soil samples, the methods can be considered transferable to all aspects of environmental mineralogy and beyond!</p>
-<div id="prerequisites" class="section level2 unnumbered">
-<h2>Prerequisites</h2>
+<div id="prerequisites" class="section level2 unnumbered hasAnchor">
+<h2>Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To run the examples provided throughout this document, it is recommended that you have <a href="https://www.r-project.org/">R</a> and <a href="https://www.rstudio.com/products/rstudio/">RStudio</a> installed on your machine. Once that’s set up, then additional extensions (packages) required along the way can be installed and loaded. R and it’s extensions are designed to be multi-platform so all material presented here should work on Windows, Mac, or Linux. The only package needed from the very start of the document is <a href="https://cran.r-project.org/web/packages/powdR/index.html"><strong>powdR</strong></a>, and subsequent packages will be introduced in later chapters. To install <strong>powdR</strong>, use:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;powdR&quot;</span>)</span></code></pre></div>
 </div>
-<div id="code-conventions" class="section level2 unnumbered">
-<h2>Code Conventions</h2>
+<div id="code-conventions" class="section level2 unnumbered hasAnchor">
+<h2>Code Conventions<a href="index.html#code-conventions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This document contains many chunks of R code that provide reproducible examples that can be copied and pasted to run on your own computer, for instance:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Summarise a vector of integers 1 to 10</span></span>
 <span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
@@ -320,33 +319,33 @@ div.csl-indent {
 ##    1.00    3.25    5.50    5.50    7.75   10.00</code></pre>
 <p>The R session information when compiling this book is shown below:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="index.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
-<pre><code>## R version 4.1.0 (2021-05-18)
+<pre><code>## R version 4.2.1 (2022-06-23 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 10 x64 (build 17763)
+## Running under: Windows 10 x64 (build 19042)
 ## 
 ## Matrix products: default
 ## 
 ## locale:
-## [1] LC_COLLATE=English_United Kingdom.1252 
-## [2] LC_CTYPE=English_United Kingdom.1252   
-## [3] LC_MONETARY=English_United Kingdom.1252
+## [1] LC_COLLATE=English_United Kingdom.utf8 
+## [2] LC_CTYPE=English_United Kingdom.utf8   
+## [3] LC_MONETARY=English_United Kingdom.utf8
 ## [4] LC_NUMERIC=C                           
-## [5] LC_TIME=English_United Kingdom.1252    
+## [5] LC_TIME=English_United Kingdom.utf8    
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] bookdown_0.22     codetools_0.2-18  digest_0.6.27     R6_2.5.0         
-##  [5] jsonlite_1.7.2    magrittr_2.0.1    evaluate_0.14     highr_0.9        
-##  [9] stringi_1.7.3     rlang_0.4.11      rstudioapi_0.13   jquerylib_0.1.4  
-## [13] bslib_0.2.5.1     rmarkdown_2.10    tools_4.1.0       stringr_1.4.0    
-## [17] xfun_0.25         yaml_2.2.1        compiler_4.1.0    htmltools_0.5.1.1
-## [21] knitr_1.33        sass_0.4.0</code></pre>
+##  [1] bookdown_0.27    codetools_0.2-18 digest_0.6.28    R6_2.5.1        
+##  [5] jsonlite_1.7.2   magrittr_2.0.1   evaluate_0.15    highr_0.9       
+##  [9] stringi_1.7.6    rlang_0.4.11     rstudioapi_0.13  jquerylib_0.1.4 
+## [13] bslib_0.3.0      rmarkdown_2.14   tools_4.2.1      stringr_1.4.0   
+## [17] xfun_0.31        yaml_2.2.1       fastmap_1.1.0    compiler_4.2.1  
+## [21] htmltools_0.5.2  knitr_1.39       sass_0.4.0</code></pre>
 <p>Text outputs associated with R code are denoted by two hashes (<code>##</code>) by default, as you can see from the example above. This is for your convenience when you want to copy and run the code (the text output will be ignored since it is commented out). Package names are in bold text (e.g. <strong>powdR</strong>), and inline code and filenames are formatted in a typewriter font (e.g., <code>summary(1:10)</code>). Function names can easily be identified by the parentheses that follow them (e.g., <code>mean(1:10)</code>).</p>
 </div>
-<div id="what-to-expect" class="section level2 unnumbered">
-<h2>What to expect</h2>
+<div id="what-to-expect" class="section level2 unnumbered hasAnchor">
+<h2>What to expect<a href="index.html#what-to-expect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This document is divided into chapters that each detail specific aspects of Digital Soil Mineralogy. To start with, the basics of handling XRPD data in R are introduced, which progresses to more advanced manipulation of such data that cannot be realised with proprietary XRPD software. Subsequently, specific examples of methods for Digital Soil Mineralogy are provided that include high throughput quantitative analysis, data mining, and cluster analysis. As such, the documentation is separated into the following chapters:</p>
 <ul>
 <li>Chapter <a href="intro.html#intro">1</a>: Loading and handling XRPD data in R</li>
@@ -357,16 +356,16 @@ div.csl-indent {
 </ul>
 <p>Each chapter contains reproducible R code along with written explanations. For those that prefer video tutorials, there are a number of embedded YouTube videos throughout the course material that describe and explain the R code. With exception to Chapter <a href="intro.html#intro">1</a>, all chapters are standalone so there is no need to read everything!</p>
 </div>
-<div id="about-the-authors" class="section level2 unnumbered">
-<h2>About the authors</h2>
+<div id="about-the-authors" class="section level2 unnumbered hasAnchor">
+<h2>About the authors<a href="index.html#about-the-authors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
 <li><p><a href="https://www.hutton.ac.uk/staff/benjamin-butler"><strong>Benjamin Butler</strong></a> is a Digital Mineralogist at the James Hutton Institute, Aberdeen, UK. His interests centre around the use of XRPD to characterise the mineral composition of environmental mixtures such as soils, construction and demolition waste, and sea ice. As an active R user he has authored the <strong>powdR</strong> package that provides a range of methods for quantitative analysis of XRPD data using full pattern summation. Aside from dealing with data, he is involved in regular soil surveys on forestry land across Scotland, allowing him to observe soils from the digging to the databases.</p></li>
-<li><p><a href="https://www.hutton.ac.uk/staff/steve-hillier"><strong>Steve Hillier</strong></a> is a Soil Mineralogist at the James Hutton Institute, Aberdeen, UK…</p></li>
+<li><p><a href="https://www.hutton.ac.uk/staff/steve-hillier"><strong>Steve Hillier</strong></a> is a Soil Mineralogist at the James Hutton Institute, Aberdeen, UK. Steve conceived the concept of digital mineralogy when he realized that attempts to understand how soil properties relate to mineralogical properties did not need to involve complex intermediate steps such as quantitative mineralogical analysis of XRD data but could instead work directly with more precise uninterpreted primary XRD data, linking back to mineralogical interpretations at a later stage in the analysis. Steve is well know for his work on quantitative mineralogical analysis using full pattern methods as exemplified by his success in the <a href="https://www.clays.org/reynolds/"><strong>Reynolds Cup</strong></a> Round Robin. Steve is outgoing Chair of IUSS commission 2.4 on soil mineralogy (2018-2022) and has been actively promoting data driven approaches to understanding soil mineralogy/soil property relationships.</p></li>
 </ul>
 </div>
-<div id="acknowledgments" class="section level2 unnumbered">
-<h2>Acknowledgments</h2>
-<p>The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. Additional support from the International Union of Soil Sciences (IUSS) is gratefully acknowledged, as is the support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS).</p>
+<div id="acknowledgments" class="section level2 unnumbered hasAnchor">
+<h2>Acknowledgments<a href="index.html#acknowledgments" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. Additional support from the International Union of Soil Sciences (IUSS) Stimulus Fund is gratefully acknowledged, as is the support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS).</p>
 <p><img src="figures/acknowledgements_small.png" width="100%" style="display: block; margin: auto;" /></p>
 <p><img src="figures/IUSS_edit2.png" width="90%" style="display: block; margin: auto;" /></p>
 

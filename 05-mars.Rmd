@@ -4,9 +4,9 @@ This chapter will use [data](https://pds.nasa.gov/ds-view/pds/viewDataset.jsp?ds
 
 The mineral compositions of the samples in the MSL dataset are described and discussed in numerous publications [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2015; @Bristow2018]. The many clay minerals identified and quantified from the XRPD data provides compelling evidence that the Martian surface material has been altered by water, which has profound implications for the potential existence of microbial life on Mars.
 
-Qualitative and quantitative analysis of clay minerals is a notoriously challenging undertaking, often requiring separation of the clay fraction onto oriented slides combined with several ethylene-glycol and heat treatments. The MSL cannot separate the clay fraction from Martian samples and is limited to bulk sample analysis, where clay minerals are analysed in a randomly oriented powder along with all other crystalline and amorphous components within the sample. This has acted to create uncertainty in the analysis of clay minerals from MSL XRPD data [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2018]. Identification of Earth based analogues for Martian soil mineralogy therefore represent an opportunity to facilitate more accurate interpretation of the clay mineralogy encoded within MSL XRPD data. Further, understanding the development of mineralogically analogous soils on Earth has potential to aid the development of hypotheses for the environmental properties of aqueous systems on ancient Mars [@Marlow2008].
+Qualitative and quantitative analysis of clay minerals is a notoriously challenging undertaking, often requiring separation of the clay fraction onto oriented slides combined with treatements such as ethylene-glycol solvation and heating, among others. The MSL cannot separate the clay fraction from Martian samples and is limited to bulk sample analysis, where clay minerals are analysed in a randomly oriented powder along with all other crystalline and amorphous components within the sample. This has acted to create some uncertainty in the analysis of clay minerals from MSL XRPD data [@Bish2013; @Grotzinger2014; @Vaniman2014; @Bristow2018]. Identification of Earth based analogues for Martian soil mineralogy therefore represent an opportunity to facilitate more accurate interpretation of the clay mineralogy encoded within MSL XRPD data. Further, understanding the development of mineralogically analogous soils on Earth has potential to aid the development of hypotheses for the environmental properties of aqueous systems on ancient Mars [@Marlow2008].
 
-Here, soil XRPD data from across Scotland [@Butler2018] will be compared to the MSL XRPD data in the aim of identifying potential soil analogues for Martian mineralogy.
+Here, soil XRPD data from across Scotland [@Butler2018] will be compared to the MSL XRPD data with the aim of identifying potential soil analogues for Martian mineralogy.
 
 ## Required packages {#mars-package}
 Data for this chapter are stored within a **mars2mull** R package [hosted on GitHub](https://github.com/benmbutler/mars2mull/). The package can be installed using the **devtools** package
@@ -126,7 +126,7 @@ The aim of this analysis is to compare all Martian diffractograms from the MSL t
 2. [Interpolate](#interpolation) the data onto a harmonised 2θ scale within the overlapping 2θ range
 
 ### 2θ transformation
-As outlined [here](#two-theta-transform), `tth_transform()` can be used to transform the 2θ axis of a sample to one that is representative of data recorded using a different wavelength. Here the `scotland_xrpd` data, which were collected using Cu-Kα radiation, will be transformed to be representative of the Co-Kα radiation that was used on the MSL diffractometer:
+As outlined [here](#two-theta-transform), `tth_transform()` can be used to transform the 2θ axis of a sample to one that is representative of data recorded using a different wavelength. Here the `scotland_xrpd` data, which were collected using Cu-Kα radiation, will be transformed to be comparable to the Co-Kα radiation that was used on the MSL diffractometer:
 
 
 ```{r fig.cap = "The first 10 samples in the scotland_xrpd data after 2theta transformation.", out.width='100%', fig.align='center', fig.asp=0.75, message=FALSE, warning=FALSE, cache = TRUE}
@@ -361,7 +361,7 @@ plot(mars_highest_cor,
      interactive = FALSE)
 ```
 
-From this plot (which is best plotted using `interactive = TRUE` in the function call) we can see how three samples from the `scotland_xrpd` data show notable similarity to the data from the Cumberland site in the MSL data. Of particular note is the very similar basal plane d-spacing of the predominant clay mineral within the samples, suggesting that perhaps similar clay minerals are observed in the samples from Mars and Scotland.
+From this plot (which is best plotted using `interactive = TRUE` in the function call) we can see how three samples from the `scotland_xrpd` data show notable similarity to the data from the Cumberland site in the MSL data. Of particular note is the very similar low angle d-spacing of the predominant clay mineral within the samples, suggesting that perhaps similar clay minerals are observed in the samples from Mars and Scotland.
 
 Further exploration of Scottish samples identified as having similar diffraction patterns to the Cumberland MSL sample can be achieved by exploring the data spatially and by understanding more about the parent material that Scottish soils developed from:
 
@@ -377,4 +377,4 @@ leaflet() %>%
 
 Plotting the data spatially reveals that the samples are from two sites that are both located on the West Coast of Scotland. More specifically the sites are on the Isle of Ulva, near the Isle of Mull, and the Trotternish Peninsula on the Isle of Skye. Both of these locations display soils developed from a basaltic parent material in combination with a relatively wet climate that has resulted in the weathering of this material to various clay minerals, which may be useful analogues for Martian clay mineralogy.
 
-In summary, manipulation of XRPD data and data-driven comparisons allows for inter-planetary comparisons of soil samples collected on Earth and Mars. Application of such approaches may serve as a useful way of identifying sites that can be further studies as geological or mineralogy analogues for Mars in order to undertake more detailed analyses that are beyond the capabilities of rover missions.
+In summary, manipulation of XRPD data and data-driven comparisons allows for inter-planetary comparisons of soil samples collected on Earth and Mars. Application of such approaches may serve as a useful way of identifying sites that can be further studied as geological or mineralogy analogues for Mars in order to undertake more detailed analyses that are beyond the capabilities of rover missions.

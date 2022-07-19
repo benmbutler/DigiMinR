@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Quantitative phase analysis | Digital Soil Mineralogy with R</title>
   <meta name="description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
-  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Quantitative phase analysis | Digital Soil Mineralogy with R" />
   <meta property="og:type" content="book" />
-  
   <meta property="og:image" content="/figures/dsm_graphic.png" />
   <meta property="og:description" content="An online course detailing various methods for data-driven analysis of X-ray powder diffraction using R" />
   
@@ -24,7 +23,7 @@
 <meta name="author" content="Benjamin Butler and Steve Hillier" />
 
 
-<meta name="date" content="2021-11-30" />
+<meta name="date" content="2022-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +32,6 @@
   
 <link rel="prev" href="intro.html"/>
 <link rel="next" href="machine-learning.html"/>
-<script src="libs/header-attrs-2.10/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,17 +49,18 @@
 
 
 
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/font-awesome-5.13.0/js/script.js"></script>
-<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/plotly-binding-4.9.4.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
@@ -295,18 +294,17 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="quant" class="section level1" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Quantitative phase analysis</h1>
-<p>This chapter describes methods for quantitative analysis implemented within the <strong>powdR</strong> package using a range of reproducible examples. Detailed accounts of these methods are provided in <span class="citation"><a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation"><a href="#ref-Butler2021powdR" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
-<p>One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) signals within a diffractogram can be related to
-their concentrations within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.</p>
-<p>Of the approaches available for quantitative XRPD, the simple Reference Intensity Ratio (RIR) method has consistently proven accurate. A RIR is a measure of the diffracting power of a phase relative to that of a standard (most often corundum, Al<sub>2</sub>O<sub>3</sub>), usually measured in a 50:50 mixture by weight. The RIR of a detectable phase within a mixture is required for its quantification.</p>
+<div id="quant" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Quantitative phase analysis<a href="quant.html#quant" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This chapter describes methods for quantitative analysis implemented within the <strong>powdR</strong> package using a range of reproducible examples. Detailed accounts of these methods are provided in <span class="citation">Butler and Hillier (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation">Butler and Hillier (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span> and references therein.</p>
+<p>One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) scattering signals within a diffractogram can be related to the concentrations of these components within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.</p>
+<p>Of the approaches available for quantitative XRPD, the simple Reference Intensity Ratio (RIR) method has consistently proven accurate. A RIR is a measure of the diffracting power of a phase relative to that of a standard (most often corundum, α Al<sub>2</sub>O<sub>3</sub>), usually measured in a 50:50 mixture by weight. The RIR of a detectable phase within a mixture is required for its quantification.</p>
 <p>As mentioned in Chapter <a href="intro.html#intro">1</a>, a given diffractogram can be modeled as the sum of pure diffractograms for all detectable phases, each scaled by different amounts (scaling factors). By combining these scaling factors with RIRs, phase concentrations can be calculated. Hereafter this approach is referred to as <strong>full pattern summation</strong>.</p>
-<p>Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the “reference library” containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn’t possible and the data can be harmonised accordingly. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs <span class="citation">(see Section 2 in <a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier 2021a</a>)</span>.</p>
-<div id="full-pattern-summation-with-powdr" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> Full pattern summation with <strong>powdR</strong></h2>
-<div id="powdRlib" class="section level3" number="2.1.1">
-<h3><span class="header-section-number">2.1.1</span> The <code>powdRlib</code> object</h3>
+<p>Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases because the background scattering is also included. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the “reference library” containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn’t possible and the data can be harmonised accordingly, at least in some respects. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate full pattern fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs <span class="citation">(see Section 2 in <a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier 2021a</a>)</span>.</p>
+<div id="full-pattern-summation-with-powdr" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Full pattern summation with <strong>powdR</strong><a href="quant.html#full-pattern-summation-with-powdr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="powdRlib" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> The <code>powdRlib</code> object<a href="quant.html#powdRlib" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3XorZfqAKo4" frameborder="0" allowfullscreen>
 </iframe>
@@ -360,13 +358,13 @@ their concentrations within the mixture. This principal facilitates the quantifi
 Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 </p>
 </div>
-<div id="rockjock" class="section level4" number="2.1.1.1">
-<h4><span class="header-section-number">2.1.1.1</span> Pre-loaded <code>powdRlib</code> objects</h4>
+<div id="rockjock" class="section level4 hasAnchor" number="2.1.1.1">
+<h4><span class="header-section-number">2.1.1.1</span> Pre-loaded <code>powdRlib</code> objects<a href="quant.html#rockjock" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>There are two <code>powdRlib</code> objects provided as part of the <strong>powdR</strong> package. The first is <code>minerals</code> [accessed via <code>data(minerals)</code>], which is a simple and low resolution library designed to facilitate fast computation of basic examples. The second is <code>rockjock</code> [accessed via <code>data(rockjock)</code>], which is a comprehensive library of 169 reference patterns covering most phases that might be encountered in geological and soil samples. The <code>rockjock</code> library in <strong>powdR</strong> uses data from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> thanks to the permission of Dennis Eberl. In <code>rockjock</code>, each reference pattern from the original RockJock program has been scaled to a maximum intensity of 10000 counts, and the RIRs normalised relative to Corundum. All <code>rockjock</code> data were analysed using Cu K<span class="math inline">\(\alpha\)</span> radiation. The final library is <code>afsis</code> [accessed via <code>data(minerals)</code>], which contains 21 reference patterns measured on a Bruker D2 phaser as part of the XRPD data analysis undertaken for Africa Soil Information Service Sentinel Site programme.</p>
 <p>To accompany the <code>rockjock</code> reference library, a list of eight synthetic mixtures from the original RockJock program <span class="citation">(<a href="#ref-Eberl2003" role="doc-biblioref">Eberl 2003</a>)</span> are also included in <strong>powdR</strong> in the <code>rockjock_mixtures</code> data [accessed via <code>data(rockjock_mixtures)</code>], and the known compositions of these mixtures provided in the <code>rockjock_weights</code> data [accessed via <code>data(rockjock_weights)</code>].</p>
 </div>
-<div id="subsetting-a-powdrlib-object" class="section level4" number="2.1.1.2">
-<h4><span class="header-section-number">2.1.1.2</span> Subsetting a <code>powdRlib</code> object</h4>
+<div id="subsetting-a-powdrlib-object" class="section level4 hasAnchor" number="2.1.1.2">
+<h4><span class="header-section-number">2.1.1.2</span> Subsetting a <code>powdRlib</code> object<a href="quant.html#subsetting-a-powdrlib-object" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Occasionally it may be useful to subset a reference library to a smaller selection. This can be achieved using <code>subset()</code>, which for <code>powdRlib</code> objects accepts three arguments; <code>x</code>, <code>refs</code> and <code>mode</code> (see <code>?subset.powdRlib</code>). The <code>x</code> argument specifies the <code>powdRlib</code> object to be subset, <code>refs</code> specifies the ID’s and/or names of phases to select, and <code>mode</code> specifies whether these phases are kept (<code>mode = "keep"</code>) or removed (<code>mode = "remove"</code>).</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="quant.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock)</span>
 <span id="cb70-2"><a href="quant.html#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -400,8 +398,8 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <span id="cb74-10"><a href="quant.html#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(rockjock_2<span class="sc">$</span>phases)</span></code></pre></div>
 <pre><code>## [1] 11</code></pre>
 </div>
-<div id="interpolating-and-merging-powdrlib-objects" class="section level4" number="2.1.1.3">
-<h4><span class="header-section-number">2.1.1.3</span> Interpolating and merging <code>powdRlib</code> objects</h4>
+<div id="interpolating-and-merging-powdrlib-objects" class="section level4 hasAnchor" number="2.1.1.3">
+<h4><span class="header-section-number">2.1.1.3</span> Interpolating and merging <code>powdRlib</code> objects<a href="quant.html#interpolating-and-merging-powdrlib-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Two <code>powdRlib</code> objects from different instruments can be interpolated and then merged using the <code>interpolate</code> and <code>merge</code> methods (see <code>?interpolate.powdRlib</code> and <code>merge.powdRlib</code>), respectively. For example, the <code>minerals</code> library can be merged with the <code>rockjock</code> library following interpolation using:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="quant.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the minerals library</span></span>
 <span id="cb76-2"><a href="quant.html#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(minerals)</span>
@@ -431,17 +429,17 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="quant.html#cb84-1" aria-hidden="true" tabindex="-1"></a>rockjock_afsis <span class="ot">&lt;-</span> <span class="fu">merge</span>(rockjock, afsis)</span></code></pre></div>
 </div>
 </div>
-<div id="full-pattern-summation-with-fps" class="section level3" number="2.1.2">
-<h3><span class="header-section-number">2.1.2</span> Full pattern summation with <code>fps()</code></h3>
+<div id="full-pattern-summation-with-fps" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Full pattern summation with <code>fps()</code><a href="quant.html#full-pattern-summation-with-fps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/5PdRaLmJumE" frameborder="0" allowfullscreen>
 </iframe>
 </p>
-<p>Once you have a <code>powdRlib</code> reference library and diffractogram(s) <a href="intro.html#loading-data">loaded into R</a>, you have everything needed for quantitative analysis via full pattern summation. Full pattern summation in <strong>powdR</strong> is provided via the <code>fps()</code> function, whilst an automated version is provided in <a href="quant.html#afps"><code>afps()</code></a>. Details of the equations and routines implemented in <code>fps()</code> and <code>afps()</code> are provided in <span class="citation"><a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation"><a href="#ref-Butler2021powdR" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
+<p>Once you have a <code>powdRlib</code> reference library and diffractogram(s) <a href="intro.html#loading-data">loaded into R</a>, you have everything needed for quantitative analysis via full pattern summation. Full pattern summation in <strong>powdR</strong> is provided via the <code>fps()</code> function, whilst an automated version is provided in <a href="quant.html#afps"><code>afps()</code></a>. Details of the equations and routines implemented in <code>fps()</code> and <code>afps()</code> are provided in <span class="citation">Butler and Hillier (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation">Butler and Hillier (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
 <p><code>fps()</code> is specifically applied to <code>powdRlib</code> objects, and accepts a wide range of arguments that are detailed in the package documentation (see <code>?fps.powdRlib</code>). Here the <a href="quant.html#rockjock"><code>rockjock</code> and <code>rockjock_mixtures</code> data</a> will be used to demonstrate the main features of <code>fps()</code> and the various ways in which it can be used.</p>
-<div id="full-pattern-summation-with-an-internal-standard" class="section level4" number="2.1.2.1">
-<h4><span class="header-section-number">2.1.2.1</span> Full pattern summation <strong>with</strong> an internal standard</h4>
-<p>Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the <code>std</code> and <code>std_conc</code> arguments of <code>fps()</code> can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the <code>rockjock_mixtures</code> data were prepared with 20 % corundum as the internal standard, thus this can be specified using <code>std = "CORUNDUM"</code> and <code>std_conc = 20</code> in the call to <code>fps()</code>. In addition, setting the <code>omit_std</code> argument to <code>TRUE</code> makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the <code>align</code> argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined <a href="intro.html#alignment">above</a>. These principles are used in the example below, which passes the following seven arguments to <code>fps()</code>:</p>
+<div id="full-pattern-summation-with-an-internal-standard" class="section level4 hasAnchor" number="2.1.2.1">
+<h4><span class="header-section-number">2.1.2.1</span> Full pattern summation <strong>with</strong> an internal standard<a href="quant.html#full-pattern-summation-with-an-internal-standard" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the <code>std</code> and <code>std_conc</code> arguments of <code>fps()</code> can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the <code>rockjock_mixtures</code> data were prepared with 20 % corundum as the added internal standard, thus this can be specified using <code>std = "CORUNDUM"</code> and <code>std_conc = 20</code> in the call to <code>fps()</code>. In addition, setting the <code>omit_std</code> argument to <code>TRUE</code> makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the <code>align</code> argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined <a href="intro.html#alignment">above</a>. These principles are used in the example below, which passes the following seven arguments to <code>fps()</code>:</p>
 <ol style="list-style-type: decimal">
 <li><code>lib</code> is used to define the <a href="quant.html#powdRlib"><code>powdRlib</code> object</a> containing the reference patterns and their RIRs.</li>
 <li><code>smpl</code> is used to defined the data frame or <a href="intro.html#loading-data"><code>XY</code> object</a> containing the sample diffractogram.</li>
@@ -498,7 +496,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 5 KAOLINITE_DRY_BRANCH     Kaolinite 0.5812875     14.654375
 ## 6       ILLITE_1M_RM30        Illite 0.2768664      7.666375
 ## 7  MONTMORILLONITE_WYO Smectite (Di) 0.3202779     50.955000</code></pre>
-<p>Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 %:</p>
+<p>Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 % because each phase is quantified with respect to the internal standard:</p>
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="quant.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit1<span class="sc">$</span>phases<span class="sc">$</span>phase_percent, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 102.1108</code></pre>
 <p>Unlike other software where only certain phases can be used as an internal standard, any phase can be defined in <strong>powdR</strong>. For example, the <code>rockjock_mixtures$Mix5</code> sample contains 20 % quartz (see <code>data(rockjock_weights)</code>), thus adding <code>"QUARTZ"</code> as the <code>std</code> argument results in this reference pattern becoming the internal standard instead.</p>
@@ -548,8 +546,8 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <span id="cb99-3"><a href="quant.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit2c<span class="sc">$</span>phases<span class="sc">$</span>phase_percent, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
 </div>
-<div id="full-pattern-summation-without-an-internal-standard" class="section level4" number="2.1.2.2">
-<h4><span class="header-section-number">2.1.2.2</span> Full pattern summation <strong>without</strong> an internal standard</h4>
+<div id="full-pattern-summation-without-an-internal-standard" class="section level4 hasAnchor" number="2.1.2.2">
+<h4><span class="header-section-number">2.1.2.2</span> Full pattern summation <strong>without</strong> an internal standard<a href="quant.html#full-pattern-summation-without-an-internal-standard" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>In cases where an internal standard is not added to a sample, phase quantification can be achieved by assuming that all detectable phases can be identified and that they sum to 100 weight %. By setting the <code>std_conc</code> argument of <code>fps()</code> to <code>NA</code>, or leaving it out of the function call, it will be assumed that the sample has been prepared without an internal standard and the phase concentrations computed accordingly.</p>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="quant.html#cb101-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">fps</span>(<span class="at">lib =</span> rockjock,</span>
 <span id="cb101-2"><a href="quant.html#cb101-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">smpl =</span> rockjock_mixtures<span class="sc">$</span>Mix1,</span>
@@ -584,9 +582,9 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="quant.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(fit3<span class="sc">$</span>phases<span class="sc">$</span>phase_percent)</span></code></pre></div>
 <pre><code>## [1] 100</code></pre>
 </div>
-<div id="full-pattern-summation-with-data-harmonisation" class="section level4" number="2.1.2.3">
-<h4><span class="header-section-number">2.1.2.3</span> Full pattern summation with data harmonisation</h4>
-<p>It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), <code>fps()</code> contains a logical <code>harmonise</code> argument (default <code>= TRUE</code>). When the sample and library contain non-identical 2θ axes, <code>harmonise = TRUE</code> will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available.</p>
+<div id="full-pattern-summation-with-data-harmonisation" class="section level4 hasAnchor" number="2.1.2.3">
+<h4><span class="header-section-number">2.1.2.3</span> Full pattern summation with data harmonisation<a href="quant.html#full-pattern-summation-with-data-harmonisation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution, along with other identical configurations of the instrument. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), <code>fps()</code> contains a logical <code>harmonise</code> argument (default <code>= TRUE</code>). When the sample and library contain non-identical 2θ axes, <code>harmonise = TRUE</code> will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available. This type of approach may produce results that are acceptable and fit for purpose, but if the best accuracy is required then a library of standard patterns collected on the instrument used to run the unknown samples is the recommended approach.</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="quant.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a sample with a shorter 2theta axis than the library</span></span>
 <span id="cb107-2"><a href="quant.html#cb107-2" aria-hidden="true" tabindex="-1"></a>Mix1_short <span class="ot">&lt;-</span> <span class="fu">subset</span>(rockjock_mixtures<span class="sc">$</span>Mix1, tth <span class="sc">&gt;</span> <span class="dv">10</span> <span class="sc">&amp;</span> tth <span class="sc">&lt;</span> <span class="dv">55</span>)</span>
 <span id="cb107-3"><a href="quant.html#cb107-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -625,18 +623,18 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 8  MONTMORILLONITE_WYO Smectite (Di) 0.3202779       35.2585</code></pre>
 </div>
 </div>
-<div id="afps" class="section level3" number="2.1.3">
-<h3><span class="header-section-number">2.1.3</span> Automated full pattern summation with <code>afps()</code></h3>
+<div id="afps" class="section level3 hasAnchor" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Automated full pattern summation with <code>afps()</code><a href="quant.html#afps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/B7W5zXnlrGU" frameborder="0" allowfullscreen>
 </iframe>
 </p>
-<p>The selection of suitable reference patterns for full pattern summation can often be challenging and time consuming. An attempt to automate this process is provided in the <code>afps()</code> function, which can select appropriate reference patterns from a reference library and subsequently exclude reference patterns based on limit of detection estimates. Such an approach is considered particularly advantageous when quantifying high-throughput XRPD datasets that display considerable mineralogical variation such as the <a href="https://www.clays.org/reynolds/">Reynolds Cup</a>. Detailed accounts of the <code>afps()</code> function are provided in <span class="citation"><a href="#ref-Butler2021rc" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation"><a href="#ref-Butler2021powdR" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
-<p>All of the principles and arguments outlined above for the <code>fps()</code> function apply to the use of <code>afps()</code>. When using <code>afps()</code>, there are a few additional arguments that need to be defined:</p>
+<p>The selection of suitable reference patterns for full pattern summation can often be challenging and time consuming. An attempt to automate this process is provided in the <code>afps()</code> function, which can select appropriate reference patterns from a reference library and subsequently exclude reference patterns based on limit of detection estimates. Such an approach is considered particularly advantageous when quantifying XRPD datasets that display considerable mineralogical variation such as the <a href="https://www.clays.org/reynolds/">Reynolds Cup</a> samples. Detailed accounts of the <code>afps()</code> function are provided in <span class="citation">Butler and Hillier (<a href="#ref-Butler2021rc" role="doc-biblioref">2021a</a>)</span> and <span class="citation">Butler and Hillier (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
+<p>All of the principles and arguments outlined above for the <code>fps()</code> function apply to the use of <code>afps(). However, when using</code>afps()`, there are a few additional arguments that need to be defined:</p>
 <ol style="list-style-type: decimal">
 <li><code>force</code> is used to specify phase IDs (<code>lib$phases$phase_id</code>) or phase names (<code>lib$phases$phase_name</code>) that must be retained in the output, even if their concentrations are estimated to be below the limit of detection or negative.</li>
 <li><code>lod</code> is used to define the limit of detection (LOD; in weight %) of the phase specified as the internal standard in the <code>std</code> argument. This limit of detection for the define phase is then used in combination with the RIRs to estimate the LODs of all other phases.</li>
-<li><code>amorphous</code> is used to specify which, if any, phases should be treated as amorphous. This is used because the assumptions used to estimate the LODs of crystalliane and disordered phases are not appropriate for amorphous phases.</li>
+<li><code>amorphous</code> is used to specify which, if any, phases should be treated as amorphous. This is used because the assumptions used to estimate the LODs of crystalline and disordered phases are not appropriate for amorphous phases.</li>
 <li><code>amorphous_lod</code> is used to define the LOD (in weight %) of the phases specified in the <code>amorphous</code> argument.</li>
 </ol>
 <p>Here the <code>rockjock</code> library, containing 169 reference patterns, will be used to quantify one of the samples in the <code>rockjock_mixtures</code> data. Note that when using <code>afps()</code>, omission of the <code>refs</code> argument in the function call will automatically result in all phases from the reference library being used in the fitting process.</p>
@@ -666,7 +664,7 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ##             1             1             2             1             1 
 ##   Plagioclase Smectite (Di) 
 ##             3             2</code></pre>
-<p>Illustrates that the resulting output contains 2 reference patterns for both illite and smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by <code>afps()</code>. This information is grouped together and summed in the <code>phases_grouped</code> data frame within the <code>powdRafps</code> object:</p>
+<p>Illustrates that the resulting output contains 2 reference patterns for both illite and smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by <code>afps()'. This information is grouped together and summed in the</code>phases_grouped<code>data frame within the</code>powdRafps` object:</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="quant.html#cb115-1" aria-hidden="true" tabindex="-1"></a>a_fit1<span class="sc">$</span>phases_grouped</span></code></pre></div>
 <pre><code>##      phase_name phase_percent
 ## 1      Corundum       19.2449
@@ -676,17 +674,17 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 ## 5     Kaolinite       10.8828
 ## 6 Smectite (Di)       40.0788
 ## 7        Illite        7.9105</code></pre>
-<p>Note that the “background” phase in the output is simply a horizontal line that can account for shifts in background intensity, which can be useful to use in some cases. In the <code>rockjock</code> data, the background patterns have been given an exceptionally high RIR so that their quantified concentrations are near zero.</p>
+<p>Grouping of phases like this is a powerful approach to obtain better fits to the minerals present in a given sample, and is advantageous even for minerals like quartz, where some combination of several quartz standards may produce a better fit that a single standard. Note also that the “background” phase in the output is simply a horizontal line that can account for shifts in background intensity, which can be useful to use in some cases, but most especially when working with data and libraries from different instruments. In the <code>rockjock</code> data, the background patterns have been given an exceptionally high RIR so that their quantified concentrations are effectively zero.</p>
 </div>
-<div id="additional-fps-and-afps-functionality" class="section level3" number="2.1.4">
-<h3><span class="header-section-number">2.1.4</span> Additional <code>fps()</code> and <code>afps()</code> functionality</h3>
-<div id="shifting-of-reference-patterns" class="section level4" number="2.1.4.1">
-<h4><span class="header-section-number">2.1.4.1</span> Shifting of reference patterns</h4>
+<div id="additional-fps-and-afps-functionality" class="section level3 hasAnchor" number="2.1.4">
+<h3><span class="header-section-number">2.1.4</span> Additional <code>fps()</code> and <code>afps()</code> functionality<a href="quant.html#additional-fps-and-afps-functionality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="shifting-of-reference-patterns" class="section level4 hasAnchor" number="2.1.4.1">
+<h4><span class="header-section-number">2.1.4.1</span> Shifting of reference patterns<a href="quant.html#shifting-of-reference-patterns" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Both <code>fps()</code> and <code>afps()</code> accept a <code>shift</code> argument, which when set to a value greater than zero results in optimisation of a small 2θ shift for each reference pattern in order to improve the quality of the fit. The value supplied to the <code>shift</code> argument defines the maximum (either positive or negative) shift that can be applied to each reference pattern before the shift is reset to zero.</p>
 <p>This shifting process is designed to correct for small linear differences in the peak positions of the standards relative to the sample, which may result from a combination of instrumental aberrations, mineralogical variation and/or uncorrected errors in the library patterns. Whilst it provides more accurate results, the process can substantially increase computation time.</p>
 </div>
-<div id="regrouping-phases-in-powdrfps-and-powdrafps-objects" class="section level4" number="2.1.4.2">
-<h4><span class="header-section-number">2.1.4.2</span> Regrouping phases in <code>powdRfps</code> and <code>powdRafps</code> objects</h4>
+<div id="regrouping-phases-in-powdrfps-and-powdrafps-objects" class="section level4 hasAnchor" number="2.1.4.2">
+<h4><span class="header-section-number">2.1.4.2</span> Regrouping phases in <code>powdRfps</code> and <code>powdRafps</code> objects<a href="quant.html#regrouping-phases-in-powdrfps-and-powdrafps-objects" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Occasionally it can be useful to apply a different grouping structure to the phases quantified within a <code>powdRfps</code> or <code>powdRafps</code> object. This can be achieved using the <code>regroup</code> function (see <code>?regroup.powdRfps</code> and <code>?regroup.powdRafps</code>):</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="quant.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the rockjock regrouping structure</span></span>
 <span id="cb117-2"><a href="quant.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rockjock_regroup)</span>
@@ -727,8 +725,8 @@ Figure 2.1: Plotting selected reference patterns from a powdRlib object.
 </div>
 </div>
 </div>
-<div id="plotting-powdrfps-and-powdrafps-objects" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> Plotting <code>powdRfps</code> and <code>powdRafps</code> objects</h2>
+<div id="plotting-powdrfps-and-powdrafps-objects" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Plotting <code>powdRfps</code> and <code>powdRafps</code> objects<a href="quant.html#plotting-powdrfps-and-powdrafps-objects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/XEw-KHov2mI" frameborder="0" allowfullscreen>
 </iframe>
@@ -773,14 +771,14 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 </p>
 </div>
 </div>
-<div id="quantifying-multiple-samples" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Quantifying multiple samples</h2>
+<div id="quantifying-multiple-samples" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Quantifying multiple samples<a href="quant.html#quantifying-multiple-samples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/baUcGgkdzZM" frameborder="0" allowfullscreen>
 </iframe>
 </p>
-<div id="lapply" class="section level3" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> <code>lapply()</code></h3>
+<div id="lapply" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> <code>lapply()</code><a href="quant.html#lapply" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The simplest way to quantify multiple samples via either <code>fps()</code> and <code>afps()</code> is by wrapping either of the functions in <code>lapply()</code> and supplying a list of diffractograms. The following example wraps the <code>fps()</code> function in <code>lapply</code> and applies the function to the first three items within the <code>rockjock_mixtures</code> data.</p>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="quant.html#cb127-1" aria-hidden="true" tabindex="-1"></a>multi_fit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(rockjock_mixtures[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], fps,</span>
 <span id="cb127-2"><a href="quant.html#cb127-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">lib =</span> rockjock,</span>
@@ -820,8 +818,8 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 <span id="cb129-2"><a href="quant.html#cb129-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">names</span>(multi_fit))</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="parallel-processing" class="section level3" number="2.3.2">
-<h3><span class="header-section-number">2.3.2</span> Parallel processing</h3>
+<div id="parallel-processing" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Parallel processing<a href="quant.html#parallel-processing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Whilst <code>lapply</code> is a simple way to quantify multiple samples, the computation remains restricted to a single core. Computation time can be reduced many-fold by allowing different cores of your machine to process one sample at a time, which can be achieved using the <code>doParallel</code> and <code>foreach</code> packages:</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="quant.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Install the foreach and doParallel package</span></span>
 <span id="cb131-2"><a href="quant.html#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;foreach&quot;</span>, <span class="st">&quot;doParallel&quot;</span>))</span>
@@ -860,8 +858,8 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 <p>Note how the call to <code>fps</code> uses the notation <code>powdR::fps()</code>, which specifies the accessing of the <code>fps()</code> function from the <strong>powdR</strong> package.</p>
 </div>
 </div>
-<div id="summarising-mineralogy" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Summarising mineralogy</h2>
+<div id="summarising-mineralogy" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Summarising mineralogy<a href="quant.html#summarising-mineralogy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>When multiple samples are quantified it is often useful to report the phase concentrations of all of the samples in a single table. For a given list of <code>powdRfps</code> and/or <code>powdRafps</code> objects, the <code>summarise_mineralogy()</code> function yields such summary tables, for example:</p>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="quant.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_mineralogy</span>(multi_fit, <span class="at">type =</span> <span class="st">&quot;grouped&quot;</span>, <span class="at">order =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##   sample_id Kaolinite Corundum Plagioclase Smectite (Di)  Illite K-feldspar
@@ -884,10 +882,10 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 ## 1 0.2197 0.1193771 0.1165048 39834.67
 ## 2 4.5911 0.1237287 0.1115322 36910.18
 ## 3 7.7318 0.1141585 0.1077551 37571.72</code></pre>
-<p>For each of these parameters, lower values represent a smaller difference between the measured and fitted patterns, and hence are indicative of a better fit. For more information see Section 2.1 in <span class="citation"><a href="#ref-Butler2021powdR" role="doc-biblioref">Butler and Hillier</a> (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
+<p>For each of these parameters, lower values represent a smaller difference between the measured and fitted patterns, and hence are indicative of a better fit. For more information see Section 2.1 in <span class="citation">Butler and Hillier (<a href="#ref-Butler2021powdR" role="doc-biblioref">2021b</a>)</span>.</p>
 </div>
-<div id="the-powdr-shiny-app" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> The powdR Shiny app</h2>
+<div id="the-powdr-shiny-app" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> The powdR Shiny app<a href="quant.html#the-powdr-shiny-app" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All above examples showcase the use of R code to carry out full pattern summation. It is also possible to run much of this functionality of <strong>powdR</strong> via a Shiny web application. This Shiny app can be loaded in your default web browser by running <code>run_powdR()</code>. The resulting application has six tabs:</p>
 <ol style="list-style-type: decimal">
 <li><strong>Reference Library Builder:</strong> Allows you to create and export a <a href="quant.html#powdRlib"><code>powdRlib</code> reference library</a> from two ‘.csv’ files: one for the XRPD measurements, and the other for the ID, name and reference intensity ratio of each pattern.</li>
@@ -904,7 +902,7 @@ Figure 2.5: Plotting both the fit and residuals of a powdRfps or powdRafps objec
 
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Butler2021rc" class="csl-entry">
 Butler, Benjamin M, and Stephen Hillier. 2021a. <span>“<span>AUTOMATED FULL-PATTERN SUMMATION OF X-RAY POWDER DIFFRACTION DATA FOR HIGH-THROUGHPUT QUANTIFICATION OF CLAY-BEARING MIXTURES</span>.”</span> <em>Clays and Clay Minerals</em>. <a href="https://doi.org/10.1007/s42860-020-00105-6">https://doi.org/10.1007/s42860-020-00105-6</a>.

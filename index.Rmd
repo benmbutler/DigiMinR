@@ -24,9 +24,9 @@ if (knitr:::is_html_output())
 }
 ```
 
-Digital Soil Mineralogy relates to the data-driven analysis of soil X-ray powder diffraction (XRPD) data. Such data are considered to be precise digital signatures of a given soil's mineralogy, within which is all of the information required to identify and quantify the various mineral components within these complex mixtures.
+Digital Soil Mineralogy relates to the data-driven analysis of soil X-ray powder diffraction (XRPD) data. Such data are considered to be precise digital signatures of a given soil's mineralogy, within which all of the information required to identify and quantify the various mineral components within these complex mixtures is encoded.
 
-In recent years various methods for Digital Soil Mineralogy have been developed and published in peer-reviewed literature. These methods include the use of supervised and unsupervised machine learning to predict and interpret soil properties from XRPD data, the application of novel multivariate statistical methods, and automated approaches for mineral quantification. Each chapter in this documentation will detail one such method, providing code and data for reproducible examples that can be adapted by readers for their own projects/research.
+In recent years various methods for Digital Soil Mineralogy have been developed and published in peer-reviewed literature. These methods include the use of supervised and unsupervised machine learning to predict and interpret soil properties from XRPD data, the application of novel multivariate statistical methods, and automated approaches for mineral quantification. Each chapter in this course will detail one such method, providing code and data for reproducible examples that can be adapted by readers for their own projects/research.
 
 Whilst all data and methods presented herein relate to soil samples, the methods can be considered transferable to all aspects of environmental mineralogy and beyond!
 
@@ -68,10 +68,10 @@ Each chapter contains reproducible R code along with written explanations. For t
 ## About the authors {-}
 * [**Benjamin Butler**](https://www.hutton.ac.uk/staff/benjamin-butler) is a Digital Mineralogist at the James Hutton Institute, Aberdeen, UK. His interests centre around the use of XRPD to characterise the mineral composition of environmental mixtures such as soils, construction and demolition waste, and sea ice. As an active R user he has authored the **powdR** package that provides a range of methods for quantitative analysis of XRPD data using full pattern summation. Aside from dealing with data, he is involved in regular soil surveys on forestry land across Scotland, allowing him to observe soils from the digging to the databases.
 
-* [**Steve Hillier**](https://www.hutton.ac.uk/staff/steve-hillier) is a Soil Mineralogist at the James Hutton Institute, Aberdeen, UK...
+* [**Steve Hillier**](https://www.hutton.ac.uk/staff/steve-hillier) is a Soil Mineralogist at the James Hutton Institute, Aberdeen, UK.  Steve conceived the concept of digital mineralogy when he realized that attempts to understand how soil properties relate to mineralogical properties did not need to involve complex intermediate steps such as quantitative mineralogical analysis of XRD data but could instead work directly with more precise uninterpreted primary XRD data, linking back to mineralogical interpretations at a later stage in the analysis.  Steve is well know for his work on quantitative mineralogical analysis using full pattern methods as exemplified by his success in the [**Reynolds Cup**](https://www.clays.org/reynolds/) Round Robin. Steve is outgoing Chair of IUSS commission 2.4 on soil mineralogy (2018-2022) and has been actively promoting data driven approaches to understanding soil mineralogy/soil property relationships. 
 
 ## Acknowledgments {-}
-The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. Additional support from the International Union of Soil Sciences (IUSS) is gratefully acknowledged, as is the support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS).
+The research that comprises the bulk of this material, and the time required to create this material was kindly funded by the Macaulay Development Trust. Additional support from the International Union of Soil Sciences (IUSS) Stimulus Fund is gratefully acknowledged, as is the support of the Scottish Government’s Rural and Environment Science and Analytical Services Division (RESAS).
 
 ```{r, echo=FALSE, out.width = '100%', fig.align="center", cache = TRUE}
 if (knitr:::is_html_output())
