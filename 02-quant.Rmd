@@ -1,15 +1,14 @@
 # Quantitative phase analysis {#quant}
 
-This chapter describes methods for quantitative analysis implemented within the **powdR** package using a range of reproducible examples. Detailed accounts of these methods are provided in @Butler2021rc and @Butler2021powdR.
+This chapter describes methods for quantitative analysis implemented within the **powdR** package using a range of reproducible examples. Detailed accounts of these methods are provided in @Butler2021rc and @Butler2021powdR and references therein.
 
-One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) signals within a diffractogram can be related to
-their concentrations within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.
+One of the most powerful properties of XRPD data is that the intensities of crystalline (e.g., quartz, calcite and gypsum), disordered (e.g., clay minerals), and amorphous (e.g., volcanic glass and organic matter) scattering signals within a diffractogram can be related to the concentrations of these components within the mixture. This principal facilitates the quantification of phase concentrations from XRPD data.
 
-Of the approaches available for quantitative XRPD, the simple Reference Intensity Ratio (RIR) method has consistently proven accurate. A RIR is a measure of the diffracting power of a phase relative to that of a standard (most often corundum, Al~2~O~3~), usually measured in a 50:50 mixture by weight. The RIR of a detectable phase within a mixture is required for its quantification.
+Of the approaches available for quantitative XRPD, the simple Reference Intensity Ratio (RIR) method has consistently proven accurate. A RIR is a measure of the diffracting power of a phase relative to that of a standard (most often corundum, α Al~2~O~3~), usually measured in a 50:50 mixture by weight. The RIR of a detectable phase within a mixture is required for its quantification.
 
 As mentioned in Chapter \@ref(intro), a given diffractogram can be modeled as the sum of pure diffractograms for all detectable phases, each scaled by different amounts (scaling factors). By combining these scaling factors with RIRs, phase concentrations can be calculated. Hereafter this approach is referred to as **full pattern summation**.
 
-Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the "reference library" containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn't possible and the data can be harmonised accordingly. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs [see Section 2 in @Butler2021rc].
+Full pattern summation is particularly suitable for mixtures containing crystalline mineral components in combination with disordered and/or X-ray amorphous phases because the background scattering is also included. Soil is a prime example of such mixtures, where crystalline minerals such as quartz and feldspars can be present in combination with clay minerals (i.e. disordered phases), and organic matter (i.e. amorphous phases). A key component of the full pattern summation approach is the "reference library" containing measured or calculated patterns of the pure phases that may be encountered within the samples. The reference patterns within the library would ideally be measured on the same instrument as the sample, however in some cases this isn't possible and the data can be harmonised accordingly, at least in some respects. To quantify a given sample, suitable phases from the library are selected that together account for the peaks within the data, and their relative contributions to the observed signal optimised until an appropriate full pattern fit is achieved. This fit is usually refined using least squares optimisation of an objective parameter. The scaled intensities of the optimised patterns are then converted to weight % using the RIRs [see Section 2 in @Butler2021rc].
 
 ## Full pattern summation with **powdR**
 
@@ -135,7 +134,7 @@ Once you have a `powdRlib` reference library and diffractogram(s) [loaded into R
 `fps()` is specifically applied to `powdRlib` objects, and accepts a wide range of arguments that are detailed in the package documentation (see `?fps.powdRlib`). Here the [`rockjock` and `rockjock_mixtures` data](#rockjock) will be used to demonstrate the main features of `fps()` and the various ways in which it can be used.
 
 #### Full pattern summation **with** an internal standard
-Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the `std` and `std_conc` arguments of `fps()` can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the `rockjock_mixtures` data were prepared with 20 % corundum as the internal standard, thus this can be specified using `std = "CORUNDUM"` and `std_conc = 20` in the call to `fps()`. In addition, setting the `omit_std` argument to `TRUE` makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the `align` argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined [above](#alignment). These principles are used in the example below, which passes the following seven arguments to `fps()`:
+Often samples are prepared for XRPD analysis with an internal standard of known concentration. If this is the case, then the `std` and `std_conc` arguments of `fps()` can be used to define the internal standard and its concentration (in weight %), respectively, which is then used in combination with the reference intensity ratios to compute phase concentrations. For example, all samples in the `rockjock_mixtures` data were prepared with 20 % corundum as the added internal standard, thus this can be specified using `std = "CORUNDUM"` and `std_conc = 20` in the call to `fps()`. In addition, setting the `omit_std` argument to `TRUE` makes sure that the internal standard concentration will be omitted from the output and the phase concentrations recomputed accordingly. In such cases the phase specified as the internal standard can also be used in combination with the value specified in the `align` argument to ensure that the measured diffractogram is appropriately aligned on the 2θ axis using the alignment approach outlined [above](#alignment). These principles are used in the example below, which passes the following seven arguments to `fps()`:
 
 1. `lib` is used to define the [`powdRlib` object](#powdRlib) containing the reference patterns and their RIRs.
 2. `smpl` is used to defined the data frame or [`XY` object](#loading-data) containing the sample diffractogram.
@@ -174,7 +173,7 @@ The phase concentrations can be accessed in the `phases` data frame of the `powd
 fit1$phases
 ```
 
-Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 %:
+Further, notice that if the concentration of the internal standard is specified then the phase concentrations do not necessarily sum to 100 % because each phase is quantified with respect to the internal standard:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 sum(fit1$phases$phase_percent, na.rm = TRUE)
@@ -243,7 +242,7 @@ sum(fit3$phases$phase_percent)
 ```
 
 #### Full pattern summation with data harmonisation
-It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), `fps()` contains a logical `harmonise` argument (default `= TRUE`). When the sample and library contain non-identical 2θ axes, `harmonise = TRUE` will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available.
+It is usually recommended that the reference library used for full pattern summation is measured on the same instrument as the sample using an identical 2θ range and resolution, along with other identical configurations of the instrument. In some cases this is not feasible, and the reference library patterns may be from a different instrument to the sample. To allow for seamless use of samples and libraries from different instruments (measured using the same X-ray wavelength), `fps()` contains a logical `harmonise` argument (default `= TRUE`). When the sample and library contain non-identical 2θ axes, `harmonise = TRUE` will convert the data onto the same axis by determining the overlapping 2θ range and interpolating to the coarsest resolution available. This type of approach may produce results that are acceptable and fit for purpose, but if the best accuracy is required then a library of standard patterns collected on the instrument used to run the unknown samples is the recommended approach.
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 #Create a sample with a shorter 2theta axis than the library
@@ -270,13 +269,13 @@ fit4$phases
 
 <p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/B7W5zXnlrGU" frameborder="0" allowfullscreen></iframe></p>
 
-The selection of suitable reference patterns for full pattern summation can often be challenging and time consuming. An attempt to automate this process is provided in the `afps()` function, which can select appropriate reference patterns from a reference library and subsequently exclude reference patterns based on limit of detection estimates. Such an approach is considered particularly advantageous when quantifying high-throughput XRPD datasets that display considerable mineralogical variation such as the [Reynolds Cup](https://www.clays.org/reynolds/). Detailed accounts of the `afps()` function are provided in @Butler2021rc and @Butler2021powdR.
+The selection of suitable reference patterns for full pattern summation can often be challenging and time consuming. An attempt to automate this process is provided in the `afps()` function, which can select appropriate reference patterns from a reference library and subsequently exclude reference patterns based on limit of detection estimates. Such an approach is considered particularly advantageous when quantifying XRPD datasets that display considerable mineralogical variation such as the [Reynolds Cup](https://www.clays.org/reynolds/) samples. Detailed accounts of the `afps()` function are provided in @Butler2021rc and @Butler2021powdR.
 
-All of the principles and arguments outlined above for the `fps()` function apply to the use of `afps()`. When using `afps()`, there are a few additional arguments that need to be defined:
+All of the principles and arguments outlined above for the `fps()` function apply to the use of `afps(). However, when using `afps()`, there are a few additional arguments that need to be defined:
 
 1. `force` is used to specify phase IDs (`lib$phases$phase_id`) or phase names (`lib$phases$phase_name`) that must be retained in the output, even if their concentrations are estimated to be below the limit of detection or negative.
 2. `lod` is used to define the limit of detection (LOD; in weight %) of the phase specified as the internal standard in the `std` argument. This limit of detection for the define phase is then used in combination with the RIRs to estimate the LODs of all other phases.
-3. `amorphous` is used to specify which, if any, phases should be treated as amorphous. This is used because the assumptions used to estimate the LODs of crystalliane and disordered phases are not appropriate for amorphous phases.
+3. `amorphous` is used to specify which, if any, phases should be treated as amorphous. This is used because the assumptions used to estimate the LODs of crystalline and disordered phases are not appropriate for amorphous phases.
 4. `amorphous_lod` is used to define the LOD (in weight %) of the phases specified in the `amorphous` argument.
 
 Here the `rockjock` library, containing 169 reference patterns, will be used to quantify one of the samples in the `rockjock_mixtures` data. Note that when using `afps()`, omission of the `refs` argument in the function call will automatically result in all phases from the reference library being used in the fitting process.
@@ -296,13 +295,13 @@ Once computed, the `afps` function produces a `powdRafps` object, which is a bun
 table(a_fit1$phases$phase_name)
 ```
 
-Illustrates that the resulting output contains 2 reference patterns for both illite and smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by `afps()`. This information is grouped together and summed in the `phases_grouped` data frame within the `powdRafps` object:
+Illustrates that the resulting output contains 2 reference patterns for both illite and smectite, 3 patterns for plagioclase, and 1 pattern for each of the other phases selected by `afps()'. This information is grouped together and summed in the `phases_grouped` data frame within the `powdRafps` object:
 
 ```{r, message = FALSE, warning = FALSE, cache = TRUE}
 a_fit1$phases_grouped
 ```
 
-Note that the "background" phase in the output is simply a horizontal line that can account for shifts in background intensity, which can be useful to use in some cases. In the `rockjock` data, the background patterns have been given an exceptionally high RIR so that their quantified concentrations are near zero.
+Grouping of phases like this is a powerful approach to obtain better fits to the minerals present in a given sample, and is advantageous even for minerals like quartz, where some combination of several quartz standards may produce a better fit that a single standard. Note also that the "background" phase in the output is simply a horizontal line that can account for shifts in background intensity, which can be useful to use in some cases, but most especially when working with data and libraries from different instruments. In the `rockjock` data, the background patterns have been given an exceptionally high RIR so that their quantified concentrations are effectively zero.
 
 ### Additional `fps()` and `afps()` functionality
 
